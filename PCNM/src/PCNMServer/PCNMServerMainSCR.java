@@ -4,6 +4,9 @@
  */
 package PCNMServer;
 
+import PCNMServer.ServerLogic.PCNMServerLogic;
+import java.io.IOException;
+
 /**
  *
  * @author Ori Ziv
@@ -251,11 +254,53 @@ public class PCNMServerMainSCR extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnStartStopSrvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartStopSrvActionPerformed
-        // TODO add your handling code here:
+        String port = txtSrvPort.getText();
+        boolean listens;
+        // if server is not listennig - start it
+        if (false == PCNMServerLogic.pcnm.isListening()) {
+            if (port == null || port.isEmpty()) {
+                txtareaSRVConsole.append("Server port is a mandatory field");
+                return;
+            }
+            try {
+                PCNMServerLogic.initServer(port);
+            } catch (NumberFormatException e) {
+                txtareaSRVConsole.append(String.format("%s is not a valid port", port));
+                return;
+            }
+        }
+        // revert server listening status
+        try {
+            listens = PCNMServerLogic.startStopListening();
+        } catch (IOException e) {
+            txtareaSRVConsole.append(e.getMessage());
+            return;
+        }
+        if (listens)
+            txtareaSRVConsole.append(String.format("Server is up and listening to port %s", port));
+        else
+            txtareaSRVConsole.append("Server is down");
     }//GEN-LAST:event_btnStartStopSrvActionPerformed
 
     private void btnConnectDBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConnectDBActionPerformed
-        // TODO add your handling code here:
+        String DBSrv;
+        String DBName;
+        String DBUser;
+        char [] DBPswd;
+        try {
+            DBSrv = txtDBSrvName.getText();
+            DBName = txtDBName.getText();
+            DBUser = txtDBUserName.getText();
+            DBPswd = pswdDBPassword.getPassword();
+        } catch (NullPointerException e) {
+            txtareaSRVConsole.append("All DB Connection Settings fields are mandatory");
+            return;
+        }
+        if (DBSrv.isEmpty() || DBName.isEmpty() || DBUser.isEmpty() || DBPswd.length == 0) {
+            txtareaSRVConsole.append("All DB Connection Settings fields are mandatory");
+            return;
+        }
+        PCNMServerLogic.setDBParams(DBSrv, DBName, DBUser, DBPswd);
     }//GEN-LAST:event_btnConnectDBActionPerformed
 
     /**
