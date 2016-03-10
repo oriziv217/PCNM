@@ -6,6 +6,8 @@ package PCNMServer;
 
 import PCNMServer.ServerLogic.PCNMServerLogic;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -50,9 +52,15 @@ public class PCNMServerMainSCR extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PCNM Server");
+        setBounds(new java.awt.Rectangle(300, 300, 0, 0));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setName("MainSCR"); // NOI18N
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         lblTitle.setFont(new java.awt.Font("David", 1, 24)); // NOI18N
         lblTitle.setForeground(java.awt.Color.red);
@@ -257,15 +265,15 @@ public class PCNMServerMainSCR extends javax.swing.JFrame {
         String port = txtSrvPort.getText();
         boolean listens;
         // if server is not listennig - start it
-        if (false == PCNMServerLogic.pcnm.isListening()) {
+        if (PCNMServerLogic.pcnm == null || PCNMServerLogic.pcnm.isListening() == false) {
             if (port == null || port.isEmpty()) {
-                txtareaSRVConsole.append("Server port is a mandatory field");
+                txtareaSRVConsole.append("Server port is a mandatory field\n");
                 return;
             }
             try {
                 PCNMServerLogic.initServer(port);
             } catch (NumberFormatException e) {
-                txtareaSRVConsole.append(String.format("%s is not a valid port", port));
+                txtareaSRVConsole.append(String.format("%s is not a valid port\n", port));
                 return;
             }
         }
@@ -277,9 +285,9 @@ public class PCNMServerMainSCR extends javax.swing.JFrame {
             return;
         }
         if (listens)
-            txtareaSRVConsole.append(String.format("Server is up and listening to port %s", port));
+            txtareaSRVConsole.append(String.format("Server is up and listening to port %s\n", port));
         else
-            txtareaSRVConsole.append("Server is down");
+            txtareaSRVConsole.append("Server is down\n");
     }//GEN-LAST:event_btnStartStopSrvActionPerformed
 
     private void btnConnectDBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConnectDBActionPerformed
@@ -293,15 +301,24 @@ public class PCNMServerMainSCR extends javax.swing.JFrame {
             DBUser = txtDBUserName.getText();
             DBPswd = pswdDBPassword.getPassword();
         } catch (NullPointerException e) {
-            txtareaSRVConsole.append("All DB Connection Settings fields are mandatory");
+            txtareaSRVConsole.append("All DB Connection Settings fields are mandatory\n");
             return;
         }
         if (DBSrv.isEmpty() || DBName.isEmpty() || DBUser.isEmpty() || DBPswd.length == 0) {
-            txtareaSRVConsole.append("All DB Connection Settings fields are mandatory");
+            txtareaSRVConsole.append("All DB Connection Settings fields are mandatory\n");
             return;
         }
         PCNMServerLogic.setDBParams(DBSrv, DBName, DBUser, DBPswd);
+        txtareaSRVConsole.append("DB connection parameters loaded\n");
     }//GEN-LAST:event_btnConnectDBActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        if (PCNMServerLogic.pcnm != null && PCNMServerLogic.pcnm.isListening() == true)
+            try {
+                PCNMServerLogic.pcnm.close();
+        } catch (IOException ex) {}
+        this.dispose();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

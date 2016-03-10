@@ -55,6 +55,6 @@ public class PCNMServerLogic {
      * @param DBpswd
      */
     public static void setDBParams (String DBSrv, String DBName, String DBUser, char[] DBpswd) {
-        DBConnect.setMySQLConnection(DBSrv, DBName, DBUser, Arrays.toString(DBpswd));
+        DBConnect.setMySQLConnection(DBSrv, DBName, DBUser, String.valueOf(DBpswd));
     }
 }
