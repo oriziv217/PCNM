@@ -1,10 +1,12 @@
 package Entities;
 
+import java.io.Serializable;
+
 /**
  * This class represents a record in Employee table
  * @author ori ziv
  */
-public class Employee {
+public class Employee implements Serializable{
     private int ID;
     private String name;
     private String userName;

@@ -29,7 +29,7 @@ public class EmployeesLogic {
         // query DB
         String filter = "userName = '" + username + "'";
         Connection conDB = DBConnect.mySQLConnection();
-        ResultSet rs = DBConnect.selectWithFilter(conDB, "Employees", null, filter);
+        ResultSet rs = DBConnect.selectWithFilter(conDB, "Employee", null, filter);
         // if result set is not empty then username is a match
         if (rs.next()) {
             // verify password
