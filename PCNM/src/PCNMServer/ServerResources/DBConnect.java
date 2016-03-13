@@ -64,47 +64,47 @@ public class DBConnect {
             setMySQLConnection (server, DB, user, pswrd);       // set parameters
             return mySQLConnection();                           // create connection object
     }
-//
-//        /**
-//         * This method executes an SQL select query on a specific table in a specific schema with a specific filter
-//         * 
-//         * @param conDB - connection to the DB schema - must be active and open connection
-//         * @param table - table name - must be a name of an existing table.
-//         * 					Table string shell look like this: "table_name"
-//         * @param fields - fields to select from the table.
-//         * 					If null is supplied then the query is "SELECT *"
-//         * 					You can use SQL aggregation functions here if you need to as long as you keep SQL syntax.
-//         * 					Fields string shell look like this: "field1, field2" or: "MAX(field1)"
-//         * @param filter - query filter.
-//         * 					If null is supplied then no WHERE clause will be added to the query.
-//         * 					You can add ORDER BY clause here as long as you keep SQL syntax.
-//         * 					You can add GROUP BY clause here if necessary as you keep SQL syntax.
-//         * 					Filter string shell look like this: field1 = 'value1' AND field2 = 'value2'"
-//         * @return ResultSet of the query execution.
-//         * 					Please notice that the returned object might be an empty ResultSet.
-//         * @throws SQLException
-//         */
-//        public static ResultSet selectWithFilter (Connection conDB, String table, String fields, String filter) throws SQLException {
-//                // if connection is closed throw exception
-//                if (conDB.isClosed()) throw new SQLException("Connection is closed");
-//                // if no table supplied throw exception
-//                if (table == null) throw new SQLException("No table specified");
-//
-//                // if no fields specified get all fields
-//                String select;
-//                if (fields == null) select = "*";
-//                else select = fields;
-//
-//                // create query
-//                String query = "SELECT " + select + " FROM " + table;
-//
-//                // add filter if necessary
-//                if (filter != null) query = query + " WHERE " + filter;
-//
-//                // execute query
-//                Statement stmnt = conDB.createStatement();
-//                return stmnt.executeQuery(query);
-//        }
+
+        /**
+         * This method executes an SQL select query on a specific table in a specific schema with a specific filter
+         * 
+         * @param conDB - connection to the DB schema - must be active and open connection
+         * @param table - table name - must be a name of an existing table.
+         * 					Table string shell look like this: "table_name"
+         * @param fields - fields to select from the table.
+         * 					If null is supplied then the query is "SELECT *"
+         * 					You can use SQL aggregation functions here if you need to as long as you keep SQL syntax.
+         * 					Fields string shell look like this: "field1, field2" or: "MAX(field1)"
+         * @param filter - query filter.
+         * 					If null is supplied then no WHERE clause will be added to the query.
+         * 					You can add ORDER BY clause here as long as you keep SQL syntax.
+         * 					You can add GROUP BY clause here if necessary as you keep SQL syntax.
+         * 					Filter string shell look like this: field1 = 'value1' AND field2 = 'value2'"
+         * @return ResultSet of the query execution.
+         * 					Please notice that the returned object might be an empty ResultSet.
+         * @throws SQLException
+         */
+        public static ResultSet selectWithFilter (Connection conDB, String table, String fields, String filter) throws SQLException {
+                // if connection is closed throw exception
+                if (conDB.isClosed()) throw new SQLException("Connection is closed");
+                // if no table supplied throw exception
+                if (table == null) throw new SQLException("No table specified");
+
+                // if no fields specified get all fields
+                String select;
+                if (fields == null) select = "*";
+                else select = fields;
+
+                // create query
+                String query = "SELECT " + select + " FROM " + table;
+
+                // add filter if necessary
+                if (filter != null) query = query + " WHERE " + filter;
+
+                // execute query
+                Statement stmnt = conDB.createStatement();
+                return stmnt.executeQuery(query);
+        }
 //
 //        /**
 //         * This method execute an SQL update query on a specific table in a specific schema.

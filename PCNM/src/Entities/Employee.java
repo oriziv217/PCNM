@@ -13,6 +13,17 @@ public class Employee {
     private Status status;
 
     // Constructors
+
+    /**
+     *
+     * @param userName
+     * @param password
+     */
+
+    public Employee(String userName, char[] password) {
+        this.userName = userName;
+        this.password = password;
+    }
     
     /**
      *
@@ -48,7 +59,28 @@ public class Employee {
         this.status = status;
     }
 
+    /**
+     *
+     * @param emp
+     */
+    public Employee (Employee emp) {
+        this.ID = emp.getID();
+        this.name = emp.getName();
+        this.password = emp.getPassword();
+        this.status = emp.getStatus();
+        this.type = emp.getType();
+        this.userName = emp.getUserName();
+    }
     // Setters and Getters
+
+    /**
+     *
+     * @param ID
+     */
+    
+    public void setID(int ID) {
+        this.ID = ID;
+    }
     
     /**
      *

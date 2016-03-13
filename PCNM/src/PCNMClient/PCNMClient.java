@@ -1,5 +1,8 @@
 package PCNMClient;
 
+import Entities.Employee;
+import Entities.Message;
+import PCNMClient.PCNMClientView.*;
 import java.io.IOException;
 import ocsf.client.AbstractClient;
 
@@ -7,7 +10,7 @@ import ocsf.client.AbstractClient;
  * This class implements the system's client
  * @author ori ziv
  */
-public class PCNMClient extends AbstractClient{
+public class PCNMClient extends AbstractClient {
 
     /**
      * Constructor that starts client-server session
@@ -22,7 +25,17 @@ public class PCNMClient extends AbstractClient{
 
     @Override
     protected void handleMessageFromServer(Object msg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Message response = (Message)msg;
+        switch (response.getMsgType()) {
+            case LOGIN_ANSWER:
+                if (response.getDataString().equals("User logged-in")) {
+                    PCNMClientStart.user = new Employee((Employee)response.getEntity());
+                    PCNMClientStart.switchPanels(new HomeSCR());
+                } else {
+                    PCNMClientStart.appWindow.badLogin(response.getDataString());
+                }
+                break;
+        }
     }
     
     /**

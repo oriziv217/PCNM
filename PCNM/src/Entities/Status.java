@@ -5,5 +5,19 @@ package Entities;
  * @author ori ziv
  */
 public enum Status {
-    ENABLE, DISABLE, SUSPENDED
+
+    /**
+     * Enabled Status
+     */
+    ENABLE,
+
+    /**
+     * Disabled Status
+     */
+    DISABLE,
+
+    /**
+     * Suspended Status
+     */
+    SUSPENDED
 }

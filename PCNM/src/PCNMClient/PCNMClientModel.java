@@ -6,7 +6,7 @@ import java.io.IOException;
  * This class control the system's client
  * @author ori ziv
  */
-public class PCNMClientCTRL {
+public class PCNMClientModel {
 
     /**
      * This is the system's client instance
@@ -27,11 +27,20 @@ public class PCNMClientCTRL {
     }
     
     /**
+     *
+     * @param msg
+     * @throws IOException
+     */
+    public static void sendMessageToServer (Object msg) throws IOException {
+        client.sendToServer(msg);
+    }
+    
+    /**
      * This method ends the connection with the server
      * @throws java.io.IOException
      */
-    public static void quitApp () throws IOException {
-        if (client.isConnected())
+    public static void killConnection () throws IOException {
+        if (client != null && client.isConnected())
             client.closeConnection();
     }
 }

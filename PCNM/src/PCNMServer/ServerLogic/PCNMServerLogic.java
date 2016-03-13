@@ -3,7 +3,6 @@ package PCNMServer.ServerLogic;
 import PCNMServer.PCNMServer;
 import PCNMServer.ServerResources.DBConnect;
 import java.io.IOException;
-import java.util.Arrays;
 
 /**
  * This class implements basic server functionality

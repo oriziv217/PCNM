@@ -1,14 +1,14 @@
-package PCNMClientView;
+package PCNMClient.PCNMClientView;
 
-import PCNMClient.PCNMClientCTRL;
-import PCNMController.LoginCTRL;
+import PCNMClient.PCNMClientModel;
+import PCNMClient.PCNMClientController.LoginCTRL;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * This class implements login view
  * @author ori ziv
  */
 public class LoginSCR extends javax.swing.JFrame implements WindowMustHave {
@@ -16,7 +16,7 @@ public class LoginSCR extends javax.swing.JFrame implements WindowMustHave {
     private String userName = "";
     private char[] password;
     private String server = "";
-    private int port = 0;
+    private int port = 11111;
     /**
      * Creates new form LoginSCR
      */
@@ -33,19 +33,20 @@ public class LoginSCR extends javax.swing.JFrame implements WindowMustHave {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblTitle = new javax.swing.JLabel();
-        lblScreenName = new javax.swing.JLabel();
-        lblUserName = new javax.swing.JLabel();
-        lblPswd = new javax.swing.JLabel();
-        lblServer = new javax.swing.JLabel();
-        lblPort = new javax.swing.JLabel();
-        txtUserName = new javax.swing.JTextField();
-        txtServer = new javax.swing.JTextField();
-        txtPort = new javax.swing.JTextField();
+        pnlLogin = new javax.swing.JPanel();
         pswd = new javax.swing.JPasswordField();
-        chbxDefaultPort = new javax.swing.JCheckBox();
-        btnLogin = new javax.swing.JButton();
+        lblServer = new javax.swing.JLabel();
+        lblScreenName = new javax.swing.JLabel();
         btnExit = new javax.swing.JButton();
+        lblPort = new javax.swing.JLabel();
+        txtPort = new javax.swing.JTextField();
+        lblPswd = new javax.swing.JLabel();
+        btnLogin = new javax.swing.JButton();
+        txtServer = new javax.swing.JTextField();
+        chbxDefaultPort = new javax.swing.JCheckBox();
+        txtUserName = new javax.swing.JTextField();
+        lblUserName = new javax.swing.JLabel();
+        lblTitle = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PCNM Client - Log in");
@@ -58,102 +59,30 @@ public class LoginSCR extends javax.swing.JFrame implements WindowMustHave {
             }
         });
 
-        lblTitle.setFont(new java.awt.Font("David", 1, 24)); // NOI18N
-        lblTitle.setForeground(java.awt.Color.red);
-        lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTitle.setText("PCNM Client");
-        lblTitle.setName("lblTitle"); // NOI18N
-
-        lblScreenName.setFont(new java.awt.Font("David", 1, 18)); // NOI18N
-        lblScreenName.setForeground(java.awt.Color.red);
-        lblScreenName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblScreenName.setText("Log-In:");
-        lblScreenName.setName("lblScreenName"); // NOI18N
-
-        lblUserName.setFont(new java.awt.Font("David", 1, 12)); // NOI18N
-        lblUserName.setForeground(java.awt.Color.red);
-        lblUserName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblUserName.setText("User Name:");
-        lblUserName.setName("lblUserName"); // NOI18N
-
-        lblPswd.setFont(new java.awt.Font("David", 1, 12)); // NOI18N
-        lblPswd.setForeground(java.awt.Color.red);
-        lblPswd.setText("Password:");
-        lblPswd.setName("lblPswd"); // NOI18N
-
-        lblServer.setFont(new java.awt.Font("David", 1, 12)); // NOI18N
-        lblServer.setForeground(java.awt.Color.red);
-        lblServer.setText("Server:");
-        lblServer.setName("lblServer"); // NOI18N
-
-        lblPort.setFont(new java.awt.Font("David", 1, 12)); // NOI18N
-        lblPort.setForeground(java.awt.Color.red);
-        lblPort.setText("Port:");
-        lblPort.setName("lblPort"); // NOI18N
-
-        txtUserName.setFont(new java.awt.Font("David", 0, 12)); // NOI18N
-        txtUserName.setToolTipText("Type your user name");
-        txtUserName.setName("txtUserName"); // NOI18N
-        txtUserName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtUserNameActionPerformed(evt);
-            }
-        });
-
-        txtServer.setFont(new java.awt.Font("David", 0, 12)); // NOI18N
-        txtServer.setToolTipText("Type server name or IP address");
-        txtServer.setName("txtServer"); // NOI18N
-        txtServer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtServerActionPerformed(evt);
-            }
-        });
-
-        txtPort.setEditable(false);
-        txtPort.setFont(new java.awt.Font("David", 0, 12)); // NOI18N
-        txtPort.setText("11111");
-        txtPort.setToolTipText("Type server port number");
-        txtPort.setDragEnabled(true);
-        txtPort.setName("txtPort"); // NOI18N
-        txtPort.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPortActionPerformed(evt);
-            }
-        });
-
         pswd.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         pswd.setToolTipText("Type pasword");
         pswd.setName(" pswd"); // NOI18N
+        pswd.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                pswdFocusLost(evt);
+            }
+        });
         pswd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 pswdActionPerformed(evt);
             }
         });
 
-        chbxDefaultPort.setFont(new java.awt.Font("David", 0, 12)); // NOI18N
-        chbxDefaultPort.setSelected(true);
-        chbxDefaultPort.setText("Default port");
-        chbxDefaultPort.setToolTipText("Check in order to use default port number");
-        chbxDefaultPort.setActionCommand("useDeafultPort");
-        chbxDefaultPort.setName("chbxDefaultPort"); // NOI18N
-        chbxDefaultPort.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chbxDefaultPortActionPerformed(evt);
-            }
-        });
+        lblServer.setFont(new java.awt.Font("David", 1, 12)); // NOI18N
+        lblServer.setForeground(java.awt.Color.red);
+        lblServer.setText("Server:");
+        lblServer.setName("lblServer"); // NOI18N
 
-        btnLogin.setFont(new java.awt.Font("David", 1, 12)); // NOI18N
-        btnLogin.setText("Log-in");
-        btnLogin.setToolTipText("Press in order to login");
-        btnLogin.setActionCommand("loginBtnPressed");
-        btnLogin.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btnLogin.setEnabled(false);
-        btnLogin.setName("btnLogin"); // NOI18N
-        btnLogin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLoginActionPerformed(evt);
-            }
-        });
+        lblScreenName.setFont(new java.awt.Font("David", 1, 18)); // NOI18N
+        lblScreenName.setForeground(java.awt.Color.red);
+        lblScreenName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblScreenName.setText("Log-In:");
+        lblScreenName.setName("lblScreenName"); // NOI18N
 
         btnExit.setFont(new java.awt.Font("David", 1, 12)); // NOI18N
         btnExit.setText(" Exit");
@@ -169,68 +98,177 @@ public class LoginSCR extends javax.swing.JFrame implements WindowMustHave {
             }
         });
 
+        lblPort.setFont(new java.awt.Font("David", 1, 12)); // NOI18N
+        lblPort.setForeground(java.awt.Color.red);
+        lblPort.setText("Port:");
+        lblPort.setName("lblPort"); // NOI18N
+
+        txtPort.setEditable(false);
+        txtPort.setFont(new java.awt.Font("David", 0, 12)); // NOI18N
+        txtPort.setText("11111");
+        txtPort.setToolTipText("Type server port number");
+        txtPort.setDragEnabled(true);
+        txtPort.setName("txtPort"); // NOI18N
+        txtPort.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtPortFocusLost(evt);
+            }
+        });
+        txtPort.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPortActionPerformed(evt);
+            }
+        });
+
+        lblPswd.setFont(new java.awt.Font("David", 1, 12)); // NOI18N
+        lblPswd.setForeground(java.awt.Color.red);
+        lblPswd.setText("Password:");
+        lblPswd.setName("lblPswd"); // NOI18N
+
+        btnLogin.setFont(new java.awt.Font("David", 1, 12)); // NOI18N
+        btnLogin.setText("Log-in");
+        btnLogin.setToolTipText("Press in order to login");
+        btnLogin.setActionCommand("loginBtnPressed");
+        btnLogin.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnLogin.setEnabled(false);
+        btnLogin.setName("btnLogin"); // NOI18N
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
+
+        txtServer.setFont(new java.awt.Font("David", 0, 12)); // NOI18N
+        txtServer.setToolTipText("Type server name or IP address");
+        txtServer.setName("txtServer"); // NOI18N
+        txtServer.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtServerFocusLost(evt);
+            }
+        });
+        txtServer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtServerActionPerformed(evt);
+            }
+        });
+
+        chbxDefaultPort.setFont(new java.awt.Font("David", 0, 12)); // NOI18N
+        chbxDefaultPort.setSelected(true);
+        chbxDefaultPort.setText("Default port");
+        chbxDefaultPort.setToolTipText("Check in order to use default port number");
+        chbxDefaultPort.setActionCommand("useDeafultPort");
+        chbxDefaultPort.setName("chbxDefaultPort"); // NOI18N
+        chbxDefaultPort.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chbxDefaultPortActionPerformed(evt);
+            }
+        });
+
+        txtUserName.setFont(new java.awt.Font("David", 0, 12)); // NOI18N
+        txtUserName.setToolTipText("Type your user name");
+        txtUserName.setName("txtUserName"); // NOI18N
+        txtUserName.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtUserNameFocusLost(evt);
+            }
+        });
+        txtUserName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUserNameActionPerformed(evt);
+            }
+        });
+
+        lblUserName.setFont(new java.awt.Font("David", 1, 12)); // NOI18N
+        lblUserName.setForeground(java.awt.Color.red);
+        lblUserName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblUserName.setText("User Name:");
+        lblUserName.setName("lblUserName"); // NOI18N
+
+        lblTitle.setFont(new java.awt.Font("David", 1, 24)); // NOI18N
+        lblTitle.setForeground(java.awt.Color.red);
+        lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTitle.setText("PCNM Client");
+        lblTitle.setName("lblTitle"); // NOI18N
+
+        javax.swing.GroupLayout pnlLoginLayout = new javax.swing.GroupLayout(pnlLogin);
+        pnlLogin.setLayout(pnlLoginLayout);
+        pnlLoginLayout.setHorizontalGroup(
+            pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlLoginLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlLoginLayout.createSequentialGroup()
+                        .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblTitle)
+                            .addGroup(pnlLoginLayout.createSequentialGroup()
+                                .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblServer)
+                                    .addComponent(lblUserName)
+                                    .addComponent(lblPswd)
+                                    .addComponent(lblPort))
+                                .addGap(18, 18, 18)
+                                .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtUserName)
+                                    .addComponent(txtServer)
+                                    .addComponent(txtPort)
+                                    .addComponent(chbxDefaultPort, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+                                    .addComponent(pswd))))
+                        .addGap(22, 22, 22))
+                    .addGroup(pnlLoginLayout.createSequentialGroup()
+                        .addComponent(lblScreenName)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(pnlLoginLayout.createSequentialGroup()
+                        .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        pnlLoginLayout.setVerticalGroup(
+            pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlLoginLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblTitle)
+                .addGap(13, 13, 13)
+                .addComponent(lblScreenName)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblUserName)
+                    .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPswd)
+                    .addComponent(pswd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblServer)
+                    .addComponent(txtServer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPort)
+                    .addComponent(txtPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chbxDefaultPort)
+                .addGap(18, 18, 18)
+                .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblTitle)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblServer)
-                                    .addComponent(lblUserName)
-                                    .addComponent(lblPswd)
-                                    .addComponent(lblPort))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtUserName)
-                                    .addComponent(txtServer)
-                                    .addComponent(txtPort)
-                                    .addComponent(chbxDefaultPort, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
-                                    .addComponent(pswd))))
-                        .addGap(22, 22, 22))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblScreenName)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(pnlLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblTitle)
-                .addGap(13, 13, 13)
-                .addComponent(lblScreenName)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblUserName)
-                    .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblPswd)
-                    .addComponent(pswd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblServer)
-                    .addComponent(txtServer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblPort)
-                    .addComponent(txtPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(chbxDefaultPort)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(pnlLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -240,7 +278,7 @@ public class LoginSCR extends javax.swing.JFrame implements WindowMustHave {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         try {
-            PCNMClientCTRL.quitApp();
+            PCNMClientModel.killConnection();
         } catch (IOException ex) {
             Logger.getLogger(LoginSCR.class.getName()).log(Level.SEVERE, null, ex);
             this.dispose();
@@ -248,22 +286,20 @@ public class LoginSCR extends javax.swing.JFrame implements WindowMustHave {
         this.dispose();
     }//GEN-LAST:event_formWindowClosing
 
-    private void txtUserNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserNameActionPerformed
-        userName = txtUserName.getText();
-        canLogin();
-    }//GEN-LAST:event_txtUserNameActionPerformed
-
     private void pswdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pswdActionPerformed
+        // check rather login button should turnned on
         password = pswd.getPassword();
         canLogin();
     }//GEN-LAST:event_pswdActionPerformed
 
     private void txtServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtServerActionPerformed
+        // check rather login button should turnned on
         server = txtServer.getText();
         canLogin();
     }//GEN-LAST:event_txtServerActionPerformed
 
     private void txtPortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPortActionPerformed
+        // check value validity
         try {
             port = Integer.parseInt(txtPort.getText());
         } catch (NumberFormatException e) {
@@ -276,10 +312,12 @@ public class LoginSCR extends javax.swing.JFrame implements WindowMustHave {
             txtPort.setText("");
             showDialog("Invalid port number", DialogType.ERROR);
         } else
+            // check rather login button should turnned on
             canLogin();
     }//GEN-LAST:event_txtPortActionPerformed
 
     private void chbxDefaultPortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbxDefaultPortActionPerformed
+        // check rather login button should turnned on
         if (chbxDefaultPort.isSelected()) {
             txtPort.setEditable(false);
             port = 11111;
@@ -289,28 +327,75 @@ public class LoginSCR extends javax.swing.JFrame implements WindowMustHave {
     }//GEN-LAST:event_chbxDefaultPortActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+        // close connections and dispose window
         try {
-            PCNMClientCTRL.quitApp();
+            PCNMClientModel.killConnection();
         } catch (IOException ex) {
-            Logger.getLogger(LoginSCR.class.getName()).log(Level.SEVERE, null, ex);
             this.dispose();
         }
         this.dispose();
     }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+        // connect to server
         try {
-            PCNMClientCTRL.initPCNMClient(server, port);
+            PCNMClientModel.initPCNMClient(server, port);
         } catch (IOException ex) {
-            Logger.getLogger(LoginSCR.class.getName()).log(Level.SEVERE, null, ex);
             showDialog("Error connecting to the server", DialogType.ERROR);
+            return;
         }
-        LoginCTRL.processInput(userName, password);
+        try {
+            // start login sequance
+            LoginCTRL.loginBtnPressed(userName, password);
+        } catch (IOException ex) {
+            showDialog("Error sending message to server", DialogType.ERROR);
+        }
     }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void txtUserNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtUserNameFocusLost
+        userName = txtUserName.getText();
+        canLogin();
+    }//GEN-LAST:event_txtUserNameFocusLost
+
+    private void txtUserNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserNameActionPerformed
+        userName = txtUserName.getText();
+        canLogin();
+    }//GEN-LAST:event_txtUserNameActionPerformed
+
+    private void pswdFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_pswdFocusLost
+        // check rather login button should turnned on
+        password = pswd.getPassword();
+        canLogin();
+    }//GEN-LAST:event_pswdFocusLost
+
+    private void txtServerFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtServerFocusLost
+        // check rather login button should turnned on
+        server = txtServer.getText();
+        canLogin();
+    }//GEN-LAST:event_txtServerFocusLost
+
+    private void txtPortFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPortFocusLost
+        // check value validity
+        try {
+            port = Integer.parseInt(txtPort.getText());
+        } catch (NumberFormatException e) {
+            txtPort.setText("");
+            port = 0;
+            showDialog("Port must be a number", DialogType.ERROR);
+        }
+        if (port <= 0) {
+            port = 0;
+            txtPort.setText("");
+            showDialog("Invalid port number", DialogType.ERROR);
+        } else
+            // check rather login button should turnned on
+            canLogin();
+    }//GEN-LAST:event_txtPortFocusLost
 
     /**
      * @param args the command line arguments
      */
+    @SuppressWarnings("Convert2Lambda")
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -353,6 +438,7 @@ public class LoginSCR extends javax.swing.JFrame implements WindowMustHave {
     private javax.swing.JLabel lblServer;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JLabel lblUserName;
+    private javax.swing.JPanel pnlLogin;
     private javax.swing.JPasswordField pswd;
     private javax.swing.JTextField txtPort;
     private javax.swing.JTextField txtServer;
@@ -365,13 +451,35 @@ public class LoginSCR extends javax.swing.JFrame implements WindowMustHave {
             case ERROR:
                 JOptionPane.showMessageDialog(this, text, "PCNM Error", JOptionPane.ERROR_MESSAGE);
                 break;
+            case WARNING:
+                JOptionPane.showMessageDialog(this, text, "PCNM Error", JOptionPane.WARNING_MESSAGE);
+                break;
+            case INFO:
+                JOptionPane.showMessageDialog(this, text, "PCNM Error", JOptionPane.INFORMATION_MESSAGE);
+                break;
+            default:
+                JOptionPane.showMessageDialog(this, text, "PCNM Error", JOptionPane.NO_OPTION);
         }
     }
 
     private void canLogin() {
-        if (userName.length() > 0 && password.length > 0 && server.length() > 0 && port > 0)
+        // only if all fields were filled, turn login button on
+        if (userName.length() > 0 && password != null && password.length > 0 && server.length() > 0 && port > 0)
             btnLogin.setEnabled(true);
         else
             btnLogin.setEnabled(false);
+    }
+    
+    public void badLogin(String message) {
+        switch (message) {
+            case "Bad User Name or Password":
+                txtUserName.setText("");
+                pswd.setText("");
+                break;
+            case "Bad Password":
+                pswd.setText("");
+                break;
+        }
+        showDialog(message, DialogType.WARNING);
     }
 }

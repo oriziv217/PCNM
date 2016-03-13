@@ -1,4 +1,4 @@
-package PCNMClientView;
+package PCNMClient.PCNMClientView;
 
 /**
  * Most common screen functionality

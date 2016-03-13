@@ -2,6 +2,11 @@ package PCNMServer;
 
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
+import Entities.*;
+import PCNMServer.ServerLogic.EmployeesLogic;
+import java.io.IOException;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  * This class implements system's server
@@ -33,12 +38,24 @@ public class PCNMServer extends AbstractServer {
     @Override
     /**
 	   * This method handles any messages received from client.
-	   *
 	   * @param msg The message received from the client.
 	   * @param client The connection from which the message originated.
 	   */
     protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Message message = (Message)msg;
+        
+        try {
+            switch (message.getMsgType()) {
+            case LOGIN:
+                try {
+                    client.sendToClient(EmployeesLogic.LoginRequest((Employee)message.getEntity()));
+                } catch (SQLException ex) {
+                    client.sendToClient(new Message(MessageType.DB_PROBLEM, ex.getMessage()));
+                }
+                break;
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, String.format("Lost connection with client %s", client.toString()));
+        }
     }
-    
 }
