@@ -19,8 +19,10 @@ public class LoginCTRL {
      * @throws IOException
      */
     public static void loginBtnPressed(String userName, char[] password) throws IOException {
+        // Build message to server
         Employee emp = new Employee(userName, password);
         Message msg = new Message(MessageType.LOGIN, emp);
+        // send to server
         PCNMClientModel.sendMessageToServer(msg);
     }
 

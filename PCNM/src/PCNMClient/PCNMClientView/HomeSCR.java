@@ -1,8 +1,8 @@
-/*
- * Here comes the text of your license
- * Each line should be prefixed with  * 
- */
 package PCNMClient.PCNMClientView;
+
+import Entities.EmpType;
+import PCNMClient.PCNMClientController.HomeCTRL;
+import PCNMClient.PCNMClientStart;
 
 /**
  *
@@ -26,19 +26,135 @@ public class HomeSCR extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jplScreenLabel = new javax.swing.JPanel();
+        lblScreenTitle = new javax.swing.JLabel();
+        btnQuit = new javax.swing.JButton();
+        btnClose = new javax.swing.JButton();
+        btnEmployees = new javax.swing.JButton();
+
+        FormListener formListener = new FormListener();
+
+        setFont(new java.awt.Font("Times New Roman", 1, 11)); // NOI18N
+        setName("jplHomeScreen"); // NOI18N
+        setPreferredSize(new java.awt.Dimension(881, 527));
+
+        jplScreenLabel.setName("jplScreenLabel"); // NOI18N
+
+        lblScreenTitle.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
+        lblScreenTitle.setForeground(java.awt.Color.red);
+        lblScreenTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblScreenTitle.setText("PCNM Home Screen");
+        lblScreenTitle.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblScreenTitle.setName("lblScreenTitle"); // NOI18N
+
+        javax.swing.GroupLayout jplScreenLabelLayout = new javax.swing.GroupLayout(jplScreenLabel);
+        jplScreenLabel.setLayout(jplScreenLabelLayout);
+        jplScreenLabelLayout.setHorizontalGroup(
+            jplScreenLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jplScreenLabelLayout.createSequentialGroup()
+                .addGap(217, 217, 217)
+                .addComponent(lblScreenTitle)
+                .addContainerGap(236, Short.MAX_VALUE))
+        );
+        jplScreenLabelLayout.setVerticalGroup(
+            jplScreenLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jplScreenLabelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblScreenTitle)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        btnQuit.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnQuit.setForeground(java.awt.Color.red);
+        btnQuit.setText("Quit");
+        btnQuit.setToolTipText("Quit PCNM");
+        btnQuit.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnQuit.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnQuit.setInheritsPopupMenu(true);
+        btnQuit.setName("btnQuit"); // NOI18N
+        btnQuit.addActionListener(formListener);
+
+        btnClose.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnClose.setForeground(java.awt.Color.red);
+        btnClose.setToolTipText("Close screen and return to log-in screen");
+        btnClose.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnClose.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnClose.setInheritsPopupMenu(true);
+        btnClose.setLabel("Close");
+        btnClose.setName("btnClose"); // NOI18N
+        btnClose.addActionListener(formListener);
+
+        btnEmployees.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnEmployees.setForeground(java.awt.Color.red);
+        btnEmployees.setText("System Users Management");
+        btnEmployees.setToolTipText("Manage users and roles witjin the system");
+        btnEmployees.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnEmployees.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnEmployees.setInheritsPopupMenu(true);
+        btnEmployees.setName("btnEmployees"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jplScreenLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnEmployees, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(23, 23, 23))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jplScreenLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
+                .addComponent(btnEmployees, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 280, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20))
         );
+
+        if (PCNMClientStart.user.getType() != EmpType.ADMINISTRATOR)
+        btnEmployees.setEnabled(false);
+    }
+
+    // Code for dispatching events from components to event handlers.
+
+    private class FormListener implements java.awt.event.ActionListener {
+        FormListener() {}
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            if (evt.getSource() == btnClose) {
+                HomeSCR.this.btnCloseActionPerformed(evt);
+            }
+            else if (evt.getSource() == btnQuit) {
+                HomeSCR.this.btnQuitActionPerformed(evt);
+            }
+        }
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
+        HomeCTRL.closeBtnPressed();
+    }//GEN-LAST:event_btnCloseActionPerformed
+
+    private void btnQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitActionPerformed
+        HomeCTRL.QuitBtnPressed();
+    }//GEN-LAST:event_btnQuitActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnClose;
+    private javax.swing.JButton btnEmployees;
+    private javax.swing.JButton btnQuit;
+    private javax.swing.JPanel jplScreenLabel;
+    private javax.swing.JLabel lblScreenTitle;
     // End of variables declaration//GEN-END:variables
 }

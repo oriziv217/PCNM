@@ -23,6 +23,10 @@ public class PCNMClient extends AbstractClient {
         openConnection();
     }
 
+    /**
+     * This method receives message from the server and route it to the right controller method
+     * @param msg
+     */
     @Override
     protected void handleMessageFromServer(Object msg) {
         Message response = (Message)msg;

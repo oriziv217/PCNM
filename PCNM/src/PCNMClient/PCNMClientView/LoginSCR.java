@@ -6,12 +6,21 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /**
  * This class implements login view
  * @author ori ziv
  */
 public class LoginSCR extends javax.swing.JFrame implements WindowMustHave {
+
+    /**
+     *
+     * @return
+     */
+    public JPanel getPnlLogin() {
+        return pnlLogin;
+    }
 
     private String userName = "";
     private char[] password;
@@ -470,6 +479,10 @@ public class LoginSCR extends javax.swing.JFrame implements WindowMustHave {
             btnLogin.setEnabled(false);
     }
     
+    /**
+     * This method handles login failuer
+     * @param message
+     */
     public void badLogin(String message) {
         switch (message) {
             case "Bad User Name or Password":
