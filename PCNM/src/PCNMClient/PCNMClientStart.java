@@ -33,7 +33,7 @@ public class PCNMClientStart {
         // clear old panel
         appWindow.getContentPane().removeAll();
         // adjust frame's size
-        appWindow.setSize(newPanel.getPreferredSize());
+        appWindow.setSize(newPanel.getMinimumSize());
         // load new panel
         appWindow.getContentPane().add(newPanel);
         newPanel.setVisible(true);

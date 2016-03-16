@@ -34,9 +34,12 @@ public class HomeSCR extends javax.swing.JPanel {
 
         FormListener formListener = new FormListener();
 
+        setBackground(java.awt.Color.white);
         setFont(new java.awt.Font("Times New Roman", 1, 11)); // NOI18N
+        setMinimumSize(new java.awt.Dimension(881, 527));
         setName("jplHomeScreen"); // NOI18N
         setPreferredSize(new java.awt.Dimension(881, 527));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jplScreenLabel.setName("jplScreenLabel"); // NOI18N
 
@@ -64,6 +67,8 @@ public class HomeSCR extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        add(jplScreenLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
         btnQuit.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         btnQuit.setForeground(java.awt.Color.red);
         btnQuit.setText("Quit");
@@ -73,6 +78,7 @@ public class HomeSCR extends javax.swing.JPanel {
         btnQuit.setInheritsPopupMenu(true);
         btnQuit.setName("btnQuit"); // NOI18N
         btnQuit.addActionListener(formListener);
+        add(btnQuit, new org.netbeans.lib.awtextra.AbsoluteConstraints(738, 447, 120, 60));
 
         btnClose.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         btnClose.setForeground(java.awt.Color.red);
@@ -83,6 +89,7 @@ public class HomeSCR extends javax.swing.JPanel {
         btnClose.setLabel("Close");
         btnClose.setName("btnClose"); // NOI18N
         btnClose.addActionListener(formListener);
+        add(btnClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 447, 120, 60));
 
         btnEmployees.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         btnEmployees.setForeground(java.awt.Color.red);
@@ -92,37 +99,8 @@ public class HomeSCR extends javax.swing.JPanel {
         btnEmployees.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnEmployees.setInheritsPopupMenu(true);
         btnEmployees.setName("btnEmployees"); // NOI18N
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jplScreenLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnEmployees, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(23, 23, 23))))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jplScreenLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addComponent(btnEmployees, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 280, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20))
-        );
-
+        btnEmployees.addActionListener(formListener);
+        add(btnEmployees, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 107, 300, 60));
         if (PCNMClientStart.user.getType() != EmpType.ADMINISTRATOR)
         btnEmployees.setEnabled(false);
     }
@@ -132,11 +110,14 @@ public class HomeSCR extends javax.swing.JPanel {
     private class FormListener implements java.awt.event.ActionListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
-            if (evt.getSource() == btnClose) {
+            if (evt.getSource() == btnQuit) {
+                HomeSCR.this.btnQuitActionPerformed(evt);
+            }
+            else if (evt.getSource() == btnClose) {
                 HomeSCR.this.btnCloseActionPerformed(evt);
             }
-            else if (evt.getSource() == btnQuit) {
-                HomeSCR.this.btnQuitActionPerformed(evt);
+            else if (evt.getSource() == btnEmployees) {
+                HomeSCR.this.btnEmployeesActionPerformed(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
@@ -148,6 +129,10 @@ public class HomeSCR extends javax.swing.JPanel {
     private void btnQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitActionPerformed
         HomeCTRL.QuitBtnPressed();
     }//GEN-LAST:event_btnQuitActionPerformed
+
+    private void btnEmployeesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmployeesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEmployeesActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

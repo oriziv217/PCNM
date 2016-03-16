@@ -60,6 +60,7 @@ public class LoginSCR extends javax.swing.JFrame implements WindowMustHave {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PCNM Client - Log in");
         setBounds(new java.awt.Rectangle(300, 300, 0, 0));
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setName("PCNMClient Login Screen"); // NOI18N
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -67,6 +68,10 @@ public class LoginSCR extends javax.swing.JFrame implements WindowMustHave {
                 formWindowClosing(evt);
             }
         });
+        getContentPane().setLayout(new java.awt.CardLayout(5, 5));
+
+        pnlLogin.setBackground(java.awt.Color.white);
+        pnlLogin.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         pswd.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         pswd.setToolTipText("Type pasword");
@@ -81,19 +86,21 @@ public class LoginSCR extends javax.swing.JFrame implements WindowMustHave {
                 pswdActionPerformed(evt);
             }
         });
+        pnlLogin.add(pswd, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 127, 203, -1));
 
-        lblServer.setFont(new java.awt.Font("David", 1, 12)); // NOI18N
-        lblServer.setForeground(java.awt.Color.red);
+        lblServer.setFont(new java.awt.Font("David", 1, 20)); // NOI18N
         lblServer.setText("Server:");
         lblServer.setName("lblServer"); // NOI18N
+        pnlLogin.add(lblServer, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 166, -1, -1));
 
-        lblScreenName.setFont(new java.awt.Font("David", 1, 18)); // NOI18N
+        lblScreenName.setFont(new java.awt.Font("David", 1, 24)); // NOI18N
         lblScreenName.setForeground(java.awt.Color.red);
         lblScreenName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblScreenName.setText("Log-In:");
         lblScreenName.setName("lblScreenName"); // NOI18N
+        pnlLogin.add(lblScreenName, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 51, -1, -1));
 
-        btnExit.setFont(new java.awt.Font("David", 1, 12)); // NOI18N
+        btnExit.setFont(new java.awt.Font("David", 1, 20)); // NOI18N
         btnExit.setText(" Exit");
         btnExit.setToolTipText("Press to close the program");
         btnExit.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -106,11 +113,12 @@ public class LoginSCR extends javax.swing.JFrame implements WindowMustHave {
                 btnExitActionPerformed(evt);
             }
         });
+        pnlLogin.add(btnExit, new org.netbeans.lib.awtextra.AbsoluteConstraints(279, 269, 76, 42));
 
-        lblPort.setFont(new java.awt.Font("David", 1, 12)); // NOI18N
-        lblPort.setForeground(java.awt.Color.red);
+        lblPort.setFont(new java.awt.Font("David", 1, 20)); // NOI18N
         lblPort.setText("Port:");
         lblPort.setName("lblPort"); // NOI18N
+        pnlLogin.add(lblPort, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 206, -1, -1));
 
         txtPort.setEditable(false);
         txtPort.setFont(new java.awt.Font("David", 0, 12)); // NOI18N
@@ -128,13 +136,14 @@ public class LoginSCR extends javax.swing.JFrame implements WindowMustHave {
                 txtPortActionPerformed(evt);
             }
         });
+        pnlLogin.add(txtPort, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 209, 203, -1));
 
-        lblPswd.setFont(new java.awt.Font("David", 1, 12)); // NOI18N
-        lblPswd.setForeground(java.awt.Color.red);
+        lblPswd.setFont(new java.awt.Font("David", 1, 20)); // NOI18N
         lblPswd.setText("Password:");
         lblPswd.setName("lblPswd"); // NOI18N
+        pnlLogin.add(lblPswd, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 127, -1, -1));
 
-        btnLogin.setFont(new java.awt.Font("David", 1, 12)); // NOI18N
+        btnLogin.setFont(new java.awt.Font("David", 1, 20)); // NOI18N
         btnLogin.setText("Log-in");
         btnLogin.setToolTipText("Press in order to login");
         btnLogin.setActionCommand("loginBtnPressed");
@@ -146,6 +155,7 @@ public class LoginSCR extends javax.swing.JFrame implements WindowMustHave {
                 btnLoginActionPerformed(evt);
             }
         });
+        pnlLogin.add(btnLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 269, 76, 42));
 
         txtServer.setFont(new java.awt.Font("David", 0, 12)); // NOI18N
         txtServer.setToolTipText("Type server name or IP address");
@@ -160,6 +170,7 @@ public class LoginSCR extends javax.swing.JFrame implements WindowMustHave {
                 txtServerActionPerformed(evt);
             }
         });
+        pnlLogin.add(txtServer, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 169, 203, -1));
 
         chbxDefaultPort.setFont(new java.awt.Font("David", 0, 12)); // NOI18N
         chbxDefaultPort.setSelected(true);
@@ -172,6 +183,7 @@ public class LoginSCR extends javax.swing.JFrame implements WindowMustHave {
                 chbxDefaultPortActionPerformed(evt);
             }
         });
+        pnlLogin.add(chbxDefaultPort, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 230, 203, -1));
 
         txtUserName.setFont(new java.awt.Font("David", 0, 12)); // NOI18N
         txtUserName.setToolTipText("Type your user name");
@@ -186,100 +198,22 @@ public class LoginSCR extends javax.swing.JFrame implements WindowMustHave {
                 txtUserNameActionPerformed(evt);
             }
         });
+        pnlLogin.add(txtUserName, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, 203, -1));
 
-        lblUserName.setFont(new java.awt.Font("David", 1, 12)); // NOI18N
-        lblUserName.setForeground(java.awt.Color.red);
+        lblUserName.setFont(new java.awt.Font("David", 1, 20)); // NOI18N
         lblUserName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblUserName.setText("User Name:");
         lblUserName.setName("lblUserName"); // NOI18N
+        pnlLogin.add(lblUserName, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 87, -1, -1));
 
-        lblTitle.setFont(new java.awt.Font("David", 1, 24)); // NOI18N
+        lblTitle.setFont(new java.awt.Font("David", 1, 26)); // NOI18N
         lblTitle.setForeground(java.awt.Color.red);
         lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTitle.setText("PCNM Client");
         lblTitle.setName("lblTitle"); // NOI18N
+        pnlLogin.add(lblTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(104, 18, -1, -1));
 
-        javax.swing.GroupLayout pnlLoginLayout = new javax.swing.GroupLayout(pnlLogin);
-        pnlLogin.setLayout(pnlLoginLayout);
-        pnlLoginLayout.setHorizontalGroup(
-            pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlLoginLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlLoginLayout.createSequentialGroup()
-                        .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblTitle)
-                            .addGroup(pnlLoginLayout.createSequentialGroup()
-                                .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblServer)
-                                    .addComponent(lblUserName)
-                                    .addComponent(lblPswd)
-                                    .addComponent(lblPort))
-                                .addGap(18, 18, 18)
-                                .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtUserName)
-                                    .addComponent(txtServer)
-                                    .addComponent(txtPort)
-                                    .addComponent(chbxDefaultPort, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
-                                    .addComponent(pswd))))
-                        .addGap(22, 22, 22))
-                    .addGroup(pnlLoginLayout.createSequentialGroup()
-                        .addComponent(lblScreenName)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(pnlLoginLayout.createSequentialGroup()
-                        .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
-        pnlLoginLayout.setVerticalGroup(
-            pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlLoginLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblTitle)
-                .addGap(13, 13, 13)
-                .addComponent(lblScreenName)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblUserName)
-                    .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblPswd)
-                    .addComponent(pswd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblServer)
-                    .addComponent(txtServer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblPort)
-                    .addComponent(txtPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(chbxDefaultPort)
-                .addGap(18, 18, 18)
-                .addGroup(pnlLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnExit, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(pnlLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(pnlLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        getContentPane().add(pnlLogin, "card2");
 
         pack();
         setLocationRelativeTo(null);
