@@ -3,6 +3,7 @@ package PCNMClient;
 import Entities.Employee;
 import Entities.Message;
 import PCNMClient.PCNMClientView.*;
+import com.lloseng.ocsf.client.AbstractClient;
 import java.io.IOException;
 import ocsf.client.AbstractClient;
 
