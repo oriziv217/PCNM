@@ -36,7 +36,7 @@ public class HomeSCR extends javax.swing.JPanel {
 
         setBackground(java.awt.Color.white);
         setFont(new java.awt.Font("Times New Roman", 1, 11)); // NOI18N
-        setMinimumSize(new java.awt.Dimension(881, 527));
+        setMinimumSize(new java.awt.Dimension(900, 560));
         setName("jplHomeScreen"); // NOI18N
         setPreferredSize(new java.awt.Dimension(881, 527));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -131,7 +131,7 @@ public class HomeSCR extends javax.swing.JPanel {
     }//GEN-LAST:event_btnQuitActionPerformed
 
     private void btnEmployeesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmployeesActionPerformed
-        // TODO add your handling code here:
+        PCNMClientStart.switchPanels(new EmployeeSCR());
     }//GEN-LAST:event_btnEmployeesActionPerformed
 
 

@@ -71,6 +71,7 @@ public class LoginSCR extends javax.swing.JFrame implements WindowMustHave {
         getContentPane().setLayout(new java.awt.CardLayout(5, 5));
 
         pnlLogin.setBackground(java.awt.Color.white);
+        pnlLogin.setMinimumSize(new java.awt.Dimension(380, 355));
         pnlLogin.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         pswd.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
