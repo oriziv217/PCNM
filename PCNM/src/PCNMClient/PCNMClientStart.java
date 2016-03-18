@@ -38,6 +38,7 @@ public class PCNMClientStart {
         appWindow.getContentPane().add(newPanel);
         newPanel.setVisible(true);
         appWindow.repaint();
+        appWindow.setVisible(true);
     }
     
     /**
