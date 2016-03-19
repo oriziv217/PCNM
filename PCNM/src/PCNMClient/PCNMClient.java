@@ -2,9 +2,10 @@ package PCNMClient;
 
 import Entities.Employee;
 import Entities.Message;
+import PCNMClient.PCNMClientController.HomeCTRL;
 import PCNMClient.PCNMClientView.*;
-import com.lloseng.ocsf.client.AbstractClient;
 import java.io.IOException;
+import java.util.ArrayList;
 import ocsf.client.AbstractClient;
 
 /**
@@ -13,6 +14,7 @@ import ocsf.client.AbstractClient;
  */
 public class PCNMClient extends AbstractClient {
 
+    private ArrayList<String>search_results;
     /**
      * Constructor that starts client-server session
      * @param host - Server's host name or IP address
@@ -39,6 +41,13 @@ public class PCNMClient extends AbstractClient {
                 } else {
                     PCNMClientStart.appWindow.badLogin(response.getDataString());
                 }
+                break;
+            case GET_EMPLOYEES:
+                search_results = HomeCTRL.processEmployeesResponse((ArrayList<Employee>) response.getEntity());
+                PCNMClientStart.switchPanels(new EmployeeSCR(search_results));
+                break;
+                
+            case DB_PROBLEM:
                 break;
         }
     }

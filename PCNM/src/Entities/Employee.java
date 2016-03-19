@@ -16,12 +16,12 @@ public class Employee implements Serializable{
 
     // Constructors
 
+    public Employee(){}
     /**
      *
      * @param userName
      * @param password
      */
-
     public Employee(String userName, char[] password) {
         this.userName = userName;
         this.password = password;
@@ -171,4 +171,39 @@ public class Employee implements Serializable{
     public Status getStatus() {
         return status;
     }
+
+    @Override
+    public String toString() {
+        String type = "Error";
+        String status = "Error";
+        
+        switch (this.type) {
+            case TECHNICIAN:
+                type = "Technician";
+                break;
+            case MCSE:
+                type = "MCSE";
+                break;
+            case CEO:
+                type = "CEO";
+                break;
+            case ADMINISTRATOR:
+                type = "Administrator";
+                break;
+        }
+        switch (this.status) {
+            case ENABLE:
+                status = "Enabled";
+                break;
+            case DISABLE:
+                status = "Disabled";
+                break;
+            case SUSPENDED:
+                status = "Suspended";
+                break;
+        }
+        return String.valueOf(ID) + "," + name + "," + userName + "," + String.valueOf(password) + "," + type + "," + status;
+    }
+    
+    
 }

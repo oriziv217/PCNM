@@ -4,6 +4,10 @@
  */
 package PCNMClient.PCNMClientView;
 
+import PCNMClient.PCNMClientController.HomeCTRL;
+import java.util.ArrayList;
+import javax.swing.DefaultCellEditor;
+
 /**
  *
  * @author ori ziv
@@ -17,6 +21,12 @@ public class EmployeeSCR extends javax.swing.JPanel {
         initComponents();
     }
 
+    public EmployeeSCR(ArrayList<String> search_results) {
+        this();
+        loadSearchResults(search_results);
+        tblUsers.setEnabled(true);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,21 +36,38 @@ public class EmployeeSCR extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        cmbEmpType = new javax.swing.JComboBox();
+        txtTableCell = new javax.swing.JTextField();
+        cmbEmpStatus = new javax.swing.JComboBox();
         lblTitle = new javax.swing.JLabel();
         scrollPaneUsersTbl = new javax.swing.JScrollPane();
         tblUsers = new javax.swing.JTable();
+        btnClose = new javax.swing.JButton();
+        btnQuit = new javax.swing.JButton();
+
+        cmbEmpType.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        cmbEmpType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Administrator", "Technician", "MCSE", "CEO" }));
+        cmbEmpType.setName("cmbEmpType"); // NOI18N
+
+        txtTableCell.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        txtTableCell.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        cmbEmpStatus.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        cmbEmpStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Enabled", "Disabled", "Suspended" }));
 
         setBackground(java.awt.Color.white);
+        setMinimumSize(new java.awt.Dimension(826, 562));
 
         lblTitle.setBackground(java.awt.Color.white);
         lblTitle.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
         lblTitle.setForeground(java.awt.Color.red);
         lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTitle.setText("System Users Managment");
+        lblTitle.setText("System Users Management");
         lblTitle.setName("lblTitle"); // NOI18N
 
         scrollPaneUsersTbl.setBackground(java.awt.Color.white);
         scrollPaneUsersTbl.setBorder(null);
+        scrollPaneUsersTbl.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
 
         tblUsers.setAutoCreateRowSorter(true);
         tblUsers.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
@@ -65,14 +92,59 @@ public class EmployeeSCR extends javax.swing.JPanel {
                 return types [columnIndex];
             }
         });
+        tblUsers.setCellSelectionEnabled(true);
+        tblUsers.setRowHeight(32);
         scrollPaneUsersTbl.setViewportView(tblUsers);
+        tblUsers.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         if (tblUsers.getColumnModel().getColumnCount() > 0) {
-            tblUsers.getColumnModel().getColumn(0).setHeaderValue("Name");
-            tblUsers.getColumnModel().getColumn(1).setHeaderValue("User Name");
-            tblUsers.getColumnModel().getColumn(2).setHeaderValue("Password");
-            tblUsers.getColumnModel().getColumn(3).setHeaderValue("Type");
-            tblUsers.getColumnModel().getColumn(4).setHeaderValue("Status");
+            tblUsers.getColumnModel().getColumn(0).setMinWidth(150);
+            tblUsers.getColumnModel().getColumn(0).setPreferredWidth(150);
+            tblUsers.getColumnModel().getColumn(0).setMaxWidth(150);
+            tblUsers.getColumnModel().getColumn(1).setMinWidth(150);
+            tblUsers.getColumnModel().getColumn(1).setPreferredWidth(150);
+            tblUsers.getColumnModel().getColumn(1).setMaxWidth(150);
+            tblUsers.getColumnModel().getColumn(2).setMinWidth(150);
+            tblUsers.getColumnModel().getColumn(2).setPreferredWidth(150);
+            tblUsers.getColumnModel().getColumn(2).setMaxWidth(150);
+            tblUsers.getColumnModel().getColumn(3).setMinWidth(150);
+            tblUsers.getColumnModel().getColumn(3).setPreferredWidth(150);
+            tblUsers.getColumnModel().getColumn(3).setMaxWidth(150);
+            tblUsers.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(cmbEmpType));
+            tblUsers.getColumnModel().getColumn(4).setMinWidth(150);
+            tblUsers.getColumnModel().getColumn(4).setPreferredWidth(150);
+            tblUsers.getColumnModel().getColumn(4).setMaxWidth(150);
+            tblUsers.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(cmbEmpStatus));
         }
+        tblUsers.getTableHeader().setFont(new java.awt.Font("Times New Roman", java.awt.Font.PLAIN, 24));
+        tblUsers.setDefaultRenderer(String.class, new MyTableCellRenderer());
+        DefaultCellEditor dce = new DefaultCellEditor(txtTableCell);
+        tblUsers.setDefaultEditor(String.class, dce);
+
+        btnClose.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnClose.setToolTipText("Return to Home screen");
+        btnClose.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnClose.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnClose.setInheritsPopupMenu(true);
+        btnClose.setLabel("Close");
+        btnClose.setName("btnClose"); // NOI18N
+        btnClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCloseActionPerformed(evt);
+            }
+        });
+
+        btnQuit.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnQuit.setText("Quit");
+        btnQuit.setToolTipText("Quit PCNM");
+        btnQuit.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnQuit.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnQuit.setInheritsPopupMenu(true);
+        btnQuit.setName("btnQuit"); // NOI18N
+        btnQuit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnQuitActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -80,12 +152,19 @@ public class EmployeeSCR extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(125, Short.MAX_VALUE)
-                .addComponent(scrollPaneUsersTbl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(124, 124, 124))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(scrollPaneUsersTbl, javax.swing.GroupLayout.PREFERRED_SIZE, 753, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(85, 85, 85))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -93,15 +172,47 @@ public class EmployeeSCR extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(lblTitle)
                 .addGap(18, 18, 18)
-                .addComponent(scrollPaneUsersTbl, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(280, Short.MAX_VALUE))
+                .addComponent(scrollPaneUsersTbl, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 218, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
+        HomeCTRL.closeBtnPressed();
+    }//GEN-LAST:event_btnCloseActionPerformed
+
+    private void btnQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitActionPerformed
+        HomeCTRL.QuitBtnPressed();
+    }//GEN-LAST:event_btnQuitActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnClose;
+    private javax.swing.JButton btnQuit;
+    private javax.swing.JComboBox cmbEmpStatus;
+    private javax.swing.JComboBox cmbEmpType;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JScrollPane scrollPaneUsersTbl;
     private javax.swing.JTable tblUsers;
+    private javax.swing.JTextField txtTableCell;
     // End of variables declaration//GEN-END:variables
+
+    private void loadSearchResults(ArrayList<String> search_results) {
+        String[] row;
+        String element;
+        
+        for (int i = 0, row_idx = 0 ; i < search_results.size() ; i ++, row_idx ++) {
+            element = search_results.get(i);
+            row = element.split(",");
+            tblUsers.getModel().setValueAt(row[1], row_idx, 0);
+            tblUsers.getModel().setValueAt(row[2], row_idx, 1);
+            tblUsers.getModel().setValueAt(row[3], row_idx, 2);
+            tblUsers.getModel().setValueAt(row[4], row_idx, 3);
+            tblUsers.getModel().setValueAt(row[5], row_idx, 4);
+        }
+    }
 }

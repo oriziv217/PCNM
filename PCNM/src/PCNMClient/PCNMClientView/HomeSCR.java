@@ -1,8 +1,10 @@
 package PCNMClient.PCNMClientView;
 
 import Entities.EmpType;
+import PCNMClient.PCNMClientController.CTRL;
 import PCNMClient.PCNMClientController.HomeCTRL;
 import PCNMClient.PCNMClientStart;
+import java.io.IOException;
 
 /**
  *
@@ -15,6 +17,7 @@ public class HomeSCR extends javax.swing.JPanel {
      */
     public HomeSCR() {
         initComponents();
+        btnEmployees.requestFocusInWindow();
     }
 
     /**
@@ -41,6 +44,7 @@ public class HomeSCR extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(881, 527));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jplScreenLabel.setBackground(java.awt.Color.white);
         jplScreenLabel.setName("jplScreenLabel"); // NOI18N
 
         lblScreenTitle.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
@@ -88,6 +92,7 @@ public class HomeSCR extends javax.swing.JPanel {
         btnClose.setInheritsPopupMenu(true);
         btnClose.setLabel("Close");
         btnClose.setName("btnClose"); // NOI18N
+        btnClose.setNextFocusableComponent(btnQuit);
         btnClose.addActionListener(formListener);
         add(btnClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 447, 120, 60));
 
@@ -99,6 +104,7 @@ public class HomeSCR extends javax.swing.JPanel {
         btnEmployees.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnEmployees.setInheritsPopupMenu(true);
         btnEmployees.setName("btnEmployees"); // NOI18N
+        btnEmployees.setNextFocusableComponent(btnClose);
         btnEmployees.addActionListener(formListener);
         add(btnEmployees, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 107, 300, 60));
         if (PCNMClientStart.user.getType() != EmpType.ADMINISTRATOR)
@@ -123,7 +129,7 @@ public class HomeSCR extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
-        HomeCTRL.closeBtnPressed();
+        CTRL.closeBtnPressed();
     }//GEN-LAST:event_btnCloseActionPerformed
 
     private void btnQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitActionPerformed
@@ -131,7 +137,12 @@ public class HomeSCR extends javax.swing.JPanel {
     }//GEN-LAST:event_btnQuitActionPerformed
 
     private void btnEmployeesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmployeesActionPerformed
-        PCNMClientStart.switchPanels(new EmployeeSCR());
+        try {
+            HomeCTRL.btnEmployeesPressed();
+        } catch (IOException ex) {
+            WindowMustHave.showDialog(this, "Lost Connection With Server", DialogType.ERROR);
+            System.exit(0);
+        }
     }//GEN-LAST:event_btnEmployeesActionPerformed
 
 

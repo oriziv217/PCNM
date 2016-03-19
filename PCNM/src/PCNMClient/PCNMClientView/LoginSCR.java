@@ -5,14 +5,13 @@ import PCNMClient.PCNMClientController.LoginCTRL;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
  * This class implements login view
  * @author ori ziv
  */
-public class LoginSCR extends javax.swing.JFrame implements WindowMustHave {
+public class LoginSCR extends javax.swing.JFrame {
 
     /**
      *
@@ -249,12 +248,12 @@ public class LoginSCR extends javax.swing.JFrame implements WindowMustHave {
         } catch (NumberFormatException e) {
             txtPort.setText("");
             port = 0;
-            showDialog("Port must be a number", DialogType.ERROR);
+            WindowMustHave.showDialog(this.pnlLogin, "Port must be a number", DialogType.ERROR);
         }
         if (port <= 0) {
             port = 0;
             txtPort.setText("");
-            showDialog("Invalid port number", DialogType.ERROR);
+            WindowMustHave.showDialog(this.pnlLogin, "Invalid port number", DialogType.ERROR);
         } else
             // check rather login button should turnned on
             canLogin();
@@ -285,14 +284,14 @@ public class LoginSCR extends javax.swing.JFrame implements WindowMustHave {
         try {
             PCNMClientModel.initPCNMClient(server, port);
         } catch (IOException ex) {
-            showDialog("Error connecting to the server", DialogType.ERROR);
+            WindowMustHave.showDialog(this.pnlLogin, "Error connecting to the server", DialogType.ERROR);
             return;
         }
         try {
             // start login sequance
             LoginCTRL.loginBtnPressed(userName, password);
         } catch (IOException ex) {
-            showDialog("Error sending message to server", DialogType.ERROR);
+            WindowMustHave.showDialog(this.pnlLogin, "Error sending message to server", DialogType.ERROR);
         }
     }//GEN-LAST:event_btnLoginActionPerformed
 
@@ -325,12 +324,12 @@ public class LoginSCR extends javax.swing.JFrame implements WindowMustHave {
         } catch (NumberFormatException e) {
             txtPort.setText("");
             port = 0;
-            showDialog("Port must be a number", DialogType.ERROR);
+            WindowMustHave.showDialog(this.pnlLogin, "Port must be a number", DialogType.ERROR);
         }
         if (port <= 0) {
             port = 0;
             txtPort.setText("");
-            showDialog("Invalid port number", DialogType.ERROR);
+            WindowMustHave.showDialog(this.pnlLogin, "Invalid port number", DialogType.ERROR);
         } else
             // check rather login button should turnned on
             canLogin();
@@ -389,23 +388,6 @@ public class LoginSCR extends javax.swing.JFrame implements WindowMustHave {
     private javax.swing.JTextField txtUserName;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void showDialog(String text, DialogType type) {
-        switch (type) {
-            case ERROR:
-                JOptionPane.showMessageDialog(this, text, "PCNM Error", JOptionPane.ERROR_MESSAGE);
-                break;
-            case WARNING:
-                JOptionPane.showMessageDialog(this, text, "PCNM Error", JOptionPane.WARNING_MESSAGE);
-                break;
-            case INFO:
-                JOptionPane.showMessageDialog(this, text, "PCNM Error", JOptionPane.INFORMATION_MESSAGE);
-                break;
-            default:
-                JOptionPane.showMessageDialog(this, text, "PCNM Error", JOptionPane.NO_OPTION);
-        }
-    }
-
     private void canLogin() {
         // only if all fields were filled, turn login button on
         if (userName.length() > 0 && password != null && password.length > 0 && server.length() > 0 && port > 0)
@@ -428,6 +410,6 @@ public class LoginSCR extends javax.swing.JFrame implements WindowMustHave {
                 pswd.setText("");
                 break;
         }
-        showDialog(message, DialogType.WARNING);
+        WindowMustHave.showDialog(this.pnlLogin, message, DialogType.WARNING);
     }
 }

@@ -9,6 +9,7 @@ import PCNMServer.ServerResources.DBConnect;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * This class implements application procedures related to employees
@@ -65,5 +66,50 @@ public class EmployeesLogic {
                 return new Message(MessageType.LOGIN_ANSWER, "Bad User Name or Password");
             }
         return new Message(MessageType.LOGIN_ANSWER, emp, "User logged-in");
+    }
+
+    public static Object getAllEntities() throws SQLException {
+        Connection conDB = DBConnect.mySQLConnection();
+        ResultSet rs = DBConnect.selectWithFilter(conDB, "employee", null, null);
+        ArrayList<Employee> emp_tbl = new ArrayList<Employee>();
+        Employee row = new Employee();
+        
+        while (rs.next()) {
+            row.setID(rs.getInt("ID"));
+            row.setName(rs.getString("name"));
+            row.setUserName(rs.getString("userName"));
+            row.setPassword(rs.getString("password").toCharArray());
+            row.setType(extractEmpType(rs.getInt("type")));
+            row.setStatus(extractStatus(rs.getInt("status")));
+            if (row.getType() != EmpType.Error && row.getStatus() != Status.Error)
+                emp_tbl.add(new Employee(row.getID(), row.getName(), row.getUserName(), row.getPassword(), row.getType(), row.getStatus()));
+        }
+        return new Message(MessageType.GET_EMPLOYEES, emp_tbl);
+    }
+
+    private static EmpType extractEmpType(int dbType) {
+        switch (dbType) {
+            case 1:
+                return EmpType.TECHNICIAN;
+            case 2:
+                return EmpType.MCSE;
+            case 3:
+                return EmpType.CEO;
+            case 4:
+                return EmpType.ADMINISTRATOR;
+        }
+        return EmpType.Error;
+    }
+
+    private static Status extractStatus(int dbStatus) {
+        switch (dbStatus) {
+            case 1:
+                return Status.ENABLE;
+            case 2:
+                return Status.DISABLE;
+            case 3:
+                return Status.SUSPENDED;
+        }
+        return Status.Error;
     }
 }

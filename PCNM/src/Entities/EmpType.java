@@ -26,5 +26,10 @@ public enum EmpType implements Serializable{
     /**
      * Administrator = 4
      */
-    ADMINISTRATOR
+    ADMINISTRATOR,
+
+    /**
+     * Error type
+     */
+    Error;    
 }

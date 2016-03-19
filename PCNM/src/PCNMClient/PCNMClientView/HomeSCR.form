@@ -35,6 +35,9 @@
   <SubComponents>
     <Container class="javax.swing.JPanel" name="jplScreenLabel">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" id="white" palette="1" red="ff" type="palette"/>
+        </Property>
         <Property name="name" type="java.lang.String" value="jplScreenLabel" noResource="true"/>
       </Properties>
       <Constraints>
@@ -130,6 +133,9 @@
         <Property name="inheritsPopupMenu" type="boolean" value="true"/>
         <Property name="label" type="java.lang.String" value="Close"/>
         <Property name="name" type="java.lang.String" value="btnClose" noResource="true"/>
+        <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="btnQuit"/>
+        </Property>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCloseActionPerformed"/>
@@ -160,12 +166,15 @@
         </Property>
         <Property name="inheritsPopupMenu" type="boolean" value="true"/>
         <Property name="name" type="java.lang.String" value="btnEmployees" noResource="true"/>
+        <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="btnClose"/>
+        </Property>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEmployeesActionPerformed"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="if (PCNMClientStart.user.getType() != EmpType.ADMINISTRATOR)&#xd;&#xa;btnEmployees.setEnabled(false);&#xd;&#xa;"/>
+        <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="if (PCNMClientStart.user.getType() != EmpType.ADMINISTRATOR)&#xd;&#xa;btnEmployees.setEnabled(false);"/>
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">

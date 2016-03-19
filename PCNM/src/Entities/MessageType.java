@@ -17,6 +17,11 @@ public enum MessageType {
     LOGIN_ANSWER,
     
     /**
+     * Open Employees management screen
+     */
+    GET_EMPLOYEES,
+    
+    /**
      * SQL Exception was thrown
      */
     DB_PROBLEM

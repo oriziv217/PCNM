@@ -19,5 +19,10 @@ public enum Status {
     /**
      * Suspended Status
      */
-    SUSPENDED
+    SUSPENDED,
+
+    /**
+     * Error
+     */
+    Error
 }
