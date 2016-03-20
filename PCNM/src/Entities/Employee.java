@@ -16,7 +16,11 @@ public class Employee implements Serializable{
 
     // Constructors
 
-    public Employee(){}
+    /**
+     * Default Constructor
+     */
+
+    public Employee(){ super(); }
     /**
      *
      * @param userName
@@ -172,6 +176,10 @@ public class Employee implements Serializable{
         return status;
     }
 
+    /**
+     * 
+     * @return
+     */
     @Override
     public String toString() {
         String type = "Error";

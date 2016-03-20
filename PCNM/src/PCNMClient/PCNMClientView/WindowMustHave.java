@@ -21,13 +21,13 @@ public class WindowMustHave {
                 JOptionPane.showMessageDialog(panel, text, "PCNM Error", JOptionPane.ERROR_MESSAGE);
                 break;
             case WARNING:
-                JOptionPane.showMessageDialog(panel, text, "PCNM Error", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(panel, text, "PCNM Warning", JOptionPane.WARNING_MESSAGE);
                 break;
             case INFO:
-                JOptionPane.showMessageDialog(panel, text, "PCNM Error", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(panel, text, "PCNM Info", JOptionPane.INFORMATION_MESSAGE);
                 break;
             default:
-                JOptionPane.showMessageDialog(panel, text, "PCNM Error", JOptionPane.NO_OPTION);
+                JOptionPane.showMessageDialog(panel, text, "PCNM Options", JOptionPane.NO_OPTION);
         }
     }
 }

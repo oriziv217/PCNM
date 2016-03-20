@@ -7,7 +7,7 @@ import PCNMClient.PCNMClientStart;
 import java.io.IOException;
 
 /**
- *
+ * This class implements application's client home screen
  * @author Ori Ziv
  */
 public class HomeSCR extends javax.swing.JPanel {

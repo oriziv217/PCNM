@@ -2,6 +2,7 @@ package PCNMClient;
 
 import Entities.Employee;
 import Entities.Message;
+import PCNMClient.PCNMClientController.EmployeeCTRL;
 import PCNMClient.PCNMClientController.HomeCTRL;
 import PCNMClient.PCNMClientView.*;
 import java.io.IOException;
@@ -43,11 +44,12 @@ public class PCNMClient extends AbstractClient {
                 }
                 break;
             case GET_EMPLOYEES:
-                search_results = HomeCTRL.processEmployeesResponse((ArrayList<Employee>) response.getEntity());
+                search_results = HomeCTRL.processGetEmployeesResponse((ArrayList<Employee>) response.getEntity());
                 PCNMClientStart.switchPanels(new EmployeeSCR(search_results));
                 break;
-                
+            
             case DB_PROBLEM:
+                WindowMustHave.showDialog(null, response.getDataString(), DialogType.ERROR);
                 break;
         }
     }

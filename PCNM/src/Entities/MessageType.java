@@ -22,6 +22,15 @@ public enum MessageType {
     GET_EMPLOYEES,
     
     /**
+     * Add new Employee
+     */
+    ADD_EMPLOYEE,
+    
+    /**
+     * Employee added successfully to the DB
+     */
+    EMPLOYEE_ADDED,
+    /**
      * SQL Exception was thrown
      */
     DB_PROBLEM

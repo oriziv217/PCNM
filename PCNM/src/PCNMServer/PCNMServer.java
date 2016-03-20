@@ -6,8 +6,6 @@ import Entities.*;
 import PCNMServer.ServerLogic.EmployeesLogic;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -58,6 +56,8 @@ public class PCNMServer extends AbstractServer {
             case GET_EMPLOYEES:
                 client.sendToClient(EmployeesLogic.getAllEntities());
                 break;
+            case ADD_EMPLOYEE:
+                client.sendToClient(EmployeesLogic.addEmployee((Employee)message.getEntity()));
             }
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, String.format("Lost connection with client %s", client.toString()));

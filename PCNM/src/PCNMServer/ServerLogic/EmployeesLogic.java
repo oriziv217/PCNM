@@ -8,6 +8,7 @@ import Entities.Status;
 import PCNMServer.ServerResources.DBConnect;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLDataException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -79,15 +80,15 @@ public class EmployeesLogic {
             row.setName(rs.getString("name"));
             row.setUserName(rs.getString("userName"));
             row.setPassword(rs.getString("password").toCharArray());
-            row.setType(extractEmpType(rs.getInt("type")));
-            row.setStatus(extractStatus(rs.getInt("status")));
+            row.setType(intToEmpType(rs.getInt("type")));
+            row.setStatus(intToStatus(rs.getInt("status")));
             if (row.getType() != EmpType.Error && row.getStatus() != Status.Error)
                 emp_tbl.add(new Employee(row.getID(), row.getName(), row.getUserName(), row.getPassword(), row.getType(), row.getStatus()));
         }
         return new Message(MessageType.GET_EMPLOYEES, emp_tbl);
     }
 
-    private static EmpType extractEmpType(int dbType) {
+    private static EmpType intToEmpType(int dbType) {
         switch (dbType) {
             case 1:
                 return EmpType.TECHNICIAN;
@@ -101,7 +102,21 @@ public class EmployeesLogic {
         return EmpType.Error;
     }
 
-    private static Status extractStatus(int dbStatus) {
+    private static int EmpTypeToInt(EmpType type) {
+        switch (type) {
+            case TECHNICIAN:
+                return 1;
+            case MCSE:
+                return 2;
+            case CEO:
+                return 3;
+            case ADMINISTRATOR:
+                return 4;
+        }
+        return 5;
+    }
+    
+    private static Status intToStatus(int dbStatus) {
         switch (dbStatus) {
             case 1:
                 return Status.ENABLE;
@@ -111,5 +126,35 @@ public class EmployeesLogic {
                 return Status.SUSPENDED;
         }
         return Status.Error;
+    }
+    
+    private static int statusToInt(Status status) {
+        switch (status) {
+            case ENABLE:
+                return 1;
+            case DISABLE:
+                return 2;
+            case SUSPENDED:
+                return 3;
+        }
+        return 4;
+    }
+
+    public static Object addEmployee(Employee employee) throws SQLException {
+        int typ = EmpTypeToInt(employee.getType());
+        int sts = statusToInt(employee.getStatus());
+        if (typ == 5 || sts == 4) throw new SQLException("Invalid input");
+        
+        String[] fields = {"name", "username", "password", "type", "status"};
+        String[] values = {employee.getName(), employee.getUserName(), String.valueOf(employee.getPassword()), String.valueOf(typ), String.valueOf(sts)};
+        
+        Connection conDB = DBConnect.mySQLConnection();
+        boolean isSuccess = DBConnect.insertSingleRecord(conDB, "employee", fields, values);
+        if (isSuccess) {
+            employee.setID(-1);
+            return getAllEntities();
+        }
+        throw new SQLDataException("Error adding user " + employee.getName());
+        
     }
 }
