@@ -157,4 +157,28 @@ public class EmployeesLogic {
         throw new SQLDataException("Error adding user " + employee.getName());
         
     }
+
+    public static Object updateEmployees(ArrayList<Employee> emps) throws SQLException {
+        Connection conDB = DBConnect.mySQLConnection();
+        String table = "employee";
+        String[] fields = {"ID", "name", "userName", "password", "type", "status"};
+        String[] values = new String[6];
+        String[] keyName = {"ID"};
+        String[] keyVal = new String[1];
+        boolean updated;
+        
+        for (Employee emp : emps) {
+            keyVal[0] = String.valueOf(emp.getID());
+            values[0] = String.valueOf(emp.getID());
+            values[1] = emp.getName();
+            values[2] = emp.getUserName();
+            values[3] = String.valueOf(emp.getPassword());
+            values[4] = String.valueOf(EmpTypeToInt(emp.getType()));
+            values[5] = String.valueOf(statusToInt(emp.getStatus()));
+            updated = DBConnect.updateSingleRecord(conDB, table, fields, values, keyName, keyVal);
+            if (!updated)
+                throw new SQLException("DB Problem");
+        }
+        return getAllEntities();
+    }
 }

@@ -10,21 +10,27 @@ import static PCNMClient.PCNMClientView.WindowMustHave.showDialog;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.DefaultCellEditor;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author ori ziv
  */
-public class EmployeeSCR extends javax.swing.JPanel {
+public class EmployeeSCR extends javax.swing.JPanel implements TableModelListener {
 
     private ArrayList<String> search_results;
+    private String[][] tableContent;
+    private boolean[] changes;
+    private boolean tblIsUp = false;
     private FormFrame addUserForm;
     /**
      * Creates new form EmployeeSCR
      */
     public EmployeeSCR() {
         initComponents();
+        tblUsers.getModel().addTableModelListener(this);
     }
 
     /**
@@ -34,8 +40,11 @@ public class EmployeeSCR extends javax.swing.JPanel {
     public EmployeeSCR(ArrayList<String> search_results) {
         this();
         this.search_results = search_results;
+        changes = new boolean[search_results.size()];
+        tableContent = new String[search_results.size()][6];
         loadSearchResults();
         tblUsers.setEnabled(true);
+        tblIsUp = true;
     }
 
     /**
@@ -71,6 +80,8 @@ public class EmployeeSCR extends javax.swing.JPanel {
         btnQuit = new javax.swing.JButton();
         chbShowPswd = new javax.swing.JCheckBox();
         btnNewEmployee = new javax.swing.JButton();
+        btnApply = new javax.swing.JButton();
+        btnRevertChanges = new javax.swing.JButton();
 
         cmbEmpType.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
         cmbEmpType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Administrator", "Technician", "MCSE", "CEO" }));
@@ -156,7 +167,8 @@ public class EmployeeSCR extends javax.swing.JPanel {
         clearFields();
 
         setBackground(java.awt.Color.white);
-        setMinimumSize(new java.awt.Dimension(826, 562));
+        setMinimumSize(new java.awt.Dimension(840, 460));
+        setName(""); // NOI18N
 
         lblTitle.setBackground(java.awt.Color.white);
         lblTitle.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
@@ -268,6 +280,32 @@ public class EmployeeSCR extends javax.swing.JPanel {
             }
         });
 
+        btnApply.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnApply.setText("Apply");
+        btnApply.setToolTipText("Add new system user");
+        btnApply.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnApply.setMaximumSize(new java.awt.Dimension(99, 33));
+        btnApply.setMinimumSize(new java.awt.Dimension(99, 33));
+        btnApply.setPreferredSize(new java.awt.Dimension(99, 33));
+        btnApply.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnApplyActionPerformed(evt);
+            }
+        });
+
+        btnRevertChanges.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnRevertChanges.setText("Revert Changes");
+        btnRevertChanges.setToolTipText("Add new system user");
+        btnRevertChanges.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnRevertChanges.setMaximumSize(new java.awt.Dimension(99, 33));
+        btnRevertChanges.setMinimumSize(new java.awt.Dimension(99, 33));
+        btnRevertChanges.setPreferredSize(new java.awt.Dimension(99, 33));
+        btnRevertChanges.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRevertChangesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -282,13 +320,17 @@ public class EmployeeSCR extends javax.swing.JPanel {
                         .addGap(24, 24, 24)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(chbShowPswd)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(scrollPaneUsersTbl, javax.swing.GroupLayout.PREFERRED_SIZE, 753, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(btnNewEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnNewEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnApply, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnRevertChanges, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(scrollPaneUsersTbl, javax.swing.GroupLayout.PREFERRED_SIZE, 753, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(85, 85, 85))))
         );
         layout.setVerticalGroup(
@@ -301,12 +343,13 @@ public class EmployeeSCR extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(chbShowPswd)
                 .addGap(18, 18, 18)
-                .addComponent(btnNewEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnNewEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnApply, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRevertChanges, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addContainerGap(54, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -319,20 +362,16 @@ public class EmployeeSCR extends javax.swing.JPanel {
     }//GEN-LAST:event_btnQuitActionPerformed
 
     private void chbShowPswdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbShowPswdActionPerformed
-        String element;
-        String[] row;
         boolean chbStatus = chbShowPswd.isSelected();
         
-        if (chbStatus == true) {
+        tblIsUp = false;
             for (int i = 0 ; i < tblUsers.getRowCount() ; i ++) {
-                element = search_results.get(i);
-                row = element.split(",");
-                tblUsers.getModel().setValueAt(row[3], i, 2);
+                if (chbStatus == true)
+                    tblUsers.getModel().setValueAt(tableContent[i][3], i, 2);
+                else
+                    tblUsers.getModel().setValueAt("********", i, 2);
             }
-        } else {
-            for (int i = 0 ; i < tblUsers.getRowCount() ; i ++)
-                tblUsers.getModel().setValueAt("********", i, 2);
-        }
+        tblIsUp = true;
     }//GEN-LAST:event_chbShowPswdActionPerformed
 
     private void btnNewEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewEmployeeActionPerformed
@@ -382,13 +421,41 @@ public class EmployeeSCR extends javax.swing.JPanel {
         PCNMClientStart.appWindow.requestFocus();
     }//GEN-LAST:event_btnAddUserCancelActionPerformed
 
+    private void btnApplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApplyActionPerformed
+        ArrayList<String> toApply = new ArrayList<String>();
+        for (int i = 0 ; i < tableContent.length ; i ++) {
+            if (changes[i]) {
+                toApply.add(tableContent[i][0] + ","
+                        + tableContent[i][1] + "," 
+                        + tableContent[i][2] + ","
+                        + tableContent[i][3] + ","
+                        + tableContent[i][4] + ","
+                        + tableContent[i][5]);
+            }
+        }
+        try {
+            EmployeeCTRL.btnApplyPressed(toApply);
+        } catch (IOException ex) {
+            showDialog(null, ex.getMessage(), DialogType.ERROR);
+            System.exit(0);
+        }
+    }//GEN-LAST:event_btnApplyActionPerformed
+
+    private void btnRevertChangesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRevertChangesActionPerformed
+        tblIsUp = false;
+        loadSearchResults();
+        tblIsUp = true;
+    }//GEN-LAST:event_btnRevertChangesActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddUserCancel;
     private javax.swing.JButton btnAddUserOK;
+    private javax.swing.JButton btnApply;
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnNewEmployee;
     private javax.swing.JButton btnQuit;
+    private javax.swing.JButton btnRevertChanges;
     private javax.swing.JCheckBox chbShowPswd;
     private javax.swing.JComboBox cmbAddUserEmpStatus;
     private javax.swing.JComboBox cmbAddUserEmpType;
@@ -420,7 +487,6 @@ public class EmployeeSCR extends javax.swing.JPanel {
     }
     
     private void loadSearchResults() {
-        String[] row;
         String element;
         
         DefaultTableModel dtm = (DefaultTableModel)tblUsers.getModel();
@@ -428,12 +494,12 @@ public class EmployeeSCR extends javax.swing.JPanel {
         
         for (int i = 0, row_idx = 0 ; i < search_results.size() ; i ++, row_idx ++) {
             element = search_results.get(i);
-            row = element.split(",");
-            dtm.setValueAt(row[1], row_idx, 0);
-            dtm.setValueAt(row[2], row_idx, 1);
+            tableContent[i] = element.split(",");
+            dtm.setValueAt(tableContent[i][1], row_idx, 0);
+            dtm.setValueAt(tableContent[i][2], row_idx, 1);
             dtm.setValueAt("*********", row_idx, 2);
-            dtm.setValueAt(row[4], row_idx, 3);
-            dtm.setValueAt(row[5], row_idx, 4);
+            dtm.setValueAt(tableContent[i][4], row_idx, 3);
+            dtm.setValueAt(tableContent[i][5], row_idx, 4);
         }
     }
 
@@ -443,5 +509,32 @@ public class EmployeeSCR extends javax.swing.JPanel {
         pswdAddUserPassword.setText("");
         cmbAddUserEmpType.setSelectedIndex(0);
         cmbAddUserEmpStatus.setSelectedIndex(0);
+    }
+
+    @Override
+    public void tableChanged(TableModelEvent e) {
+        boolean sp;
+        if (!tblIsUp) return;
+        int row = e.getFirstRow();
+        int col = e.getColumn();
+        String val = (String)tblUsers.getModel().getValueAt(row, col);
+        changes[row] = true;
+        if (col == 1) {
+            for (int i = 0 ; i < search_results.size() ; i ++) {
+                if (i != row && tableContent[i][2].equals(val)) {
+                    showDialog(this, "User-Name must be unique", DialogType.WARNING);
+                    tblUsers.getModel().setValueAt(tableContent[row][col+1], row, col);
+                    return;
+                }
+            }
+        }
+        tableContent[row][col+1] = (String)tblUsers.getModel().getValueAt(row, col);
+        if (col == 2) {
+            tblIsUp = false;
+            sp = chbShowPswd.isSelected();
+            if (!sp)
+              tblUsers.getModel().setValueAt("********", row, col);
+            tblIsUp = true;
+        }
     }
 }

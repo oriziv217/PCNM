@@ -30,6 +30,11 @@ public enum MessageType {
      * Employee added successfully to the DB
      */
     EMPLOYEE_ADDED,
+    
+    /**
+     * Update Employee records
+     */
+    UPDATE_EMPLOYEES,
     /**
      * SQL Exception was thrown
      */

@@ -31,5 +31,6 @@ public enum EmpType implements Serializable{
     /**
      * Error type
      */
-    Error;    
+    Error;
+    
 }
