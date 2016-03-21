@@ -69,6 +69,11 @@ public class EmployeesLogic {
         return new Message(MessageType.LOGIN_ANSWER, emp, "User logged-in");
     }
 
+    /**
+     * This method retrieve all employee records from the DB and return a message with array of employees
+     * @return
+     * @throws SQLException
+     */
     public static Object getAllEntities() throws SQLException {
         Connection conDB = DBConnect.mySQLConnection();
         ResultSet rs = DBConnect.selectWithFilter(conDB, "employee", null, null);
@@ -140,6 +145,12 @@ public class EmployeesLogic {
         return 4;
     }
 
+    /**
+     * This method adds an employee record to the DB
+     * @param employee
+     * @return
+     * @throws SQLException
+     */
     public static Object addEmployee(Employee employee) throws SQLException {
         int typ = EmpTypeToInt(employee.getType());
         int sts = statusToInt(employee.getStatus());
@@ -158,6 +169,12 @@ public class EmployeesLogic {
         
     }
 
+    /**
+     * this method receives an array of employees to update and perform update query to the DB
+     * @param emps
+     * @return
+     * @throws SQLException
+     */
     public static Object updateEmployees(ArrayList<Employee> emps) throws SQLException {
         Connection conDB = DBConnect.mySQLConnection();
         String table = "employee";

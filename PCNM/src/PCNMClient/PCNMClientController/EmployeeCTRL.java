@@ -67,6 +67,11 @@ public class EmployeeCTRL extends CTRL {
         PCNMClientModel.sendMessageToServer(new Message(MessageType.ADD_EMPLOYEE, emp));
     }
 
+    /**
+     * Apply button pressed event handler
+     * @param toApply
+     * @throws IOException
+     */
     public static void btnApplyPressed(ArrayList<String> toApply) throws IOException {
         String[] data;
         EmpType typ;
