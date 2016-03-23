@@ -34,6 +34,7 @@ public class HomeSCR extends javax.swing.JPanel {
         btnQuit = new javax.swing.JButton();
         btnClose = new javax.swing.JButton();
         btnEmployees = new javax.swing.JButton();
+        btnNetMap = new javax.swing.JButton();
 
         FormListener formListener = new FormListener();
 
@@ -104,11 +105,25 @@ public class HomeSCR extends javax.swing.JPanel {
         btnEmployees.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnEmployees.setInheritsPopupMenu(true);
         btnEmployees.setName("btnEmployees"); // NOI18N
-        btnEmployees.setNextFocusableComponent(btnClose);
+        btnEmployees.setNextFocusableComponent(btnNetMap);
         btnEmployees.addActionListener(formListener);
         add(btnEmployees, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 107, 300, 60));
         if (PCNMClientStart.user.getType() != EmpType.ADMINISTRATOR)
         btnEmployees.setEnabled(false);
+
+        btnNetMap.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnNetMap.setForeground(java.awt.Color.red);
+        btnNetMap.setText("Network Mapping");
+        btnNetMap.setToolTipText("Define PCs, Workstations and User Types");
+        btnNetMap.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnNetMap.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnNetMap.setInheritsPopupMenu(true);
+        btnNetMap.setName("btnNetMap"); // NOI18N
+        btnNetMap.setNextFocusableComponent(btnClose);
+        btnNetMap.addActionListener(formListener);
+        add(btnNetMap, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 190, 300, 60));
+        if (PCNMClientStart.user.getType() == EmpType.ADMINISTRATOR)
+        btnNetMap.setEnabled(false);
     }
 
     // Code for dispatching events from components to event handlers.
@@ -124,6 +139,9 @@ public class HomeSCR extends javax.swing.JPanel {
             }
             else if (evt.getSource() == btnEmployees) {
                 HomeSCR.this.btnEmployeesActionPerformed(evt);
+            }
+            else if (evt.getSource() == btnNetMap) {
+                HomeSCR.this.btnNetMapActionPerformed(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
@@ -145,10 +163,15 @@ public class HomeSCR extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnEmployeesActionPerformed
 
+    private void btnNetMapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNetMapActionPerformed
+        HomeCTRL.btnNetMapPressed();
+    }//GEN-LAST:event_btnNetMapActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnEmployees;
+    private javax.swing.JButton btnNetMap;
     private javax.swing.JButton btnQuit;
     private javax.swing.JPanel jplScreenLabel;
     private javax.swing.JLabel lblScreenTitle;

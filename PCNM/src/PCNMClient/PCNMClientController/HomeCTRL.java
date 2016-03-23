@@ -4,6 +4,8 @@ import Entities.Employee;
 import Entities.Message;
 import Entities.MessageType;
 import PCNMClient.PCNMClientModel;
+import PCNMClient.PCNMClientStart;
+import PCNMClient.PCNMClientView.NetMapSCR;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -32,5 +34,9 @@ public class HomeCTRL extends CTRL {
         for (Employee emp : empList)
             search_results.add(emp.toString());
         return search_results;
+    }
+
+    public static void btnNetMapPressed() {
+        PCNMClientStart.switchPanels(new NetMapSCR());
     }
 }

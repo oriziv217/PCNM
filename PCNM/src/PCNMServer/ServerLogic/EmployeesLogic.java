@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * This class implements application procedures related to employees
  * @author Ori Ziv
  */
-public class EmployeesLogic {
+public class EmployeesLogic extends Logic {
 
     /**
      * This method verify login request with the DB
@@ -119,30 +119,6 @@ public class EmployeesLogic {
                 return 4;
         }
         return 5;
-    }
-    
-    private static Status intToStatus(int dbStatus) {
-        switch (dbStatus) {
-            case 1:
-                return Status.ENABLE;
-            case 2:
-                return Status.DISABLE;
-            case 3:
-                return Status.SUSPENDED;
-        }
-        return Status.Error;
-    }
-    
-    private static int statusToInt(Status status) {
-        switch (status) {
-            case ENABLE:
-                return 1;
-            case DISABLE:
-                return 2;
-            case SUSPENDED:
-                return 3;
-        }
-        return 4;
     }
 
     /**

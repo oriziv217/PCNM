@@ -35,6 +35,11 @@ public enum MessageType {
      * Update Employee records
      */
     UPDATE_EMPLOYEES,
+    
+    /**
+     * Open Manage User Types screen
+     */
+    GET_ALL_USERS,
     /**
      * SQL Exception was thrown
      */

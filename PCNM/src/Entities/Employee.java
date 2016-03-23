@@ -212,6 +212,4 @@ public class Employee implements Serializable{
         }
         return String.valueOf(ID) + "," + name + "," + userName + "," + String.valueOf(password) + "," + type + "," + status;
     }
-    
-    
 }
