@@ -2,8 +2,9 @@ package PCNMClient;
 
 import Entities.Employee;
 import Entities.Message;
-import PCNMClient.PCNMClientController.EmployeeCTRL;
+import Entities.PCUserType;
 import PCNMClient.PCNMClientController.HomeCTRL;
+import PCNMClient.PCNMClientController.UserTypesCTRL;
 import PCNMClient.PCNMClientView.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,6 +47,9 @@ public class PCNMClient extends AbstractClient {
             case GET_EMPLOYEES:
                 search_results = HomeCTRL.processGetEmployeesResponse((ArrayList<Employee>) response.getEntity());
                 PCNMClientStart.switchPanels(new EmployeeSCR(search_results));
+                break;
+            case GET_ALL_USERS:
+                search_results = UserTypesCTRL.processGetUserTypesResponse((ArrayList<PCUserType>) response.getEntity());
                 break;
             
             case DB_PROBLEM:
