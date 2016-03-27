@@ -6,7 +6,7 @@ import java.io.Serializable;
  * This class represents a record in PCUserType table
  * @author ori ziv
  */
-public class PCUserType {
+public class PCUserType implements Serializable {
     private int ID;
     private String name;
     private String description;

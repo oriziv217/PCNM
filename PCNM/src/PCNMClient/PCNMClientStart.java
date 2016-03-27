@@ -32,8 +32,9 @@ public class PCNMClientStart {
     public static void switchPanels (JPanel newPanel) {
         // clear old panel
         appWindow.getContentPane().removeAll();
-        // adjust frame's size
+        // adjust frame's size and possiotion
         appWindow.setSize(newPanel.getMinimumSize());
+        appWindow.setLocationRelativeTo(null);
         // load new panel
         appWindow.getContentPane().add(newPanel);
         newPanel.setVisible(true);

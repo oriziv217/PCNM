@@ -1,21 +1,49 @@
 package PCNMClient.PCNMClientView;
 
-import javax.swing.SpinnerNumberModel;
+import PCNMClient.PCNMClientController.UserTypesCTRL;
+import java.awt.Font;
+import java.util.ArrayList;
+import java.util.Arrays;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author Ori Ziv
+ * @author ori ziv
  */
 public class UserTypeSCR extends javax.swing.JPanel {
 
-    private SpinnerNumberModel spnImportance = new SpinnerNumberModel(1.0, 0.1, 1.9, 0.1);
+    private ArrayList<String> search_results;
+    private String[][] tableContent;
+    int rowCounter;
+    boolean rowsToShow[];
+    private String fltrCol;
+    private String fltrStr;
+    private boolean fltrEnabled;
+    private String fltrImportance;
+        
     /**
      * Creates new form UserTypeSCR
      */
     public UserTypeSCR() {
         initComponents();
+        fltrCol = "Show All";
+        fltrEnabled = false;
+        fltrStr = "";
+        fltrImportance = "Show All";
     }
 
+    public UserTypeSCR(ArrayList<String> search_results) {
+        this();
+        this.search_results = search_results;
+        rowCounter = search_results.size();
+        rowsToShow = new boolean[rowCounter];
+        Arrays.fill(rowsToShow, true);
+        tableContent = new String[rowCounter][5];
+        rowCounter --;
+        loadSearchResults();
+        tblUsers.setEnabled(true);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -25,34 +53,40 @@ public class UserTypeSCR extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        txtCellEditor = new javax.swing.JTextField();
-        pnlTitle = new javax.swing.JPanel();
-        lblTitle = new javax.swing.JLabel();
-        pnlTable = new javax.swing.JPanel();
+        lblScreenTitle = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblUsers = new javax.swing.JTable();
+        btnClose = new javax.swing.JButton();
+        btnQuit = new javax.swing.JButton();
+        btnNewPCUserType = new javax.swing.JButton();
+        btnUpdate = new javax.swing.JButton();
+        lblFilterBy = new javax.swing.JLabel();
+        cmbFilterBy = new javax.swing.JComboBox();
+        lblFilterStr = new javax.swing.JLabel();
+        txtFilterStr = new javax.swing.JTextField();
+        chbEnabledOnly = new javax.swing.JCheckBox();
+        cmbImportanceFilter = new javax.swing.JComboBox();
+        lblImportanceFilter = new javax.swing.JLabel();
 
-        txtCellEditor.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        setBackground(java.awt.Color.white);
+        setMinimumSize(new java.awt.Dimension(1185, 810));
 
-        setMinimumSize(new java.awt.Dimension(1020, 423));
-
-        pnlTitle.setBackground(java.awt.Color.white);
-        pnlTitle.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        lblTitle.setBackground(java.awt.Color.white);
-        lblTitle.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
-        lblTitle.setForeground(java.awt.Color.red);
-        lblTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTitle.setText("PC-User's type management");
-        pnlTitle.add(lblTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(243, 11, -1, -1));
-
-        pnlTable.setBackground(java.awt.Color.white);
+        lblScreenTitle.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
+        lblScreenTitle.setForeground(java.awt.Color.red);
+        lblScreenTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblScreenTitle.setText("PC-User's Types Management");
+        lblScreenTitle.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblScreenTitle.setName("lblScreenTitle"); // NOI18N
 
         tblUsers.setAutoCreateRowSorter(true);
         tblUsers.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        tblUsers.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        tblUsers.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         tblUsers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
@@ -63,77 +97,310 @@ public class UserTypeSCR extends javax.swing.JPanel {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class
             };
 
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                //all cells false
+                return false;
+            }
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
-        tblUsers.setCellSelectionEnabled(true);
+        tblUsers.setName("tblUsers"); // NOI18N
         tblUsers.setRowHeight(32);
         jScrollPane1.setViewportView(tblUsers);
         tblUsers.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         if (tblUsers.getColumnModel().getColumnCount() > 0) {
-            tblUsers.getColumnModel().getColumn(0).setMinWidth(200);
-            tblUsers.getColumnModel().getColumn(0).setPreferredWidth(200);
-            tblUsers.getColumnModel().getColumn(0).setMaxWidth(200);
-            tblUsers.getColumnModel().getColumn(1).setMinWidth(600);
-            tblUsers.getColumnModel().getColumn(1).setPreferredWidth(600);
-            tblUsers.getColumnModel().getColumn(1).setMaxWidth(600);
-            tblUsers.getColumnModel().getColumn(2).setMinWidth(100);
-            tblUsers.getColumnModel().getColumn(2).setPreferredWidth(100);
-            tblUsers.getColumnModel().getColumn(2).setMaxWidth(100);
-            tblUsers.getColumnModel().getColumn(3).setMinWidth(100);
-            tblUsers.getColumnModel().getColumn(3).setPreferredWidth(100);
-            tblUsers.getColumnModel().getColumn(3).setMaxWidth(100);
+            tblUsers.getColumnModel().getColumn(0).setMinWidth(150);
+            tblUsers.getColumnModel().getColumn(1).setMinWidth(450);
+            tblUsers.getColumnModel().getColumn(2).setMinWidth(150);
+            tblUsers.getColumnModel().getColumn(3).setMinWidth(150);
         }
-        /*if (tblUsers.getColumnModel().getColumnCount() > 0) {
-            tblUsers.getColumnModel().getColumn(2).setCellEditor(new SpinnerCellEditor(1.0, 0.1, 1.9, 0.1));
-        }*/
-        tblUsers.getColumn("Importance").setCellRenderer(new SpinnerCellRenderer());
-        tblUsers.getColumn("Importance").setCellEditor(new SpinnerCellEditor());
+        tblUsers.getAccessibleContext().setAccessibleName("");
+        tblUsers.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 24));
 
-        javax.swing.GroupLayout pnlTableLayout = new javax.swing.GroupLayout(pnlTable);
-        pnlTable.setLayout(pnlTableLayout);
-        pnlTableLayout.setHorizontalGroup(
-            pnlTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlTableLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
-        );
-        pnlTableLayout.setVerticalGroup(
-            pnlTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlTableLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 91, Short.MAX_VALUE))
-        );
+        btnClose.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnClose.setForeground(java.awt.Color.red);
+        btnClose.setToolTipText("Close screen and return to log-in screen");
+        btnClose.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnClose.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnClose.setInheritsPopupMenu(true);
+        btnClose.setLabel("Close");
+        btnClose.setName("btnClose"); // NOI18N
+        btnClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCloseActionPerformed(evt);
+            }
+        });
+
+        btnQuit.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnQuit.setForeground(java.awt.Color.red);
+        btnQuit.setText("Quit");
+        btnQuit.setToolTipText("Quit PCNM");
+        btnQuit.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnQuit.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnQuit.setInheritsPopupMenu(true);
+        btnQuit.setName("btnQuit"); // NOI18N
+        btnQuit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnQuitActionPerformed(evt);
+            }
+        });
+
+        btnNewPCUserType.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnNewPCUserType.setText("New User Type");
+        btnNewPCUserType.setToolTipText("Add new system user");
+        btnNewPCUserType.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnNewPCUserType.setMaximumSize(new java.awt.Dimension(99, 33));
+        btnNewPCUserType.setMinimumSize(new java.awt.Dimension(99, 33));
+        btnNewPCUserType.setPreferredSize(new java.awt.Dimension(99, 33));
+        btnNewPCUserType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewPCUserTypeActionPerformed(evt);
+            }
+        });
+
+        btnUpdate.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnUpdate.setText("Update Selected");
+        btnUpdate.setToolTipText("Update Selected");
+        btnUpdate.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnUpdate.setMaximumSize(new java.awt.Dimension(99, 33));
+        btnUpdate.setMinimumSize(new java.awt.Dimension(99, 33));
+        btnUpdate.setPreferredSize(new java.awt.Dimension(99, 33));
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
+
+        lblFilterBy.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        lblFilterBy.setText("Filter By:");
+
+        cmbFilterBy.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        cmbFilterBy.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Show All", "Name", "Description" }));
+        cmbFilterBy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbFilterByActionPerformed(evt);
+            }
+        });
+
+        lblFilterStr.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        lblFilterStr.setText("Filter String:");
+
+        txtFilterStr.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        txtFilterStr.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtFilterStrFocusLost(evt);
+            }
+        });
+        txtFilterStr.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFilterStrActionPerformed(evt);
+            }
+        });
+
+        chbEnabledOnly.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        chbEnabledOnly.setText("Show Enabled Only");
+        chbEnabledOnly.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chbEnabledOnlyActionPerformed(evt);
+            }
+        });
+
+        cmbImportanceFilter.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        cmbImportanceFilter.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Show All", "Greater then 1.0", "Less Then 1.0" }));
+        cmbImportanceFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbImportanceFilterActionPerformed(evt);
+            }
+        });
+
+        lblImportanceFilter.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        lblImportanceFilter.setText("Importance Filter:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 1020, Short.MAX_VALUE)
-            .addComponent(pnlTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(lblScreenTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(99, 99, 99)
+                        .addComponent(btnNewPCUserType, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(94, 94, 94)
+                        .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(lblFilterBy)
+                .addGap(18, 18, 18)
+                .addComponent(cmbFilterBy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lblFilterStr)
+                .addGap(18, 18, 18)
+                .addComponent(txtFilterStr, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chbEnabledOnly)
+                .addGap(18, 18, 18)
+                .addComponent(lblImportanceFilter)
+                .addGap(18, 18, 18)
+                .addComponent(cmbImportanceFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblScreenTitle)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblFilterBy)
+                            .addComponent(cmbFilterBy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblFilterStr)
+                            .addComponent(txtFilterStr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(chbEnabledOnly)
+                            .addComponent(cmbImportanceFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblImportanceFilter))))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 543, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnNewPCUserType, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
+        UserTypesCTRL.closeBtnPressed();
+    }//GEN-LAST:event_btnCloseActionPerformed
+
+    private void btnQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitActionPerformed
+        UserTypesCTRL.QuitBtnPressed();
+    }//GEN-LAST:event_btnQuitActionPerformed
+
+    private void btnNewPCUserTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewPCUserTypeActionPerformed
+//        clearFields();
+//        addUserForm = new FormFrame();
+//        addUserForm.setSize(pnlAddUser.getMinimumSize());
+//        addUserForm.getContentPane().add(pnlAddUser);
+//        addUserForm.getContentPane().setVisible(true);
+//        PCNMClientStart.appWindow.setEnabled(false);
+//        //pnlAddUser.setVisible(true);
+//        //addUserForm.repaint();
+//        addUserForm.setVisible(true);
+    }//GEN-LAST:event_btnNewPCUserTypeActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+//        ArrayList<String> toApply = new ArrayList<String>();
+//        for (int i = 0 ; i < tableContent.length ; i ++) {
+//            if (changes[i]) {
+//                toApply.add(tableContent[i][0] + ","
+//                    + tableContent[i][1] + ","
+//                    + tableContent[i][2] + ","
+//                    + tableContent[i][3] + ","
+//                    + tableContent[i][4] + ","
+//                    + tableContent[i][5]);
+//            }
+//        }
+//        try {
+//            EmployeeCTRL.btnApplyPressed(toApply);
+//        } catch (IOException ex) {
+//            showDialog(null, ex.getMessage(), DialogType.ERROR);
+//            System.exit(0);
+//        }
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void cmbFilterByActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbFilterByActionPerformed
+        fltrCol = String.valueOf(cmbFilterBy.getSelectedItem());
+    }//GEN-LAST:event_cmbFilterByActionPerformed
+
+    private void txtFilterStrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFilterStrActionPerformed
+        fltrStr = txtFilterStr.getText();
+        applyFilter();
+    }//GEN-LAST:event_txtFilterStrActionPerformed
+
+    private void txtFilterStrFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtFilterStrFocusLost
+        fltrStr = txtFilterStr.getText();
+        applyFilter();
+    }//GEN-LAST:event_txtFilterStrFocusLost
+
+    private void chbEnabledOnlyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbEnabledOnlyActionPerformed
+        fltrEnabled = chbEnabledOnly.isSelected();
+        applyFilter();
+    }//GEN-LAST:event_chbEnabledOnlyActionPerformed
+
+    private void cmbImportanceFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbImportanceFilterActionPerformed
+        fltrImportance = String.valueOf(cmbImportanceFilter.getSelectedItem());
+        applyFilter();;
+    }//GEN-LAST:event_cmbImportanceFilterActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnClose;
+    private javax.swing.JButton btnNewPCUserType;
+    private javax.swing.JButton btnQuit;
+    private javax.swing.JButton btnUpdate;
+    private javax.swing.JCheckBox chbEnabledOnly;
+    private javax.swing.JComboBox cmbFilterBy;
+    private javax.swing.JComboBox cmbImportanceFilter;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblTitle;
-    private javax.swing.JPanel pnlTable;
-    private javax.swing.JPanel pnlTitle;
+    private javax.swing.JLabel lblFilterBy;
+    private javax.swing.JLabel lblFilterStr;
+    private javax.swing.JLabel lblImportanceFilter;
+    private javax.swing.JLabel lblScreenTitle;
     private javax.swing.JTable tblUsers;
-    private javax.swing.JTextField txtCellEditor;
+    private javax.swing.JTextField txtFilterStr;
     // End of variables declaration//GEN-END:variables
+
+    private void loadSearchResults() {
+        String row;
+        DefaultTableModel dtm = (DefaultTableModel)tblUsers.getModel();
+        dtm.setRowCount(rowCounter);
+        for (int i = 0 ; i < search_results.size() ; i ++) {
+            if (rowsToShow[i]) {
+                row = search_results.get(i);
+                tableContent[i] = row.split(",");
+                dtm.setValueAt(tableContent[i][1], i, 0);
+                dtm.setValueAt(tableContent[i][2], i, 1);
+                dtm.setValueAt(Double.parseDouble(tableContent[i][3]), i, 2);
+                dtm.setValueAt(tableContent[i][4], i, 3);
+            }
+        }
+    }
+
+    private void applyFilter() {
+        Arrays.fill(rowsToShow, true);
+        rowCounter = rowsToShow.length - 1;
+        for (int i = 0 ; i < tableContent.length ; i ++) {
+            if (rowsToShow[i] && fltrCol.equals("Name") && tableContent[i][1].indexOf(fltrStr) == -1)
+                rowsToShow[i] = false;
+            if (rowsToShow[i] && fltrCol.equalsIgnoreCase("Description") && tableContent[i][2].indexOf(fltrStr) == -1)
+                rowsToShow[i] = false;
+            if (rowsToShow[i] && fltrEnabled && !tableContent[i][4].equalsIgnoreCase("Enabled"))
+                rowsToShow[i] = false;
+            if (rowsToShow[i] && fltrImportance.equalsIgnoreCase("Greater then 1.0") && Float.valueOf(tableContent[i][3]) > 1)
+                rowsToShow[i] = false;
+            if (rowsToShow[i] && fltrImportance.equalsIgnoreCase("Less Then 1.0") && Float.valueOf(tableContent[i][3]) < 1)
+                rowsToShow[i] = false;
+            if (!rowsToShow[i])
+                rowCounter --;
+        }
+        loadSearchResults();
+    }
 }

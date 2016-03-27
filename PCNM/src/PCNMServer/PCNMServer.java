@@ -65,7 +65,8 @@ public class PCNMServer extends AbstractServer {
                 client.sendToClient(EmployeesLogic.updateEmployees((ArrayList<Employee>)message.getEntity()));
                 break;
             case GET_ALL_USERS:
-                client.sendToClient(UserTypesLogic.getAllEntities());
+                message = (Message)UserTypesLogic.getAllEntities();
+                client.sendToClient(message);
             }
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, String.format("Lost connection with client %s", client.toString()));

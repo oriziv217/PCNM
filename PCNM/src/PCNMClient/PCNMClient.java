@@ -50,6 +50,7 @@ public class PCNMClient extends AbstractClient {
                 break;
             case GET_ALL_USERS:
                 search_results = UserTypesCTRL.processGetUserTypesResponse((ArrayList<PCUserType>) response.getEntity());
+                PCNMClientStart.switchPanels(new UserTypeSCR(search_results));
                 break;
             
             case DB_PROBLEM:
