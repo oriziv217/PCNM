@@ -40,6 +40,17 @@ public enum MessageType {
      * Open Manage User Types screen
      */
     GET_ALL_USERS,
+
+    /**
+     * Add new PC User Type
+     */
+    ADD_PC_USER_TYPE,
+    
+    /**
+     * Update PC User Type
+     */
+    UPDATE_PC_USER_TYPE,
+    
     /**
      * SQL Exception was thrown
      */

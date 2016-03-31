@@ -10,7 +10,7 @@ public class PCUserType implements Serializable {
     private int ID;
     private String name;
     private String description;
-    private float importance;
+    private double importance;
     private Status status;
 
     // Constructors
@@ -35,7 +35,7 @@ public class PCUserType implements Serializable {
      * @param importance
      * @param status
      */
-    public PCUserType(String name, String description, float importance, Status status) {
+    public PCUserType(String name, String description, double importance, Status status) {
         this.name = name;
         this.description = description;
         this.importance = importance;
@@ -50,7 +50,7 @@ public class PCUserType implements Serializable {
      * @param importance
      * @param status
      */
-    public PCUserType(int ID, String name, String description, float importance, Status status) {
+    public PCUserType(int ID, String name, String description, double importance, Status status) {
         this.ID = ID;
         this.name = name;
         this.description = description;
@@ -100,7 +100,7 @@ public class PCUserType implements Serializable {
      *
      * @param importance
      */
-    public void setImportance(float importance) {
+    public void setImportance(double importance) {
         this.importance = importance;
     }
 
@@ -140,7 +140,7 @@ public class PCUserType implements Serializable {
      *
      * @return
      */
-    public float getImportance() {
+    public double getImportance() {
         return importance;
     }
 

@@ -1,7 +1,10 @@
 package PCNMClient.PCNMClientView;
 
 import PCNMClient.PCNMClientController.UserTypesCTRL;
+import PCNMClient.PCNMClientStart;
+import static PCNMClient.PCNMClientView.WindowMustHave.showDialog;
 import java.awt.Font;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.table.DefaultTableModel;
@@ -20,18 +23,33 @@ public class UserTypeSCR extends javax.swing.JPanel {
     private String fltrStr;
     private boolean fltrEnabled;
     private String fltrImportance;
+    private boolean doneInit;
+    private FormFrame addUserForm;
+    private boolean isUpdate;
+    private int selected;
         
     /**
      * Creates new form UserTypeSCR
      */
     public UserTypeSCR() {
+        doneInit = false;
         initComponents();
-        fltrCol = "Show All";
-        fltrEnabled = false;
-        fltrStr = "";
-        fltrImportance = "Show All";
+        UserTypesCTRL.resetFilters();
+        fltrCol = UserTypesCTRL.getFltrCol();
+        fltrEnabled = UserTypesCTRL.isFltrEnabled();
+        fltrStr = UserTypesCTRL.getFltrStr();
+        fltrImportance = UserTypesCTRL.getFltrImportance();
+        cmbFilterBy.setSelectedItem(fltrCol);
+        txtFilterStr.setText(fltrStr);
+        cmbImportanceFilter.setSelectedItem(fltrImportance);
+        chbEnabledOnly.setSelected(fltrEnabled);
+        doneInit = true;
     }
 
+    /**
+     *
+     * @param search_results
+     */
     public UserTypeSCR(ArrayList<String> search_results) {
         this();
         this.search_results = search_results;
@@ -39,7 +57,6 @@ public class UserTypeSCR extends javax.swing.JPanel {
         rowsToShow = new boolean[rowCounter];
         Arrays.fill(rowsToShow, true);
         tableContent = new String[rowCounter][5];
-        rowCounter --;
         loadSearchResults();
         tblUsers.setEnabled(true);
     }
@@ -53,6 +70,18 @@ public class UserTypeSCR extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        pnlAddUser = new javax.swing.JPanel();
+        lblAddUserTitle = new javax.swing.JLabel();
+        lblAddUserName = new javax.swing.JLabel();
+        txtAddUserName = new javax.swing.JTextField();
+        lblAddUserUserName = new javax.swing.JLabel();
+        lblAddUserPassword = new javax.swing.JLabel();
+        lblAddUserStatus = new javax.swing.JLabel();
+        txtAddUserDescription = new javax.swing.JTextField();
+        cmbAddUserStatus = new javax.swing.JComboBox();
+        btnAddUserOK = new javax.swing.JButton();
+        btnAddUserCancel = new javax.swing.JButton();
+        spnAddUserImportance = new javax.swing.JSpinner();
         lblScreenTitle = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblUsers = new javax.swing.JTable();
@@ -67,6 +96,70 @@ public class UserTypeSCR extends javax.swing.JPanel {
         chbEnabledOnly = new javax.swing.JCheckBox();
         cmbImportanceFilter = new javax.swing.JComboBox();
         lblImportanceFilter = new javax.swing.JLabel();
+
+        pnlAddUser.setMinimumSize(new java.awt.Dimension(280, 400));
+        pnlAddUser.setName("pnlAddUser"); // NOI18N
+        pnlAddUser.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblAddUserTitle.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        lblAddUserTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblAddUserTitle.setText("Add New User Type");
+        lblAddUserTitle.setName("lblAddUserTitle"); // NOI18N
+        pnlAddUser.add(lblAddUserTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 11, 259, -1));
+
+        lblAddUserName.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        lblAddUserName.setText("Name:");
+        pnlAddUser.add(lblAddUserName, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 67, -1, -1));
+
+        txtAddUserName.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        txtAddUserName.setToolTipText("");
+        pnlAddUser.add(txtAddUserName, new org.netbeans.lib.awtextra.AbsoluteConstraints(119, 64, 130, -1));
+
+        lblAddUserUserName.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        lblAddUserUserName.setText("Description:");
+        pnlAddUser.add(lblAddUserUserName, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 113, -1, -1));
+
+        lblAddUserPassword.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        lblAddUserPassword.setText("Importance:");
+        pnlAddUser.add(lblAddUserPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, -1, -1));
+
+        lblAddUserStatus.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        lblAddUserStatus.setText("Status:");
+        pnlAddUser.add(lblAddUserStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, -1, -1));
+
+        txtAddUserDescription.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        txtAddUserDescription.setToolTipText("");
+        pnlAddUser.add(txtAddUserDescription, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 110, 130, -1));
+
+        cmbAddUserStatus.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        cmbAddUserStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Enabled", "Disabled", "Suspended" }));
+        pnlAddUser.add(cmbAddUserStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 200, 130, -1));
+
+        btnAddUserOK.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        btnAddUserOK.setText("OK");
+        btnAddUserOK.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnAddUserOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddUserOKActionPerformed(evt);
+            }
+        });
+        pnlAddUser.add(btnAddUserOK, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 70, -1));
+
+        btnAddUserCancel.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        btnAddUserCancel.setText("Cancel");
+        btnAddUserCancel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnAddUserCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddUserCancelActionPerformed(evt);
+            }
+        });
+        pnlAddUser.add(btnAddUserCancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 250, 70, -1));
+
+        spnAddUserImportance.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        spnAddUserImportance.setModel(new javax.swing.SpinnerNumberModel(1.0d, 0.1d, 1.9d, 0.1d));
+        pnlAddUser.add(spnAddUserImportance, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 160, 130, 28));
+
+        clearFields();
 
         setBackground(java.awt.Color.white);
         setMinimumSize(new java.awt.Dimension(1185, 810));
@@ -295,76 +388,145 @@ public class UserTypeSCR extends javax.swing.JPanel {
     }//GEN-LAST:event_btnQuitActionPerformed
 
     private void btnNewPCUserTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewPCUserTypeActionPerformed
-//        clearFields();
-//        addUserForm = new FormFrame();
-//        addUserForm.setSize(pnlAddUser.getMinimumSize());
-//        addUserForm.getContentPane().add(pnlAddUser);
-//        addUserForm.getContentPane().setVisible(true);
-//        PCNMClientStart.appWindow.setEnabled(false);
-//        //pnlAddUser.setVisible(true);
-//        //addUserForm.repaint();
-//        addUserForm.setVisible(true);
+        isUpdate = false;
+        clearFields();
+        addUserForm = new FormFrame();
+        addUserForm.setSize(pnlAddUser.getMinimumSize());
+        addUserForm.getContentPane().add(pnlAddUser);
+        addUserForm.getContentPane().setVisible(true);
+        PCNMClientStart.appWindow.setEnabled(false);
+        addUserForm.setVisible(true);
     }//GEN-LAST:event_btnNewPCUserTypeActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-//        ArrayList<String> toApply = new ArrayList<String>();
-//        for (int i = 0 ; i < tableContent.length ; i ++) {
-//            if (changes[i]) {
-//                toApply.add(tableContent[i][0] + ","
-//                    + tableContent[i][1] + ","
-//                    + tableContent[i][2] + ","
-//                    + tableContent[i][3] + ","
-//                    + tableContent[i][4] + ","
-//                    + tableContent[i][5]);
-//            }
-//        }
-//        try {
-//            EmployeeCTRL.btnApplyPressed(toApply);
-//        } catch (IOException ex) {
-//            showDialog(null, ex.getMessage(), DialogType.ERROR);
-//            System.exit(0);
-//        }
+        selected = tblUsers.getSelectedRow();
+        if (selected == -1) {
+            showDialog(this, "Please select user", DialogType.INFO);
+            return;
+        }
+        isUpdate = true;
+        txtAddUserName.setText(tableContent[selected][1]);
+        txtAddUserDescription.setText(tableContent[selected][2]);
+        spnAddUserImportance.setValue(Double.parseDouble(tableContent[selected][3]));
+        cmbAddUserStatus.setSelectedItem(tableContent[selected][4]);
+        addUserForm = new FormFrame();
+        addUserForm.setSize(pnlAddUser.getMinimumSize());
+        addUserForm.getContentPane().add(pnlAddUser);
+        addUserForm.getContentPane().setVisible(true);
+        PCNMClientStart.appWindow.setEnabled(false);
+        addUserForm.setVisible(true);
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void cmbFilterByActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbFilterByActionPerformed
+        if (!doneInit) return;
         fltrCol = String.valueOf(cmbFilterBy.getSelectedItem());
+        UserTypesCTRL.setFltrCol(fltrCol);
+        if (fltrCol.equals("Show All"))
+            applyFilter();
     }//GEN-LAST:event_cmbFilterByActionPerformed
 
     private void txtFilterStrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFilterStrActionPerformed
-        fltrStr = txtFilterStr.getText();
+        if (!doneInit) return;
+        String txt = txtFilterStr.getText();
+        if (txt.equals(fltrStr)) return;
+        fltrStr = txt;
+        UserTypesCTRL.setFltrStr(fltrStr);
         applyFilter();
     }//GEN-LAST:event_txtFilterStrActionPerformed
 
     private void txtFilterStrFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtFilterStrFocusLost
-        fltrStr = txtFilterStr.getText();
+        if (!doneInit) return;
+        String txt = txtFilterStr.getText();
+        if (txt.equals(fltrStr)) return;
+        fltrStr = txt;
+        UserTypesCTRL.setFltrStr(fltrStr);
         applyFilter();
     }//GEN-LAST:event_txtFilterStrFocusLost
 
     private void chbEnabledOnlyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbEnabledOnlyActionPerformed
+        if (!doneInit) return;
         fltrEnabled = chbEnabledOnly.isSelected();
+        UserTypesCTRL.setFltrEnabled(fltrEnabled);
         applyFilter();
     }//GEN-LAST:event_chbEnabledOnlyActionPerformed
 
     private void cmbImportanceFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbImportanceFilterActionPerformed
+        if (!doneInit) return;
         fltrImportance = String.valueOf(cmbImportanceFilter.getSelectedItem());
-        applyFilter();;
+        UserTypesCTRL.setFltrImportance(fltrImportance);
+        applyFilter();
     }//GEN-LAST:event_cmbImportanceFilterActionPerformed
+
+    private void btnAddUserOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddUserOKActionPerformed
+        String name = txtAddUserName.getText();
+        String description = txtAddUserDescription.getText();
+        double importance = (Double) spnAddUserImportance.getValue();
+        String status = (String)cmbAddUserStatus.getSelectedItem();
+        if (name.isEmpty() || description.isEmpty() || status.isEmpty()) {
+            showDialog(pnlAddUser, "All fields are mandatory.", DialogType.INFO);
+            return;
+        }
+        if (!isUpdate) {
+            for (int i = 0 ; i < tableContent.length ; i ++) {
+                if (name.equals(tableContent[i][1])) {
+                    showDialog(pnlAddUser, "User type's name must be unique.", DialogType.INFO);
+                    return;
+                }
+            }
+        }
+        try {
+            UserTypesCTRL.setFltrCol(fltrCol);
+            UserTypesCTRL.setFltrEnabled(fltrEnabled);
+            UserTypesCTRL.setFltrImportance(fltrImportance);
+            UserTypesCTRL.setFltrStr(fltrStr);
+            if (!isUpdate)
+                UserTypesCTRL.btnAddNewUserOKPressed (name, description, importance, status);
+            else
+                UserTypesCTRL.btnUpdateUserPressed (Integer.valueOf(tableContent[selected][0]), name, description, importance, status);
+        } catch (IOException ex) {
+            showDialog(pnlAddUser, "Lost Connection with the server", DialogType.ERROR);
+            System.exit(0);
+        }
+        addUserForm.dispose();
+        clearFields();
+        PCNMClientStart.appWindow.setEnabled(true);
+        PCNMClientStart.appWindow.requestFocus();
+    }//GEN-LAST:event_btnAddUserOKActionPerformed
+
+    private void btnAddUserCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddUserCancelActionPerformed
+        clearFields();
+        addUserForm.dispose();
+        PCNMClientStart.appWindow.setEnabled(true);
+        PCNMClientStart.appWindow.requestFocus();
+    }//GEN-LAST:event_btnAddUserCancelActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddUserCancel;
+    private javax.swing.JButton btnAddUserOK;
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnNewPCUserType;
     private javax.swing.JButton btnQuit;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JCheckBox chbEnabledOnly;
+    private javax.swing.JComboBox cmbAddUserStatus;
     private javax.swing.JComboBox cmbFilterBy;
     private javax.swing.JComboBox cmbImportanceFilter;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblAddUserName;
+    private javax.swing.JLabel lblAddUserPassword;
+    private javax.swing.JLabel lblAddUserStatus;
+    private javax.swing.JLabel lblAddUserTitle;
+    private javax.swing.JLabel lblAddUserUserName;
     private javax.swing.JLabel lblFilterBy;
     private javax.swing.JLabel lblFilterStr;
     private javax.swing.JLabel lblImportanceFilter;
     private javax.swing.JLabel lblScreenTitle;
+    private javax.swing.JPanel pnlAddUser;
+    private javax.swing.JSpinner spnAddUserImportance;
     private javax.swing.JTable tblUsers;
+    private javax.swing.JTextField txtAddUserDescription;
+    private javax.swing.JTextField txtAddUserName;
     private javax.swing.JTextField txtFilterStr;
     // End of variables declaration//GEN-END:variables
 
@@ -372,21 +534,25 @@ public class UserTypeSCR extends javax.swing.JPanel {
         String row;
         DefaultTableModel dtm = (DefaultTableModel)tblUsers.getModel();
         dtm.setRowCount(rowCounter);
+        int cur_row = 0;
         for (int i = 0 ; i < search_results.size() ; i ++) {
             if (rowsToShow[i]) {
                 row = search_results.get(i);
                 tableContent[i] = row.split(",");
-                dtm.setValueAt(tableContent[i][1], i, 0);
-                dtm.setValueAt(tableContent[i][2], i, 1);
-                dtm.setValueAt(Double.parseDouble(tableContent[i][3]), i, 2);
-                dtm.setValueAt(tableContent[i][4], i, 3);
+                dtm.setValueAt(tableContent[i][1], cur_row, 0);
+                dtm.setValueAt(tableContent[i][2], cur_row, 1);
+                dtm.setValueAt(Double.parseDouble(tableContent[i][3]), cur_row, 2);
+                dtm.setValueAt(tableContent[i][4], cur_row, 3);
+                cur_row ++;
+                if (cur_row > rowCounter)
+                    i = search_results.size();
             }
         }
     }
 
     private void applyFilter() {
         Arrays.fill(rowsToShow, true);
-        rowCounter = rowsToShow.length - 1;
+        rowCounter = rowsToShow.length;
         for (int i = 0 ; i < tableContent.length ; i ++) {
             if (rowsToShow[i] && fltrCol.equals("Name") && tableContent[i][1].indexOf(fltrStr) == -1)
                 rowsToShow[i] = false;
@@ -394,13 +560,20 @@ public class UserTypeSCR extends javax.swing.JPanel {
                 rowsToShow[i] = false;
             if (rowsToShow[i] && fltrEnabled && !tableContent[i][4].equalsIgnoreCase("Enabled"))
                 rowsToShow[i] = false;
-            if (rowsToShow[i] && fltrImportance.equalsIgnoreCase("Greater then 1.0") && Float.valueOf(tableContent[i][3]) > 1)
+            if (rowsToShow[i] && fltrImportance.equalsIgnoreCase("Greater then 1.0") && Float.valueOf(tableContent[i][3]) < 1)
                 rowsToShow[i] = false;
-            if (rowsToShow[i] && fltrImportance.equalsIgnoreCase("Less Then 1.0") && Float.valueOf(tableContent[i][3]) < 1)
+            if (rowsToShow[i] && fltrImportance.equalsIgnoreCase("Less Then 1.0") && Float.valueOf(tableContent[i][3]) > 1)
                 rowsToShow[i] = false;
             if (!rowsToShow[i])
                 rowCounter --;
         }
         loadSearchResults();
+    }
+
+    private void clearFields() {
+        txtAddUserName.setText("");
+        txtAddUserDescription.setText("");
+        spnAddUserImportance.setValue(1.0);
+        cmbAddUserStatus.setSelectedIndex(0);
     }
 }

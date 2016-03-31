@@ -142,7 +142,6 @@ public class EmployeesLogic extends Logic {
             return getAllEntities();
         }
         throw new SQLDataException("Error adding user " + employee.getName());
-        
     }
 
     /**
