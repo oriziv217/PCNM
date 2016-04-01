@@ -5,6 +5,7 @@ import ocsf.server.ConnectionToClient;
 import Entities.*;
 import PCNMServer.ServerLogic.EmployeesLogic;
 import PCNMServer.ServerLogic.UserTypesLogic;
+import PCNMServer.ServerLogic.WorkstationLogic;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -73,6 +74,9 @@ public class PCNMServer extends AbstractServer {
                 break;
             case UPDATE_PC_USER_TYPE:
                 client.sendToClient(UserTypesLogic.updatePCUserType((PCUserType)message.getEntity()));
+                break;
+            case OPEN_WORKSTATION_SCREEN:
+                client.sendToClient(WorkstationLogic.getAllTypes());
                 break;
             }
         } catch (IOException e) {

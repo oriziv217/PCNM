@@ -3,8 +3,10 @@ package PCNMClient;
 import Entities.Employee;
 import Entities.Message;
 import Entities.PCUserType;
+import Entities.WSType;
 import PCNMClient.PCNMClientController.HomeCTRL;
 import PCNMClient.PCNMClientController.UserTypesCTRL;
+import PCNMClient.PCNMClientController.WorkstationCTRL;
 import PCNMClient.PCNMClientView.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -52,7 +54,9 @@ public class PCNMClient extends AbstractClient {
                 search_results = UserTypesCTRL.processGetUserTypesResponse((ArrayList<PCUserType>) response.getEntity());
                 PCNMClientStart.switchPanels(new UserTypeSCR(search_results));
                 break;
-            
+            case GET_ALL_WORKSTATION_TYPES:
+                WorkstationCTRL.openWorkstationWindow((ArrayList<WSType>) response.getEntity());
+                break;
             case DB_PROBLEM:
                 WindowMustHave.showDialog(null, response.getDataString(), DialogType.ERROR);
                 break;

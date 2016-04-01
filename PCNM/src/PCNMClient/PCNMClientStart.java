@@ -20,6 +20,7 @@ public class PCNMClientStart {
      */
     public static Employee user;
 
+    public static CurrentEntities cur_ent = new CurrentEntities();
     /**
      * GUI's frame
      */

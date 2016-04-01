@@ -52,6 +52,16 @@ public enum MessageType {
     UPDATE_PC_USER_TYPE,
     
     /**
+     * Open Manage Workstations screen
+     */
+    OPEN_WORKSTATION_SCREEN,
+    
+    /**
+     * Get all Workstation types from DB
+     */
+    GET_ALL_WORKSTATION_TYPES,
+    
+    /**
      * SQL Exception was thrown
      */
     DB_PROBLEM

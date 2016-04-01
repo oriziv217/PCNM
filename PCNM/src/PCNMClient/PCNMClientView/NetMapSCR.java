@@ -33,6 +33,7 @@ public class NetMapSCR extends javax.swing.JPanel {
         btnClose = new javax.swing.JButton();
         btnQuit = new javax.swing.JButton();
         btnMngUserTyp = new javax.swing.JButton();
+        btnMngWorkstation = new javax.swing.JButton();
 
         setBackground(java.awt.Color.white);
         setAlignmentX(0.0F);
@@ -55,7 +56,7 @@ public class NetMapSCR extends javax.swing.JPanel {
         jplScreenLabelLayout.setHorizontalGroup(
             jplScreenLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jplScreenLabelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(264, Short.MAX_VALUE)
                 .addComponent(lblScreenTitle)
                 .addGap(260, 260, 260))
         );
@@ -110,6 +111,21 @@ public class NetMapSCR extends javax.swing.JPanel {
             }
         });
 
+        btnMngWorkstation.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnMngWorkstation.setForeground(java.awt.Color.red);
+        btnMngWorkstation.setText("Manage Workstations");
+        btnMngWorkstation.setToolTipText("Manage users and roles witjin the system");
+        btnMngWorkstation.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnMngWorkstation.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnMngWorkstation.setInheritsPopupMenu(true);
+        btnMngWorkstation.setMinimumSize(new java.awt.Dimension(880, 700));
+        btnMngWorkstation.setName("btnMngUserTyp"); // NOI18N
+        btnMngWorkstation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMngWorkstationActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -118,12 +134,14 @@ public class NetMapSCR extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnMngUserTyp, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 580, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnMngUserTyp, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnMngWorkstation, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addComponent(jplScreenLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -133,7 +151,9 @@ public class NetMapSCR extends javax.swing.JPanel {
                 .addComponent(jplScreenLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnMngUserTyp, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 273, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(btnMngWorkstation, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 195, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -158,10 +178,20 @@ public class NetMapSCR extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnMngUserTypActionPerformed
 
+    private void btnMngWorkstationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMngWorkstationActionPerformed
+        try {
+            NetMapCTRL.btnMngWorkstationsPressed();
+        } catch (IOException ex) {
+            WindowMustHave.showDialog(this, "Lost Connection With Server", DialogType.ERROR);
+            System.exit(0);
+        }
+    }//GEN-LAST:event_btnMngWorkstationActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnMngUserTyp;
+    private javax.swing.JButton btnMngWorkstation;
     private javax.swing.JButton btnQuit;
     private javax.swing.JPanel jplScreenLabel;
     private javax.swing.JLabel lblScreenTitle;
