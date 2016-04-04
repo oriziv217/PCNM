@@ -3,10 +3,9 @@ package PCNMClient.PCNMClientView;
 import PCNMClient.PCNMClientController.WorkstationCTRL;
 import PCNMClient.PCNMClientStart;
 import static PCNMClient.PCNMClientView.WindowMustHave.showDialog;
+import java.awt.Font;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -14,6 +13,7 @@ import java.util.logging.Logger;
  */
 public class WorkstationSCR extends javax.swing.JPanel {
     private ArrayList<String[]> types;
+    private ArrayList<String[]> ws_tbl;
 
     /**
      * Creates new form WorkstationSCR
@@ -29,6 +29,11 @@ public class WorkstationSCR extends javax.swing.JPanel {
         initComponents();
     }
 
+    public WorkstationSCR(ArrayList<String[]> ws_tbl) {
+        this();
+        this.ws_tbl = ws_tbl;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -38,6 +43,11 @@ public class WorkstationSCR extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        pnlWorkstationSearchResults = new javax.swing.JPanel();
+        lblResultsTitle = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblSearchResault = new javax.swing.JTable();
+        lblResultFilterBy = new javax.swing.JLabel();
         btnSearch = new javax.swing.JButton();
         lblScreenTitle = new javax.swing.JLabel();
         btnQuit = new javax.swing.JButton();
@@ -54,6 +64,90 @@ public class WorkstationSCR extends javax.swing.JPanel {
         cmbImportance = new javax.swing.JComboBox();
         btnClose = new javax.swing.JButton();
         lblNoFilter = new javax.swing.JLabel();
+
+        pnlWorkstationSearchResults.setBackground(java.awt.Color.white);
+
+        lblResultsTitle.setBackground(java.awt.Color.white);
+        lblResultsTitle.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
+        lblResultsTitle.setForeground(java.awt.Color.red);
+        lblResultsTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblResultsTitle.setText("Workstations Search Results");
+
+        tblSearchResault.setAutoCreateRowSorter(true);
+        tblSearchResault.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        tblSearchResault.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Name", "Description", "Importance", "Status", "Type", "Minimal Rate"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblSearchResault.setRowHeight(32);
+        tblSearchResault.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(tblSearchResault);
+        if (tblSearchResault.getColumnModel().getColumnCount() > 0) {
+            tblSearchResault.getColumnModel().getColumn(0).setMinWidth(100);
+            tblSearchResault.getColumnModel().getColumn(0).setPreferredWidth(100);
+            tblSearchResault.getColumnModel().getColumn(1).setMinWidth(100);
+            tblSearchResault.getColumnModel().getColumn(1).setPreferredWidth(450);
+            tblSearchResault.getColumnModel().getColumn(2).setMinWidth(100);
+            tblSearchResault.getColumnModel().getColumn(2).setPreferredWidth(100);
+            tblSearchResault.getColumnModel().getColumn(3).setMinWidth(100);
+            tblSearchResault.getColumnModel().getColumn(3).setPreferredWidth(100);
+            tblSearchResault.getColumnModel().getColumn(4).setMinWidth(100);
+            tblSearchResault.getColumnModel().getColumn(4).setPreferredWidth(100);
+            tblSearchResault.getColumnModel().getColumn(5).setMinWidth(100);
+            tblSearchResault.getColumnModel().getColumn(5).setPreferredWidth(100);
+        }
+        tblSearchResault.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 24));
+
+        lblResultFilterBy.setBackground(java.awt.Color.white);
+        lblResultFilterBy.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        lblResultFilterBy.setText("Filter By:");
+
+        javax.swing.GroupLayout pnlWorkstationSearchResultsLayout = new javax.swing.GroupLayout(pnlWorkstationSearchResults);
+        pnlWorkstationSearchResults.setLayout(pnlWorkstationSearchResultsLayout);
+        pnlWorkstationSearchResultsLayout.setHorizontalGroup(
+            pnlWorkstationSearchResultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblResultsTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 1487, Short.MAX_VALUE)
+            .addGroup(pnlWorkstationSearchResultsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlWorkstationSearchResultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlWorkstationSearchResultsLayout.createSequentialGroup()
+                        .addComponent(lblResultFilterBy)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1))
+                .addContainerGap())
+        );
+        pnlWorkstationSearchResultsLayout.setVerticalGroup(
+            pnlWorkstationSearchResultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlWorkstationSearchResultsLayout.createSequentialGroup()
+                .addComponent(lblResultsTitle)
+                .addGap(18, 18, 18)
+                .addComponent(lblResultFilterBy)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 271, Short.MAX_VALUE))
+        );
 
         setBackground(java.awt.Color.white);
         setMinimumSize(new java.awt.Dimension(600, 600));
@@ -190,8 +284,7 @@ public class WorkstationSCR extends javax.swing.JPanel {
                                     .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(cmbImportance, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnSearch, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(5, 5, 5))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 5, Short.MAX_VALUE))
                     .addComponent(lblNoFilter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -268,7 +361,10 @@ public class WorkstationSCR extends javax.swing.JPanel {
     private javax.swing.JComboBox cmbImportance;
     private javax.swing.JComboBox cmbStatus;
     private javax.swing.JComboBox cmbType;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblNoFilter;
+    private javax.swing.JLabel lblResultFilterBy;
+    private javax.swing.JLabel lblResultsTitle;
     private javax.swing.JLabel lblScreenTitle;
     private javax.swing.JLabel lblSearchDescription;
     private javax.swing.JLabel lblSearchImportance;
@@ -276,6 +372,8 @@ public class WorkstationSCR extends javax.swing.JPanel {
     private javax.swing.JLabel lblSearchStatus;
     private javax.swing.JLabel lblSearchTitle;
     private javax.swing.JLabel lblSearchType;
+    private javax.swing.JPanel pnlWorkstationSearchResults;
+    private javax.swing.JTable tblSearchResault;
     private javax.swing.JTextField txtDescription;
     private javax.swing.JTextField txtName;
     // End of variables declaration//GEN-END:variables

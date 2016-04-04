@@ -26,6 +26,10 @@ public class WSType implements Serializable {
         status = Status.Error;
     }
 
+    public WSType (String name) {
+        this.name = name;
+    }
+    
     public WSType(String name, String description, int minimalScore, Status status) {
         this.name = name;
         this.description = description;

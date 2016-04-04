@@ -39,8 +39,8 @@ public class Workstation implements Serializable{
         return description;
     }
 
-    public void setDiscription(String discription) {
-        this.description = discription;
+    public void setDiscription(String description) {
+        this.description = description;
     }
 
     public double getImportanceFactor() {
@@ -59,33 +59,46 @@ public class Workstation implements Serializable{
         this.status = status;
     }
 
+    public WSType getType() {
+        return type;
+    }
+
+    public void setType(WSType type) {
+        this.type = type;
+    }
+    
     public Workstation() {
     }
 
-    public Workstation(String name, String discription, double importanceFactor, Status status) {
+    public Workstation(String name, String description, double importanceFactor, Status status) {
         this.name = name;
-        this.description = discription;
+        this.description = description;
         this.importanceFactor = importanceFactor;
         this.status = status;
     }
 
-    public Workstation(String name, String discription, double importanceFactor, Status status, WSType type) {
+    public Workstation(String name, String description, double importanceFactor, Status status, WSType type) {
         this.name = name;
-        this.description = discription;
+        this.description = description;
         this.importanceFactor = importanceFactor;
         this.status = status;
         this.type = type;
     }
 
-    public Workstation(int ID, String name, String discription, double importanceFactor, Status status, WSType type) {
+    public Workstation(int ID, String name, String description, double importanceFactor, Status status, WSType type) {
         this.ID = ID;
         this.name = name;
-        this.description = discription;
+        this.description = description;
         this.importanceFactor = importanceFactor;
         this.status = status;
         this.type = type;
     }
 
+    /**
+     *
+     * @return
+     */
+    @Override
     public String toString() {
         String sts = "Error";
         

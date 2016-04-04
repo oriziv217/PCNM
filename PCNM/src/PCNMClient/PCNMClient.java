@@ -4,6 +4,7 @@ import Entities.Employee;
 import Entities.Message;
 import Entities.PCUserType;
 import Entities.WSType;
+import Entities.Workstation;
 import PCNMClient.PCNMClientController.HomeCTRL;
 import PCNMClient.PCNMClientController.UserTypesCTRL;
 import PCNMClient.PCNMClientController.WorkstationCTRL;
@@ -53,6 +54,9 @@ public class PCNMClient extends AbstractClient {
             case GET_ALL_USERS:
                 search_results = UserTypesCTRL.processGetUserTypesResponse((ArrayList<PCUserType>) response.getEntity());
                 PCNMClientStart.switchPanels(new UserTypeSCR(search_results));
+                break;
+            case GET_WORKSTATIOS_WITH_FILTER:
+                WorkstationCTRL.processSearchResults((ArrayList<Workstation>)response.getEntity());
                 break;
             case GET_ALL_WORKSTATION_TYPES:
                 WorkstationCTRL.openWorkstationWindow((ArrayList<WSType>) response.getEntity());

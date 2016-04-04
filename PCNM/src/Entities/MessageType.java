@@ -62,6 +62,11 @@ public enum MessageType {
     GET_ALL_WORKSTATION_TYPES,
     
     /**
+     * Get Workstations from DB by filter
+     */
+    GET_WORKSTATIOS_WITH_FILTER,
+    
+    /**
      * SQL Exception was thrown
      */
     DB_PROBLEM

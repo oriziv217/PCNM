@@ -3,8 +3,10 @@ package PCNMServer.ServerResources;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLDataException;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javafx.collections.transformation.FilteredList;
 
 /**
  * This is a static class that provides DB connection services
@@ -240,5 +242,88 @@ public class DBConnect {
                 Statement stmnt = conDB.createStatement();
                 if (stmnt.executeUpdate(delete) > 0) return true;
                 return false;
+        }
+        
+    /**
+     * This method executes a SQL select query with a single inner join.
+     * @param conDB - connection to the DB schema - must be active and open connection
+     * @param leftTable - table name to join with - must be a name of an existing table
+     * @param rightTable - table name to join on - must be a name of an existing table
+     * @param leftKeys - left table's attributes to join with - must be at list 1 attribute
+     * @param rightKeys - right table's attributes to join on - must the same number of attributes as the left keys.
+     *                                                          The method will match: leftKeys[i] = rightKeys[i]
+     * @param fields - list of attributes to project - if this parameter is empty or equal to null then method assumes "SELECT *"
+     *                                                          You can also add SQL functions and constants to this parameter.
+     * @param labels - list of column labels to project - if this parameter is empty or equal to null then no labels will be used.
+     *                                                          The method will match: fields[i] AS labels[i]
+     * @param filter - a set of logical filters
+     * @param options - a set of optional SQL clauses such as ORDER BY, GROUP BY...
+     *                                                          If this parameter is null or an empty string then the method will
+     *                                                          not include it in the query.
+     * @return - query results
+     * @throws SQLException
+     */
+    public static ResultSet innerJoin (Connection conDB,
+                                            String leftTable, String rightTable,
+                                            String[] leftKeys, String[] rightKeys,
+                                            String[] fields, String[]labels,
+                                            String filter, String options) throws SQLException {
+        // input verification
+        if (conDB.isClosed()) throw new SQLException("Connection is closed");
+        if (leftTable == null || rightTable == null) throw new SQLException("Missing tables to join");
+        if (rightKeys == null || rightKeys.length == 0
+            || leftKeys == null || leftKeys.length == 0
+            || rightKeys.length != leftKeys.length) throw new SQLException("Missing or invalid join keys");
+        
+        // building query string
+        String joinQuery = "SELECT ";
+        boolean isFirst = true;
+        // case query define column labels
+        if (fields != null && labels != null) {
+            // input verification
+            if (fields.length != labels.length) throw new SQLException("Error matching fields to labels");
+            for (int i = 0 ; i < fields.length ; i ++) {
+                if (!isFirst) joinQuery = joinQuery + ", ";
+                else isFirst = false;
+                joinQuery = joinQuery + fields[i];
+                if (labels[i] != null && !labels[i].isEmpty())
+                    joinQuery = joinQuery + " AS " + labels[i];
+            }
+        }
+        // case no column labels
+        if (fields != null && labels == null) {
+            for (int i = 0 ; i < fields.length ; i ++) {
+                if (!isFirst) joinQuery = joinQuery + ", ";
+                else isFirst = false;
+                joinQuery = joinQuery + fields[i];
+            }                
+        }
+        // case select *
+        if (fields == null || fields.length == 0)
+            joinQuery = joinQuery + "*";
+        // define the join clause    
+        joinQuery = joinQuery + " FROM " + leftTable;
+        joinQuery = joinQuery + " JOIN " + rightTable;
+        joinQuery = joinQuery + " ON ";
+        // define the join keys
+        isFirst = true;
+        for (int i = 0 ; i < leftKeys.length ; i ++) {
+            if (!isFirst) joinQuery = joinQuery + " AND ";
+            else isFirst = false;
+            // input verification
+            if (rightKeys[i] == null || rightKeys[i].isEmpty()
+                || leftKeys[i] == null || leftKeys[i].isEmpty()) throw new SQLException("Missing or invalid join keys");
+            joinQuery = joinQuery + leftKeys[i] + " = " + rightKeys[i];
+        }
+        // define filter
+        if (filter != null && !filter.isEmpty())
+            joinQuery = joinQuery + " WHERE " + filter;
+        // define ORDER BY, GROUP BY, etc'
+        if (options != null && !options.isEmpty())
+            joinQuery = joinQuery + " " + options;
+        
+        // create and execute SQL statement
+        Statement stmnt = conDB.createStatement();
+        return stmnt.executeQuery(joinQuery);
         }
 }
