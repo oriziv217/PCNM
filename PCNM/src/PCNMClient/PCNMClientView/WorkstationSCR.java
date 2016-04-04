@@ -6,6 +6,8 @@ import static PCNMClient.PCNMClientView.WindowMustHave.showDialog;
 import java.awt.Font;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -13,7 +15,11 @@ import java.util.ArrayList;
  */
 public class WorkstationSCR extends javax.swing.JPanel {
     private ArrayList<String[]> types;
-    private ArrayList<String[]> ws_tbl;
+    private ArrayList<String> ws_tbl;
+    private int rowCounter;
+    private boolean[] rowsToShow;
+    private String[][] tableContent;
+    private FormFrame wsTableFrame;
 
     /**
      * Creates new form WorkstationSCR
@@ -29,9 +35,21 @@ public class WorkstationSCR extends javax.swing.JPanel {
         initComponents();
     }
 
-    public WorkstationSCR(ArrayList<String[]> ws_tbl) {
+    public WorkstationSCR(ArrayList<String> ws_tbl) {
         this();
         this.ws_tbl = ws_tbl;
+        rowCounter = ws_tbl.size();
+        rowsToShow = new boolean[rowCounter];
+        Arrays.fill(rowsToShow, true);
+        tableContent = new String[rowCounter][5];
+        loadSearchResults();
+        tblSearchResault.setEnabled(true);
+        wsTableFrame = new FormFrame();
+        wsTableFrame.setSize(pnlWorkstationSearchResults.getMinimumSize());
+        wsTableFrame.getContentPane().add(pnlWorkstationSearchResults);
+        wsTableFrame.getContentPane().setVisible(true);
+        PCNMClientStart.appWindow.setEnabled(false);
+        wsTableFrame.setVisible(true);
     }
 
     /**
@@ -48,6 +66,7 @@ public class WorkstationSCR extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblSearchResault = new javax.swing.JTable();
         lblResultFilterBy = new javax.swing.JLabel();
+        btnClose1 = new javax.swing.JButton();
         btnSearch = new javax.swing.JButton();
         lblScreenTitle = new javax.swing.JLabel();
         btnQuit = new javax.swing.JButton();
@@ -124,18 +143,34 @@ public class WorkstationSCR extends javax.swing.JPanel {
         lblResultFilterBy.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
         lblResultFilterBy.setText("Filter By:");
 
+        btnClose1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnClose1.setForeground(java.awt.Color.red);
+        btnClose1.setToolTipText("Close screen and return to log-in screen");
+        btnClose1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnClose1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnClose1.setInheritsPopupMenu(true);
+        btnClose1.setLabel("Close");
+        btnClose1.setName("btnClose"); // NOI18N
+        btnClose1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClose1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlWorkstationSearchResultsLayout = new javax.swing.GroupLayout(pnlWorkstationSearchResults);
         pnlWorkstationSearchResults.setLayout(pnlWorkstationSearchResultsLayout);
         pnlWorkstationSearchResultsLayout.setHorizontalGroup(
             pnlWorkstationSearchResultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblResultsTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 1487, Short.MAX_VALUE)
+            .addComponent(lblResultsTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 1451, Short.MAX_VALUE)
             .addGroup(pnlWorkstationSearchResultsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlWorkstationSearchResultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
                     .addGroup(pnlWorkstationSearchResultsLayout.createSequentialGroup()
-                        .addComponent(lblResultFilterBy)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1))
+                        .addGroup(pnlWorkstationSearchResultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnClose1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblResultFilterBy))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnlWorkstationSearchResultsLayout.setVerticalGroup(
@@ -146,7 +181,9 @@ public class WorkstationSCR extends javax.swing.JPanel {
                 .addComponent(lblResultFilterBy)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 271, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 200, Short.MAX_VALUE)
+                .addComponent(btnClose1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         setBackground(java.awt.Color.white);
@@ -353,9 +390,16 @@ public class WorkstationSCR extends javax.swing.JPanel {
         WorkstationCTRL.closeBtnPressed();
     }//GEN-LAST:event_btnCloseActionPerformed
 
+    private void btnClose1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClose1ActionPerformed
+        wsTableFrame.dispose();
+        PCNMClientStart.appWindow.setEnabled(true);
+        PCNMClientStart.appWindow.requestFocus();
+    }//GEN-LAST:event_btnClose1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClose;
+    private javax.swing.JButton btnClose1;
     private javax.swing.JButton btnQuit;
     private javax.swing.JButton btnSearch;
     private javax.swing.JComboBox cmbImportance;
@@ -377,4 +421,20 @@ public class WorkstationSCR extends javax.swing.JPanel {
     private javax.swing.JTextField txtDescription;
     private javax.swing.JTextField txtName;
     // End of variables declaration//GEN-END:variables
+
+    private void loadSearchResults() {
+        String row;
+        DefaultTableModel dtm = (DefaultTableModel)tblSearchResault.getModel();
+        dtm.setRowCount(rowCounter);
+        int cur_row = 0;
+        for (int i = 0 ; i < ws_tbl.size() ; i ++) {
+            if (rowsToShow[i]) {
+                row = ws_tbl.get(i);
+                tableContent[i] = row.split(",");
+                cur_row ++;
+                if (cur_row > rowCounter)
+                    i = ws_tbl.size();
+            }
+        }
+    }
 }

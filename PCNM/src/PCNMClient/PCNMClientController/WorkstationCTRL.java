@@ -61,11 +61,9 @@ public class WorkstationCTRL extends CTRL {
 
     public static void processSearchResults(ArrayList<Workstation> search_result) {
         workstation_pull = search_result;
-        ArrayList<String[]>ws_tbl = new ArrayList<String[]>();
-        String row;
+        ArrayList<String>ws_tbl = new ArrayList<String>();
         for (Workstation ws : search_result) {
-            row = ws.toString();
-            ws_tbl.add(row.split(","));
+            ws_tbl.add(ws.toString());
         }
         PCNMClientStart.switchPanels(new WorkstationSCR(ws_tbl));
     }
