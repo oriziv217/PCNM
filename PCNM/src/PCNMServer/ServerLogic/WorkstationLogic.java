@@ -2,6 +2,7 @@ package PCNMServer.ServerLogic;
 
 import Entities.Message;
 import Entities.MessageType;
+import Entities.QuickDic;
 import Entities.Status;
 import Entities.WSType;
 import Entities.Workstation;
@@ -86,17 +87,17 @@ public class WorkstationLogic extends Logic {
         boolean isfirst = true;
         // applying filter by workstation name
         if (!search_model.getName().isEmpty()) {
-            filter = "workstation.name = '" + search_model.getName() + "'";
+            filter = "workstation.name LIKE '%" + search_model.getName() + "%'";
             isfirst = false;
         }
         // applying filter by workstation description
         if (!search_model.getDiscription().isEmpty()) {
             if (isfirst) {
-                filter = "workstation.description = '" + search_model.getDiscription() + "'";
+                filter = "workstation.description LIKE '%" + search_model.getDiscription() + "%'";
                 isfirst = false;
             }
             else
-                filter = filter + " AND workstation.description = '" + search_model.getDiscription() + "'";
+                filter = filter + " AND workstation.description LIKE '%" + search_model.getDiscription() + "%'";
         }
         // applying filter by importance factor
         if (search_model.getImportanceFactor() != 0) {
@@ -128,7 +129,7 @@ public class WorkstationLogic extends Logic {
                 filter = "wstype.name = '" + search_model.getType().getName() + "'";
                 isfirst = false;
             } else
-                filter = " AND wstype.name = '" + search_model.getType().getName() + "'";
+                filter = filter + " AND wstype.name = '" + search_model.getType().getName() + "'";
         }
         
         // run query and process resault-set
@@ -165,6 +166,39 @@ public class WorkstationLogic extends Logic {
                                 intToStatus(rs.getInt("status")));
         }
         return wst;
+    }
+
+    public static Message createQuickDic() throws SQLException {
+        ArrayList<QuickDic> dic = new ArrayList<QuickDic>();
+        Connection conDB = DBConnect.mySQLConnection();
+        ResultSet rs;
+        String fields = "ID, name";
+        rs = DBConnect.selectWithFilter(conDB, "workstation", fields, null);
+        while (rs.next()) {
+            dic.add(new QuickDic(rs.getInt("ID"), rs.getString("name")));
+        }
+        return new Message(MessageType.GET_WORKSTATION_QUICKDIC, dic);
+    }
+
+    public static Message addWorkstation(Workstation newWS) throws SQLException {
+        Connection conDB = DBConnect.mySQLConnection();
+        ResultSet rs;
+        boolean isAdded;
+        String resultString;
+        String[] fields = { "name",
+                            "description",
+                            "importance",
+                            "status",
+                            "wstypeid" };
+        String[] values = { newWS.getName(),
+                            newWS.getDiscription(),
+                            String.valueOf(newWS.getImportanceFactor()),
+                            String.valueOf(statusToInt(newWS.getStatus())),
+                            String.valueOf(newWS.getType().getID())};
+        isAdded = DBConnect.insertSingleRecord (conDB, "workstation", fields, values);
+        if (isAdded) resultString = "OK";
+        else resultString = "Not OK";
+        return new Message(MessageType.ADD_WORKSTATION, newWS, resultString);
     }
     
 }

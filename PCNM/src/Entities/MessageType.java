@@ -67,6 +67,16 @@ public enum MessageType {
     GET_WORKSTATIOS_WITH_FILTER,
     
     /**
+     * Get all Workstation's ID and name for quick-dic list
+     */
+    GET_WORKSTATION_QUICKDIC,
+    
+    /**
+     * Add new Workstation
+     */
+    ADD_WORKSTATION,
+    
+    /**
      * SQL Exception was thrown
      */
     DB_PROBLEM

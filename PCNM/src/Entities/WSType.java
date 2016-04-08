@@ -26,11 +26,17 @@ public class WSType implements Serializable {
         status = Status.Error;
     }
 
+    public WSType (int ID) {
+        this();
+        this.ID = ID;
+    }
     public WSType (String name) {
+        this();
         this.name = name;
     }
     
     public WSType(String name, String description, int minimalScore, Status status) {
+        ID = 0;
         this.name = name;
         this.description = description;
         this.minimalScore = minimalScore;

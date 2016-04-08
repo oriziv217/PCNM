@@ -81,6 +81,12 @@ public class PCNMServer extends AbstractServer {
             case GET_WORKSTATIOS_WITH_FILTER:
                 client.sendToClient(WorkstationLogic.getWorkstationsWithFilter((Workstation)message.getEntity()));
                 break;
+            case GET_WORKSTATION_QUICKDIC:
+                client.sendToClient(WorkstationLogic.createQuickDic());
+                break;
+            case ADD_WORKSTATION:
+                client.sendToClient(WorkstationLogic.addWorkstation((Workstation)message.getEntity()));
+                break;
             }
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, String.format("Lost connection with client %s", client.toString()));

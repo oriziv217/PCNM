@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @author Sivan Yehuda
  * @author Ori Ziv
  */
-public class Workstation implements Serializable{
+public class Workstation implements Serializable, Comparable<Workstation> {
     private int ID;
     private String name;
     private String description;
@@ -119,6 +119,11 @@ public class Workstation implements Serializable{
                 + String.valueOf(importanceFactor) + ","
                 + sts + ","
                 + type.toString();
+    }
+
+    @Override
+    public int compareTo(Workstation comparedTo) {
+        return this.ID - comparedTo.getID();
     }
 }
 

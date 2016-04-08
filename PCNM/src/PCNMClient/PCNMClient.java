@@ -2,7 +2,9 @@ package PCNMClient;
 
 import Entities.Employee;
 import Entities.Message;
+import Entities.MessageType;
 import Entities.PCUserType;
+import Entities.QuickDic;
 import Entities.WSType;
 import Entities.Workstation;
 import PCNMClient.PCNMClientController.HomeCTRL;
@@ -11,6 +13,8 @@ import PCNMClient.PCNMClientController.WorkstationCTRL;
 import PCNMClient.PCNMClientView.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import ocsf.client.AbstractClient;
 
 /**
@@ -57,9 +61,18 @@ public class PCNMClient extends AbstractClient {
                 break;
             case GET_WORKSTATIOS_WITH_FILTER:
                 WorkstationCTRL.processSearchResults((ArrayList<Workstation>)response.getEntity());
+                try {
+                    PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_WORKSTATION_QUICKDIC));
+                } catch (IOException ex) {}
+                break;
+            case GET_WORKSTATION_QUICKDIC:
+                WorkstationCTRL.setWSDic((ArrayList<QuickDic>) response.getEntity());
                 break;
             case GET_ALL_WORKSTATION_TYPES:
                 WorkstationCTRL.openWorkstationWindow((ArrayList<WSType>) response.getEntity());
+                break;
+            case ADD_WORKSTATION:
+                WorkstationCTRL.refreshWorkstationWindow(response.getMsgType(), (Workstation)response.getEntity());
                 break;
             case DB_PROBLEM:
                 WindowMustHave.showDialog(null, response.getDataString(), DialogType.ERROR);
