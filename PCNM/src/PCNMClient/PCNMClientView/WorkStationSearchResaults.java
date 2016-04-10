@@ -531,6 +531,7 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
         addWorkstationClearFields();
         addWorkstationForm = new FormFrame();
         addWorkstationForm.setSize(pnlAddWorkStationForm.getMinimumSize());
+        addWorkstationForm.setLocationRelativeTo(null);
         addWorkstationForm.getContentPane().add(pnlAddWorkStationForm);
         addWorkstationForm.addWindowListener(exitListener);
         addWorkstationForm.getContentPane().setVisible(true);
@@ -582,6 +583,10 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
             showDialog(pnlAddWorkStationForm, "Lost Connection with the server", DialogType.ERROR);
             System.exit(0);
         }
+        addWorkstationClearFields();
+        addWorkstationForm.dispose();
+        PCNMClientStart.appWindow.setEnabled(true);
+        PCNMClientStart.appWindow.requestFocus();
     }//GEN-LAST:event_btnAddWorkstationOKActionPerformed
 
     private void btnAddWorkstationCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddWorkstationCancelActionPerformed

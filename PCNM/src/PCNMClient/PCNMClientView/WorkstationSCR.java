@@ -79,23 +79,6 @@ public class WorkstationSCR extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlWorkstationSearchResults = new javax.swing.JPanel();
-        lblResultsTitle = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblSearchResault = new javax.swing.JTable();
-        lblResultFilterBy = new javax.swing.JLabel();
-        btnClose1 = new javax.swing.JButton();
-        cmbFltrField = new javax.swing.JComboBox();
-        lblFilterStr = new javax.swing.JLabel();
-        txtFilterStr = new javax.swing.JTextField();
-        lblImportanceFilter = new javax.swing.JLabel();
-        lblMinScoreFilter = new javax.swing.JLabel();
-        chbEnabledOnly = new javax.swing.JCheckBox();
-        lblMinScoreFilter1 = new javax.swing.JLabel();
-        cmbFltrImp = new javax.swing.JComboBox();
-        cmbFltrType = new javax.swing.JComboBox();
-        cmbFltrMinScore = new javax.swing.JComboBox();
-        btnNewWorkstation = new javax.swing.JButton();
         pnlAddWorkStationForm = new javax.swing.JPanel();
         lblAddWorkstationTitle = new javax.swing.JLabel();
         lblAddWorkstationName = new javax.swing.JLabel();
@@ -128,234 +111,6 @@ public class WorkstationSCR extends javax.swing.JPanel {
         cmbImportance = new javax.swing.JComboBox();
         btnClose = new javax.swing.JButton();
         lblNoFilter = new javax.swing.JLabel();
-
-        pnlWorkstationSearchResults.setBackground(java.awt.Color.white);
-        pnlWorkstationSearchResults.setMinimumSize(new java.awt.Dimension(1442, 818));
-
-        lblResultsTitle.setBackground(java.awt.Color.white);
-        lblResultsTitle.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
-        lblResultsTitle.setForeground(java.awt.Color.red);
-        lblResultsTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblResultsTitle.setText("Workstations Search Results");
-
-        tblSearchResault.setAutoCreateRowSorter(true);
-        tblSearchResault.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
-        tblSearchResault.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "Name", "Description", "Importance", "Status", "Type", "Minimal Rate"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tblSearchResault.setRowHeight(32);
-        tblSearchResault.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(tblSearchResault);
-        if (tblSearchResault.getColumnModel().getColumnCount() > 0) {
-            tblSearchResault.getColumnModel().getColumn(0).setMinWidth(100);
-            tblSearchResault.getColumnModel().getColumn(0).setPreferredWidth(100);
-            tblSearchResault.getColumnModel().getColumn(1).setMinWidth(100);
-            tblSearchResault.getColumnModel().getColumn(1).setPreferredWidth(450);
-            tblSearchResault.getColumnModel().getColumn(2).setMinWidth(100);
-            tblSearchResault.getColumnModel().getColumn(2).setPreferredWidth(100);
-            tblSearchResault.getColumnModel().getColumn(3).setMinWidth(100);
-            tblSearchResault.getColumnModel().getColumn(3).setPreferredWidth(100);
-            tblSearchResault.getColumnModel().getColumn(4).setMinWidth(100);
-            tblSearchResault.getColumnModel().getColumn(4).setPreferredWidth(100);
-            tblSearchResault.getColumnModel().getColumn(5).setMinWidth(100);
-            tblSearchResault.getColumnModel().getColumn(5).setPreferredWidth(100);
-        }
-        tblSearchResault.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 24));
-
-        lblResultFilterBy.setBackground(java.awt.Color.white);
-        lblResultFilterBy.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
-        lblResultFilterBy.setText("Filter By:");
-
-        btnClose1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        btnClose1.setForeground(java.awt.Color.red);
-        btnClose1.setToolTipText("Close screen and return to log-in screen");
-        btnClose1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btnClose1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        btnClose1.setInheritsPopupMenu(true);
-        btnClose1.setLabel("Close");
-        btnClose1.setName("btnClose"); // NOI18N
-        btnClose1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnClose1ActionPerformed(evt);
-            }
-        });
-
-        cmbFltrField.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
-        cmbFltrField.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Show All", "Workstation Name", "Workstation Description" }));
-        cmbFltrField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbFltrFieldActionPerformed(evt);
-            }
-        });
-
-        lblFilterStr.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
-        lblFilterStr.setText("Filter String:");
-
-        txtFilterStr.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
-        txtFilterStr.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txtFilterStrFocusLost(evt);
-            }
-        });
-        txtFilterStr.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFilterStrActionPerformed(evt);
-            }
-        });
-
-        lblImportanceFilter.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
-        lblImportanceFilter.setText("Importance Filter:");
-
-        lblMinScoreFilter.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
-        lblMinScoreFilter.setText("Minimal Rate Filter:");
-
-        chbEnabledOnly.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
-        chbEnabledOnly.setText("Show Enabled Only");
-        chbEnabledOnly.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chbEnabledOnlyActionPerformed(evt);
-            }
-        });
-
-        lblMinScoreFilter1.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
-        lblMinScoreFilter1.setText("Workstation Type Filter:");
-
-        cmbFltrImp.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
-        cmbFltrImp.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Show All", "Greater Then 1", "Less Then 1" }));
-        cmbFltrImp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbFltrImpActionPerformed(evt);
-            }
-        });
-
-        cmbFltrType.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
-        cmbFltrType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Show All" }));
-        cmbFltrType.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbFltrTypeActionPerformed(evt);
-            }
-        });
-
-        cmbFltrMinScore.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
-        cmbFltrMinScore.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Show All", "Greater Then 100", "Less Then 100" }));
-        cmbFltrMinScore.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbFltrMinScoreActionPerformed(evt);
-            }
-        });
-
-        btnNewWorkstation.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        btnNewWorkstation.setText("New Workstation");
-        btnNewWorkstation.setToolTipText("Add new system user");
-        btnNewWorkstation.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btnNewWorkstation.setMaximumSize(new java.awt.Dimension(99, 33));
-        btnNewWorkstation.setMinimumSize(new java.awt.Dimension(99, 33));
-        btnNewWorkstation.setPreferredSize(new java.awt.Dimension(99, 33));
-        btnNewWorkstation.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNewWorkstationActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout pnlWorkstationSearchResultsLayout = new javax.swing.GroupLayout(pnlWorkstationSearchResults);
-        pnlWorkstationSearchResults.setLayout(pnlWorkstationSearchResultsLayout);
-        pnlWorkstationSearchResultsLayout.setHorizontalGroup(
-            pnlWorkstationSearchResultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlWorkstationSearchResultsLayout.createSequentialGroup()
-                .addComponent(lblResultsTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(291, 291, 291))
-            .addGroup(pnlWorkstationSearchResultsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlWorkstationSearchResultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(pnlWorkstationSearchResultsLayout.createSequentialGroup()
-                        .addGroup(pnlWorkstationSearchResultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlWorkstationSearchResultsLayout.createSequentialGroup()
-                                .addComponent(btnClose1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnNewWorkstation, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(pnlWorkstationSearchResultsLayout.createSequentialGroup()
-                                .addGroup(pnlWorkstationSearchResultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(pnlWorkstationSearchResultsLayout.createSequentialGroup()
-                                        .addComponent(lblResultFilterBy)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cmbFltrField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(lblFilterStr)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtFilterStr, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(pnlWorkstationSearchResultsLayout.createSequentialGroup()
-                                        .addComponent(lblImportanceFilter)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cmbFltrImp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(17, 17, 17)
-                                        .addComponent(lblMinScoreFilter1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cmbFltrType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(18, 18, 18)
-                                .addGroup(pnlWorkstationSearchResultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(chbEnabledOnly)
-                                    .addGroup(pnlWorkstationSearchResultsLayout.createSequentialGroup()
-                                        .addComponent(lblMinScoreFilter)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cmbFltrMinScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(0, 86, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        pnlWorkstationSearchResultsLayout.setVerticalGroup(
-            pnlWorkstationSearchResultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlWorkstationSearchResultsLayout.createSequentialGroup()
-                .addComponent(lblResultsTitle)
-                .addGap(18, 18, 18)
-                .addGroup(pnlWorkstationSearchResultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblResultFilterBy)
-                    .addComponent(cmbFltrField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblFilterStr)
-                    .addComponent(txtFilterStr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(chbEnabledOnly))
-                .addGap(18, 18, 18)
-                .addGroup(pnlWorkstationSearchResultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblImportanceFilter)
-                    .addComponent(lblMinScoreFilter)
-                    .addComponent(lblMinScoreFilter1)
-                    .addComponent(cmbFltrImp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbFltrType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbFltrMinScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addGroup(pnlWorkstationSearchResultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnClose1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnNewWorkstation, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-
-        for (String[] typ : types) {
-            cmbFltrType.addItem(typ[1]);
-        }
 
         pnlAddWorkStationForm.setBackground(java.awt.Color.white);
         pnlAddWorkStationForm.setMinimumSize(new java.awt.Dimension(310, 420));
@@ -564,11 +319,6 @@ public class WorkstationSCR extends javax.swing.JPanel {
 
         cmbType.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
         cmbType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "All Types" }));
-        cmbType.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbTypeActionPerformed(evt);
-            }
-        });
 
         cmbStatus.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
         cmbStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Any Status", "Enabled", "Disabled", "Suspended" }));
@@ -676,8 +426,49 @@ public class WorkstationSCR extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
+        if (PCNMClientStart.workstationSearchFilters.size() == 5)
+        txtDescription.setText(PCNMClientStart.workstationSearchFilters.get(1));
+        if (PCNMClientStart.workstationSearchFilters.size() == 5)
+        txtName.setText(PCNMClientStart.workstationSearchFilters.get(0));
         for (String[] typ : types) {
             cmbType.addItem(typ[1]);
+        }
+        if (PCNMClientStart.workstationSearchFilters.size() == 5)
+        cmbType.setSelectedIndex(typStrToInt(PCNMClientStart.workstationSearchFilters.get(3)));
+        if (PCNMClientStart.workstationSearchFilters.size() == 5) {
+            String sts = PCNMClientStart.workstationSearchFilters.get(4);
+            int index = -1;
+            switch (sts) {
+                case "Any Status":
+                index = 0;
+                break;
+                case "Enabled":
+                index = 1;
+                break;
+                case "Disabled":
+                index = 2;
+                break;
+                case "Suspended":
+                index = 3;
+                break;
+            }
+            cmbStatus.setSelectedIndex(index);
+        }
+        if (PCNMClientStart.workstationSearchFilters.size() == 5) {
+            String imp = PCNMClientStart.workstationSearchFilters.get(2);
+            int index = -1;
+            switch (imp) {
+                case "All":
+                index = 0;
+                break;
+                case "Greater then 1":
+                index = 1;
+                break;
+                case "Less then 1":
+                index = 2;
+                break;
+            }
+            cmbImportance.setSelectedIndex(index);
         }
     }// </editor-fold>//GEN-END:initComponents
 
@@ -702,82 +493,6 @@ public class WorkstationSCR extends javax.swing.JPanel {
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
         WorkstationCTRL.closeBtnPressed();
     }//GEN-LAST:event_btnCloseActionPerformed
-
-    private void btnClose1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClose1ActionPerformed
-        doneInit = false;
-        wsTableFrame.dispose();
-        PCNMClientStart.appWindow.setEnabled(true);
-        PCNMClientStart.appWindow.requestFocus();
-    }//GEN-LAST:event_btnClose1ActionPerformed
-
-    private void txtFilterStrFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtFilterStrFocusLost
-        if (doneInit) {
-            fltrStirng = txtFilterStr.getText();
-            if (fltrStirng == null) fltrStirng = "";
-            applyFilter();
-        }
-    }//GEN-LAST:event_txtFilterStrFocusLost
-
-    private void txtFilterStrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFilterStrActionPerformed
-        if (doneInit) {
-            fltrStirng = txtFilterStr.getText();
-            if (fltrStirng == null) fltrStirng = "";
-            applyFilter();
-        }
-    }//GEN-LAST:event_txtFilterStrActionPerformed
-
-    private void chbEnabledOnlyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbEnabledOnlyActionPerformed
-        if (doneInit) {
-            fltrEnabled = chbEnabledOnly.isSelected();
-            applyFilter();
-        }
-    }//GEN-LAST:event_chbEnabledOnlyActionPerformed
-
-    private void cmbFltrFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbFltrFieldActionPerformed
-        if (doneInit) {
-            fltrField = cmbFltrField.getSelectedIndex();
-            fltrStirng = txtFilterStr.getText();
-            if (fltrStirng == null) fltrStirng = "";
-            applyFilter();
-        }
-    }//GEN-LAST:event_cmbFltrFieldActionPerformed
-
-    private void cmbFltrImpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbFltrImpActionPerformed
-        if (doneInit) {
-            fltrImp = cmbFltrImp.getSelectedIndex();
-            applyFilter();
-        }
-    }//GEN-LAST:event_cmbFltrImpActionPerformed
-
-    private void cmbFltrTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbFltrTypeActionPerformed
-        if (doneInit) {
-            fltrType = String.valueOf(cmbFltrType.getSelectedItem());
-            applyFilter();
-        }
-    }//GEN-LAST:event_cmbFltrTypeActionPerformed
-
-    private void cmbTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTypeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cmbTypeActionPerformed
-
-    private void cmbFltrMinScoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbFltrMinScoreActionPerformed
-        if (doneInit) {
-            fltrMinScore = cmbFltrMinScore.getSelectedIndex();
-            applyFilter();
-        }
-    }//GEN-LAST:event_cmbFltrMinScoreActionPerformed
-
-    private void btnNewWorkstationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewWorkstationActionPerformed
-        isUpdate = false;
-        addWorkstationClearFields();
-        addWorkstationForm = new FormFrame();
-        addWorkstationForm.setSize(pnlAddWorkStationForm.getMinimumSize());
-        addWorkstationForm.getContentPane().add(pnlAddWorkStationForm);
-        addWorkstationForm.addWindowListener(exitListener);
-        addWorkstationForm.getContentPane().setVisible(true);
-        wsTableFrame.setEnabled(false);
-        addWorkstationForm.setVisible(true);
-    }//GEN-LAST:event_btnNewWorkstationActionPerformed
 
     private void btnAddWorkstationOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddWorkstationOKActionPerformed
         String name = txtAddWorkstationName.getText();
@@ -845,21 +560,13 @@ public class WorkstationSCR extends javax.swing.JPanel {
     private javax.swing.JButton btnAddWorkstationCancel;
     private javax.swing.JButton btnAddWorkstationOK;
     private javax.swing.JButton btnClose;
-    private javax.swing.JButton btnClose1;
-    private javax.swing.JButton btnNewWorkstation;
     private javax.swing.JButton btnQuit;
     private javax.swing.JButton btnSearch;
-    private javax.swing.JCheckBox chbEnabledOnly;
     private javax.swing.JComboBox cmbAddWorkstationStatus;
     private javax.swing.JComboBox cmbAddWorkstationType;
-    private javax.swing.JComboBox cmbFltrField;
-    private javax.swing.JComboBox cmbFltrImp;
-    private javax.swing.JComboBox cmbFltrMinScore;
-    private javax.swing.JComboBox cmbFltrType;
     private javax.swing.JComboBox cmbImportance;
     private javax.swing.JComboBox cmbStatus;
     private javax.swing.JComboBox cmbType;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAddWorkstationDescription;
     private javax.swing.JLabel lblAddWorkstationImportance;
     private javax.swing.JLabel lblAddWorkstationMinRate;
@@ -867,13 +574,7 @@ public class WorkstationSCR extends javax.swing.JPanel {
     private javax.swing.JLabel lblAddWorkstationStatus;
     private javax.swing.JLabel lblAddWorkstationTitle;
     private javax.swing.JLabel lblAddWorkstationType;
-    private javax.swing.JLabel lblFilterStr;
-    private javax.swing.JLabel lblImportanceFilter;
-    private javax.swing.JLabel lblMinScoreFilter;
-    private javax.swing.JLabel lblMinScoreFilter1;
     private javax.swing.JLabel lblNoFilter;
-    private javax.swing.JLabel lblResultFilterBy;
-    private javax.swing.JLabel lblResultsTitle;
     private javax.swing.JLabel lblScreenTitle;
     private javax.swing.JLabel lblSearchDescription;
     private javax.swing.JLabel lblSearchImportance;
@@ -882,60 +583,13 @@ public class WorkstationSCR extends javax.swing.JPanel {
     private javax.swing.JLabel lblSearchTitle;
     private javax.swing.JLabel lblSearchType;
     private javax.swing.JPanel pnlAddWorkStationForm;
-    private javax.swing.JPanel pnlWorkstationSearchResults;
     private javax.swing.JSpinner spnAddWorkstationImportance;
-    private javax.swing.JTable tblSearchResault;
     private javax.swing.JTextField txtAddWorkstationDescription;
     private javax.swing.JTextField txtAddWorkstationMinRate;
     private javax.swing.JTextField txtAddWorkstationName;
     private javax.swing.JTextField txtDescription;
-    private javax.swing.JTextField txtFilterStr;
     private javax.swing.JTextField txtName;
     // End of variables declaration//GEN-END:variables
-
-    private void loadSearchResults() {
-        String row;
-        DefaultTableModel dtm = (DefaultTableModel)tblSearchResault.getModel();
-        dtm.setRowCount(rowCounter);
-        int cur_row = 0;
-        for (int i = 0 ; i < ws_tbl.size() ; i ++) {
-            if (rowsToShow[i]) {
-                row = ws_tbl.get(i);
-                tableContent[i] = row.split(",");
-                dtm.setValueAt(tableContent[i][1], cur_row, 0);
-                dtm.setValueAt(tableContent[i][2], cur_row, 1);
-                dtm.setValueAt(Double.parseDouble(tableContent[i][3]), cur_row, 2);
-                dtm.setValueAt(tableContent[i][4], cur_row, 3);
-                dtm.setValueAt(tableContent[i][6], cur_row, 4);
-                dtm.setValueAt(Integer.parseInt(tableContent[i][8]), cur_row, 5);
-                cur_row ++;
-                if (cur_row > rowCounter)
-                    i = ws_tbl.size();
-            }
-        }
-        DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
-        leftRenderer.setHorizontalAlignment(JLabel.LEFT);
-        tblSearchResault.getColumnModel().getColumn(2).setCellRenderer(leftRenderer);
-        tblSearchResault.getColumnModel().getColumn(5).setCellRenderer(leftRenderer);
-
-    }
-
-    private void applyFilter() {
-        Arrays.fill(rowsToShow, true);
-        rowCounter = tableContent.length;
-        for (int i = 0 ; i < tableContent.length ; i ++) {
-            if (rowsToShow[i] && fltrField == 1 && !fltrStirng.isEmpty() && tableContent[i][1].toLowerCase().indexOf(fltrStirng) == -1) rowsToShow[i] = false;
-            if (rowsToShow[i] && fltrField == 2 && !fltrStirng.isEmpty() && tableContent[i][2].toLowerCase().indexOf(fltrStirng) == -1) rowsToShow[i] = false;
-            if (rowsToShow[i] && fltrImp == 1 && Double.parseDouble(tableContent[i][3]) < 1) rowsToShow[i] = false;
-            if (rowsToShow[i] && fltrImp == 2 && Double.parseDouble(tableContent[i][3]) > 1) rowsToShow[i] = false;
-            if (rowsToShow[i] && fltrEnabled && !tableContent[i][4].equals("Enabled")) rowsToShow[i] = false;
-            if (rowsToShow[i] && !fltrType.equals("Show All") && !tableContent[i][6].equals(fltrType)) rowsToShow[i] = false;
-            if (rowsToShow[i] && fltrMinScore == 1 && Integer.parseInt(tableContent[i][8]) < 100) rowsToShow[i] = false;
-            if (rowsToShow[i] && fltrMinScore == 2 && Integer.parseInt(tableContent[i][8]) > 100) rowsToShow[i] = false;
-            if (!rowsToShow[i]) rowCounter --;
-        }
-        loadSearchResults();
-    }
 
     private void addWorkstationClearFields() {
         txtAddWorkstationName.setText("");
@@ -954,4 +608,14 @@ public class WorkstationSCR extends javax.swing.JPanel {
             wsTableFrame.requestFocus();
         }
     };
+
+    private int typStrToInt(String typeStr) {
+        if (typeStr.equals("All Types"))
+            return 0;
+        else
+            for (int i = 0 ; i < types.size() ; i ++)
+                if (typeStr.equals(types.get(i)[1]))
+                    return i+1;
+        return -1;
+    }
 }

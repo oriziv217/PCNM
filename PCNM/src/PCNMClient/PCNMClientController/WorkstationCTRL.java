@@ -37,6 +37,7 @@ public class WorkstationCTRL extends CTRL {
         WSType wst;
         Status sts;
         
+        PCNMClientStart.workstationSearchFilters.clear();
         PCNMClientStart.workstationSearchFilters.add(name);
         PCNMClientStart.workstationSearchFilters.add(description);
         PCNMClientStart.workstationSearchFilters.add(importance);
@@ -118,7 +119,6 @@ public class WorkstationCTRL extends CTRL {
         ArrayList<String>ws_tbl = new ArrayList<String>();
         if (msgType == MessageType.ADD_WORKSTATION) {
             PCNMClientStart.cur_ent.addToWorkstations(ws);
-            
             wsQD.add(new QuickDic(ws.getID(), ws.getName()));
         } else {
             PCNMClientStart.cur_ent.updateWorkstations(ws);
@@ -130,7 +130,6 @@ public class WorkstationCTRL extends CTRL {
     }
 
     public static void searchResaultCloseBtnPressed() {
-        ArrayList<String> filters = PCNMClientStart.workstationSearchFilters;
         PCNMClientStart.switchPanels(new WorkstationSCR());
     }
 }

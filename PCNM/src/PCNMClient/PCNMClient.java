@@ -60,10 +60,16 @@ public class PCNMClient extends AbstractClient {
                 PCNMClientStart.switchPanels(new UserTypeSCR(search_results));
                 break;
             case GET_WORKSTATIOS_WITH_FILTER:
-                WorkstationCTRL.processSearchResults((ArrayList<Workstation>)response.getEntity());
-                try {
-                    PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_WORKSTATION_QUICKDIC));
-                } catch (IOException ex) {}
+                ArrayList<Workstation> WS_search_resaults = (ArrayList<Workstation>)response.getEntity();
+                if (WS_search_resaults.isEmpty())
+                    WindowMustHave.showDialog(null, "Error acurred while tring to add Waorkstation to the DB.\n"
+                            + "Please contact your System Administrator", DialogType.ERROR);
+                else {
+                    WorkstationCTRL.processSearchResults(WS_search_resaults);
+                    try {
+                        PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_WORKSTATION_QUICKDIC));
+                    } catch (IOException ex) {}
+                }
                 break;
             case GET_WORKSTATION_QUICKDIC:
                 WorkstationCTRL.setWSDic((ArrayList<QuickDic>) response.getEntity());
@@ -72,7 +78,11 @@ public class PCNMClient extends AbstractClient {
                 WorkstationCTRL.openWorkstationWindow((ArrayList<WSType>) response.getEntity());
                 break;
             case ADD_WORKSTATION:
-                WorkstationCTRL.refreshWorkstationWindow(response.getMsgType(), (Workstation)response.getEntity());
+                if (response.getDataString().equals("Not OK"))
+                    WindowMustHave.showDialog(null, "Error acurred while tring to add Waorkstation to the DB.\n"
+                            + "Please contact your System Administrator", DialogType.ERROR);
+                else
+                    WorkstationCTRL.refreshWorkstationWindow(response.getMsgType(), (Workstation)response.getEntity());
                 break;
             case DB_PROBLEM:
                 WindowMustHave.showDialog(null, response.getDataString(), DialogType.ERROR);

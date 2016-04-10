@@ -52,7 +52,7 @@ public class WorkstationLogic extends Logic {
         return new Message(MessageType.GET_ALL_WORKSTATION_TYPES, users_tbl);
     }
 
-    public static Message getWorkstationsWithFilter(Workstation search_model) throws SQLException {
+    public static ArrayList<Workstation> getWorkstationsWithFilter(Workstation search_model) throws SQLException {
         ArrayList<Workstation> search_results = new ArrayList<Workstation>();
         Connection conDB = DBConnect.mySQLConnection();
         ResultSet rs;
@@ -148,9 +148,9 @@ public class WorkstationLogic extends Logic {
                                                                 intToStatus(rs.getInt("WSTSTATUS")))));
             }
         } catch (SQLException e) {
-            return new Message(MessageType.DB_PROBLEM, null, e.getMessage());
+            
         }
-        return new Message(MessageType.GET_WORKSTATIOS_WITH_FILTER, search_results);
+        return search_results;
     }
 
     private static WSType getWSTypeByID(int wsTypeID) throws SQLException {
@@ -196,9 +196,13 @@ public class WorkstationLogic extends Logic {
                             String.valueOf(statusToInt(newWS.getStatus())),
                             String.valueOf(newWS.getType().getID())};
         isAdded = DBConnect.insertSingleRecord (conDB, "workstation", fields, values);
-        if (isAdded) resultString = "OK";
-        else resultString = "Not OK";
-        return new Message(MessageType.ADD_WORKSTATION, newWS, resultString);
+        if (isAdded) {
+            resultString = "OK";
+            Workstation added = getWorkstationsWithFilter(newWS).get(0);
+            return new Message (MessageType.ADD_WORKSTATION, added, resultString);
+        }
+        resultString = "Not OK";
+        return new Message(MessageType.ADD_WORKSTATION, null, resultString);
     }
     
 }

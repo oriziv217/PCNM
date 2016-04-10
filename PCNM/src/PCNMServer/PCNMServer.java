@@ -75,7 +75,8 @@ public class PCNMServer extends AbstractServer {
                 client.sendToClient(WorkstationLogic.getAllTypes());
                 break;
             case GET_WORKSTATIOS_WITH_FILTER:
-                client.sendToClient(WorkstationLogic.getWorkstationsWithFilter((Workstation)message.getEntity()));
+                Message response = new Message(MessageType.GET_WORKSTATIOS_WITH_FILTER, WorkstationLogic.getWorkstationsWithFilter((Workstation)message.getEntity()));
+                client.sendToClient(response);
                 break;
             case GET_WORKSTATION_QUICKDIC:
                 client.sendToClient(WorkstationLogic.createQuickDic());
