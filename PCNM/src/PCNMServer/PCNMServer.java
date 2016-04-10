@@ -50,11 +50,7 @@ public class PCNMServer extends AbstractServer {
         try {
             switch (message.getMsgType()) {
             case LOGIN:
-                try {
-                    client.sendToClient(EmployeesLogic.LoginRequest((Employee)message.getEntity()));
-                } catch (SQLException ex) {
-                    
-                }
+                client.sendToClient(EmployeesLogic.LoginRequest((Employee)message.getEntity()));
                 break;
             case GET_EMPLOYEES:
                 client.sendToClient(EmployeesLogic.getAllEntities());

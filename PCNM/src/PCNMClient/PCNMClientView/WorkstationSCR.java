@@ -10,11 +10,7 @@ import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -60,23 +56,17 @@ public class WorkstationSCR extends javax.swing.JPanel {
         doneInit = true;
     }
 
-    public WorkstationSCR(ArrayList<String> ws_tbl) {
+    public WorkstationSCR(ArrayList<String> filters) {
         this();
         doneInit = false;
-        this.ws_tbl = ws_tbl;
-        rowCounter = ws_tbl.size();
-        rowsToShow = new boolean[rowCounter];
-        Arrays.fill(rowsToShow, true);
-        tableContent = new String[rowCounter][5];
-        loadSearchResults();
-        tblSearchResault.setEnabled(true);
-        wsTableFrame = new FormFrame();
-        wsTableFrame.setSize(pnlWorkstationSearchResults.getMinimumSize());
-        wsTableFrame.getContentPane().add(pnlWorkstationSearchResults);
-        wsTableFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        wsTableFrame.getContentPane().setVisible(true);
-        PCNMClientStart.appWindow.setEnabled(false);
-        wsTableFrame.setVisible(true);
+        if (filters.size() == 5)
+        {
+            txtName.setText(filters.get(0));
+            txtDescription.setText(filters.get(1));
+            cmbType.setSelectedItem(filters.get(2));
+            cmbImportance.setSelectedItem(filters.get(3));
+            cmbStatus.setSelectedIndex(4);
+        }
         doneInit = true;
     }
 
@@ -140,6 +130,7 @@ public class WorkstationSCR extends javax.swing.JPanel {
         lblNoFilter = new javax.swing.JLabel();
 
         pnlWorkstationSearchResults.setBackground(java.awt.Color.white);
+        pnlWorkstationSearchResults.setMinimumSize(new java.awt.Dimension(1442, 818));
 
         lblResultsTitle.setBackground(java.awt.Color.white);
         lblResultsTitle.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N

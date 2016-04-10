@@ -2,6 +2,7 @@ package PCNMClient;
 
 import Entities.Employee;
 import PCNMClient.PCNMClientView.LoginSCR;
+import java.util.ArrayList;
 import javax.swing.JPanel;
 
 /**
@@ -25,6 +26,8 @@ public class PCNMClientStart {
      * GUI's frame
      */
     public static LoginSCR appWindow;
+    
+    public static ArrayList<String>workstationSearchFilters = new ArrayList<String>();
     
     /**
      * This method switches panels on the GUI's frame

@@ -27,7 +27,6 @@ public class FormFrame extends javax.swing.JFrame {
         FormListener formListener = new FormListener();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setAlwaysOnTop(true);
         addWindowListener(formListener);
         getContentPane().setLayout(new java.awt.CardLayout(5, 5));
 

@@ -9,10 +9,10 @@ import Entities.Workstation;
 import PCNMClient.PCNMClientModel;
 import PCNMClient.PCNMClientStart;
 import PCNMClient.PCNMClientView.NetMapSCR;
+import PCNMClient.PCNMClientView.WorkStationSearchResaults;
 import PCNMClient.PCNMClientView.WorkstationSCR;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * This calls implements Workstation Screen controllers
@@ -36,6 +36,12 @@ public class WorkstationCTRL extends CTRL {
         double imp;
         WSType wst;
         Status sts;
+        
+        PCNMClientStart.workstationSearchFilters.add(name);
+        PCNMClientStart.workstationSearchFilters.add(description);
+        PCNMClientStart.workstationSearchFilters.add(importance);
+        PCNMClientStart.workstationSearchFilters.add(type);
+        PCNMClientStart.workstationSearchFilters.add(status);
         
         if (type.equals("All Types"))
             wst = null;
@@ -69,7 +75,7 @@ public class WorkstationCTRL extends CTRL {
         for (Workstation ws : workstation_pull) {
             ws_tbl.add(ws.toString());
         }
-        PCNMClientStart.switchPanels(new WorkstationSCR(ws_tbl));
+        PCNMClientStart.switchPanels(new WorkStationSearchResaults(ws_tbl));
     }
 
     public static boolean isNameUnique(String name) throws IOException {
@@ -121,5 +127,10 @@ public class WorkstationCTRL extends CTRL {
         for (Workstation row : workstation_pull)
             ws_tbl.add(row.toString());
         PCNMClientStart.switchPanels(new WorkstationSCR(ws_tbl));
+    }
+
+    public static void searchResaultCloseBtnPressed() {
+        ArrayList<String> filters = PCNMClientStart.workstationSearchFilters;
+        PCNMClientStart.switchPanels(new WorkstationSCR());
     }
 }
