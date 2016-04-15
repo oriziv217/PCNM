@@ -126,10 +126,35 @@ public class WorkstationCTRL extends CTRL {
         workstation_pull = PCNMClientStart.cur_ent.getWorkstations();
         for (Workstation row : workstation_pull)
             ws_tbl.add(row.toString());
-        PCNMClientStart.switchPanels(new WorkstationSCR(ws_tbl));
+        PCNMClientStart.switchPanels(new WorkStationSearchResaults(ws_tbl));
     }
 
     public static void searchResaultCloseBtnPressed() {
         PCNMClientStart.switchPanels(new WorkstationSCR());
+    }
+
+    public static void UpdateWorkstationBtnPressed(String id, String name, String description, double importance, String status,
+                            String typeID, String typeName, String typeDescription, String typeMinScore, String typeStatus) throws IOException {
+        Status sts, typSts;
+        if (status.equals("Enabled")) sts = Status.ENABLE;
+        else if (status.equals("Disabled")) sts = Status.DISABLE;
+        else if (status.equals("Suspended")) sts = Status.SUSPENDED;
+        else sts = Status.Error;
+        if (typeStatus.equals("Enabled")) typSts = Status.ENABLE;
+        else if (typeStatus.equals("Disabled")) typSts = Status.DISABLE;
+        else if (typeStatus.equals("Suspended")) typSts = Status.SUSPENDED;
+        else typSts = Status.Error;
+        
+        PCNMClientModel.sendMessageToServer(new Message(MessageType.UPDATE_WORKSTATION,
+                                            new Workstation(Integer.parseInt(id),
+                                                            name,
+                                                            description,
+                                                            importance,
+                                                            sts,
+                                                            new WSType(Integer.parseInt(typeID),
+                                                                        typeName,
+                                                                        typeDescription,
+                                                                        Integer.parseInt(typeMinScore),
+                                                                        typSts))));
     }
 }

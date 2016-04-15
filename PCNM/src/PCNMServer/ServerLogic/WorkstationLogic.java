@@ -148,7 +148,7 @@ public class WorkstationLogic extends Logic {
                                                                 intToStatus(rs.getInt("WSTSTATUS")))));
             }
         } catch (SQLException e) {
-            
+            return null;
         }
         return search_results;
     }
@@ -203,6 +203,34 @@ public class WorkstationLogic extends Logic {
         }
         resultString = "Not OK";
         return new Message(MessageType.ADD_WORKSTATION, null, resultString);
+    }
+
+    public static Message updateWorkstation(Workstation ws) throws SQLException {
+        Connection conDB = DBConnect.mySQLConnection();
+        ResultSet rs;
+        boolean isUpdated;
+        String resultString;
+        String[] fields = { "id",
+                            "name",
+                            "description",
+                            "importance",
+                            "status",
+                            "wstypeid" };
+        String[] values = { Integer.toString(ws.getID()),
+                            ws.getName(),
+                            ws.getDiscription(),
+                            String.valueOf(ws.getImportanceFactor()),
+                            String.valueOf(statusToInt(ws.getStatus())),
+                            String.valueOf(ws.getType().getID()) };
+        String[] keyName = { "id" };
+        String[] keyVal = { Integer.toString(ws.getID()) };
+        isUpdated = DBConnect.updateSingleRecord (conDB, "workstation", fields, values, keyName, keyVal);
+        if (isUpdated) {
+            resultString = "OK";
+            return new Message (MessageType.UPDATE_WORKSTATION, ws, resultString);
+        }
+        resultString = "Not OK";
+        return new Message(MessageType.UPDATE_WORKSTATION, null, resultString);
     }
     
 }

@@ -36,16 +36,27 @@ public class CurrentEntities {
     }
     
     public void addToWorkstations(Workstation ws) {
+        // case list is empty
         if (workstations.isEmpty()) {
             workstations.add(ws);
             return;
         }
-        int comperator;
+        // case add to head of the list
+        int comperator = workstations.get(0).compareTo(ws);
+        if (comperator > 0) {
+            workstations.add(0, ws);
+            return;
+        }
+        // case add to the middle of the list
         for (int i = 0 ; i < workstations.size() ; i ++) {
             comperator = workstations.get(i).compareTo(ws);
-            if (comperator > 0)
+            if (comperator > 0) {
                 workstations.add(i, ws);
+                return;
+            }
         }
+        // case add to list's tail
+        workstations.add(workstations.size(), ws);
     }
     
     public void updateWorkstations(Workstation ws) {

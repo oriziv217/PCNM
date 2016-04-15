@@ -13,8 +13,6 @@ import PCNMClient.PCNMClientController.WorkstationCTRL;
 import PCNMClient.PCNMClientView.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import ocsf.client.AbstractClient;
 
 /**
@@ -61,15 +59,10 @@ public class PCNMClient extends AbstractClient {
                 break;
             case GET_WORKSTATIOS_WITH_FILTER:
                 ArrayList<Workstation> WS_search_resaults = (ArrayList<Workstation>)response.getEntity();
-                if (WS_search_resaults.isEmpty())
-                    WindowMustHave.showDialog(null, "Error acurred while tring to add Waorkstation to the DB.\n"
-                            + "Please contact your System Administrator", DialogType.ERROR);
-                else {
-                    WorkstationCTRL.processSearchResults(WS_search_resaults);
-                    try {
-                        PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_WORKSTATION_QUICKDIC));
-                    } catch (IOException ex) {}
-                }
+                WorkstationCTRL.processSearchResults(WS_search_resaults);
+                try {
+                    PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_WORKSTATION_QUICKDIC));
+                } catch (IOException ex) {}
                 break;
             case GET_WORKSTATION_QUICKDIC:
                 WorkstationCTRL.setWSDic((ArrayList<QuickDic>) response.getEntity());
@@ -80,6 +73,13 @@ public class PCNMClient extends AbstractClient {
             case ADD_WORKSTATION:
                 if (response.getDataString().equals("Not OK"))
                     WindowMustHave.showDialog(null, "Error acurred while tring to add Waorkstation to the DB.\n"
+                            + "Please contact your System Administrator", DialogType.ERROR);
+                else
+                    WorkstationCTRL.refreshWorkstationWindow(response.getMsgType(), (Workstation)response.getEntity());
+                break;
+            case UPDATE_WORKSTATION:
+                if (response.getDataString().equals("Not OK"))
+                    WindowMustHave.showDialog(null, "Error acurred while tring to update Waorkstation to the DB.\n"
                             + "Please contact your System Administrator", DialogType.ERROR);
                 else
                     WorkstationCTRL.refreshWorkstationWindow(response.getMsgType(), (Workstation)response.getEntity());

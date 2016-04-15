@@ -31,9 +31,11 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
     private FormFrame addWorkstationForm;
     private int rowCounter;
     private boolean[] rowsToShow;
+    private ArrayList<Integer> rowsIndexes;
     private ArrayList<String[]> types;
     private ArrayList<String> ws_tbl;
     private String[][] tableContent;
+    private int selected;
 
     /**
      * Creates new form WorkStationSearchResaults
@@ -62,6 +64,7 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
         this.ws_tbl = ws_tbl;
         rowCounter = ws_tbl.size();
         rowsToShow = new boolean[rowCounter];
+        rowsIndexes = new ArrayList<Integer>();
         Arrays.fill(rowsToShow, true);
         tableContent = new String[rowCounter][5];
         loadSearchResults();
@@ -109,6 +112,7 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
         cmbFltrType = new javax.swing.JComboBox();
         btnClose = new javax.swing.JButton();
         btnNewWorkstation = new javax.swing.JButton();
+        btnUpdateWorkstation = new javax.swing.JButton();
 
         FormListener formListener = new FormListener();
 
@@ -338,6 +342,15 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
         btnNewWorkstation.setPreferredSize(new java.awt.Dimension(99, 33));
         btnNewWorkstation.addActionListener(formListener);
 
+        btnUpdateWorkstation.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnUpdateWorkstation.setText("Update Selected");
+        btnUpdateWorkstation.setToolTipText("Add new system user");
+        btnUpdateWorkstation.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnUpdateWorkstation.setMaximumSize(new java.awt.Dimension(99, 33));
+        btnUpdateWorkstation.setMinimumSize(new java.awt.Dimension(99, 33));
+        btnUpdateWorkstation.setPreferredSize(new java.awt.Dimension(99, 33));
+        btnUpdateWorkstation.addActionListener(formListener);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -348,6 +361,8 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
                 .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnNewWorkstation, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnUpdateWorkstation, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -389,7 +404,8 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 691, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnNewWorkstation, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnNewWorkstation, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnUpdateWorkstation, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -455,6 +471,9 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
             }
             else if (evt.getSource() == btnAddWorkstationCancel) {
                 WorkStationSearchResaults.this.btnAddWorkstationCancelActionPerformed(evt);
+            }
+            else if (evt.getSource() == btnUpdateWorkstation) {
+                WorkStationSearchResaults.this.btnUpdateWorkstationActionPerformed(evt);
             }
         }
 
@@ -532,6 +551,7 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
         addWorkstationForm = new FormFrame();
         addWorkstationForm.setSize(pnlAddWorkStationForm.getMinimumSize());
         addWorkstationForm.setLocationRelativeTo(null);
+        lblAddWorkstationTitle.setText("Add New Workstation");
         addWorkstationForm.getContentPane().add(pnlAddWorkStationForm);
         addWorkstationForm.addWindowListener(exitListener);
         addWorkstationForm.getContentPane().setVisible(true);
@@ -559,14 +579,6 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
             showDialog(pnlAddWorkStationForm, "All fields are mandatory.", DialogType.INFO);
             return;
         }
-        //        if (!isUpdate) {
-            //            for (int i = 0 ; i < tableContent.length ; i ++) {
-                //                if (name.equals(tableContent[i][1])) {
-                    //                    showDialog(pnlAddUser, "User type's name must be unique.", DialogType.INFO);
-                    //                    return;
-                    //                }
-                //            }
-            //        }
         try {
             if (!WorkstationCTRL.isNameUnique(name)) {
                 showDialog(pnlAddWorkStationForm, "Workstation Name must be unique.", DialogType.INFO);
@@ -577,8 +589,14 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
             System.exit(0);
         }
         try {
-            WorkstationCTRL.AddWorkstationBtnPressed(name, description, importance, status,
-                types.get(type)[0], types.get(type)[1], types.get(type)[2], types.get(type)[3], types.get(type)[4]);
+            if (!isUpdate) {
+                WorkstationCTRL.AddWorkstationBtnPressed(name, description, importance, status,
+                                    types.get(type)[0], types.get(type)[1], types.get(type)[2], types.get(type)[3], types.get(type)[4]);
+            }
+            else {
+                WorkstationCTRL.UpdateWorkstationBtnPressed(tableContent[rowsIndexes.get(selected)][0],name, description, importance, status,
+                                    types.get(type)[0], types.get(type)[1], types.get(type)[2], types.get(type)[3], types.get(type)[4]);
+            }
         } catch (IOException ex) {
             showDialog(pnlAddWorkStationForm, "Lost Connection with the server", DialogType.ERROR);
             System.exit(0);
@@ -596,12 +614,38 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
         PCNMClientStart.appWindow.requestFocus();
     }//GEN-LAST:event_btnAddWorkstationCancelActionPerformed
 
+    private void btnUpdateWorkstationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateWorkstationActionPerformed
+        selected = tblSearchResault.getSelectedRow();
+        if (selected == -1) {
+            showDialog(this, "Please select Workstation", DialogType.INFO);
+            return;
+        }
+        isUpdate = true;
+        int index = rowsIndexes.get(selected);
+        txtAddWorkstationName.setText(tableContent[index][1]);
+        txtAddWorkstationDescription.setText(tableContent[index][2]);
+        spnAddWorkstationImportance.setValue(Double.parseDouble(tableContent[index][3]));
+        cmbAddWorkstationType.setSelectedIndex(getTypeIndex(tableContent[index][6]));
+        txtAddWorkstationMinRate.setText(tableContent[index][8]);
+        cmbAddWorkstationStatus.setSelectedIndex(getStatusIndex(tableContent[index][4]));
+        addWorkstationForm = new FormFrame();
+        lblAddWorkstationTitle.setText("Update Workstation");
+        addWorkstationForm.setSize(pnlAddWorkStationForm.getMinimumSize());
+        addWorkstationForm.setLocationRelativeTo(null);
+        addWorkstationForm.getContentPane().add(pnlAddWorkStationForm);
+        addWorkstationForm.addWindowListener(exitListener);
+        addWorkstationForm.getContentPane().setVisible(true);
+        PCNMClientStart.appWindow.setEnabled(false);
+        addWorkstationForm.setVisible(true);
+    }//GEN-LAST:event_btnUpdateWorkstationActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddWorkstationCancel;
     private javax.swing.JButton btnAddWorkstationOK;
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnNewWorkstation;
+    private javax.swing.JButton btnUpdateWorkstation;
     private javax.swing.JCheckBox chbEnabledOnly;
     private javax.swing.JComboBox cmbAddWorkstationStatus;
     private javax.swing.JComboBox cmbAddWorkstationType;
@@ -636,6 +680,7 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
         String row;
         DefaultTableModel dtm = (DefaultTableModel)tblSearchResault.getModel();
         dtm.setRowCount(rowCounter);
+        rowsIndexes.clear();
         int cur_row = 0;
         for (int i = 0 ; i < ws_tbl.size() ; i ++) {
             if (rowsToShow[i]) {
@@ -647,6 +692,7 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
                 dtm.setValueAt(tableContent[i][4], cur_row, 3);
                 dtm.setValueAt(tableContent[i][6], cur_row, 4);
                 dtm.setValueAt(Integer.parseInt(tableContent[i][8]), cur_row, 5);
+                rowsIndexes.add(i);
                 cur_row ++;
                 if (cur_row > rowCounter)
                     i = ws_tbl.size();
@@ -692,4 +738,23 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
                 PCNMClientStart.appWindow.requestFocus();
             }
         };
+
+    private int getTypeIndex(String typName) {
+        for (int i = 0 ; i < types.size() ; i ++)
+            if (typName.equals(types.get(i)[1]))
+                return i;
+        return -1;
+    }
+
+    private int getStatusIndex(String stsStr) {
+        switch (stsStr) {
+            case "Enabled":
+                return 0;
+            case "Disabled":
+                return 1;
+            case "Suspended":
+                return 2;
+        }
+        return -1;
+    }
 }

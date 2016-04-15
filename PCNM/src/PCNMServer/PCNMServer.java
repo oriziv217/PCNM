@@ -75,14 +75,20 @@ public class PCNMServer extends AbstractServer {
                 client.sendToClient(WorkstationLogic.getAllTypes());
                 break;
             case GET_WORKSTATIOS_WITH_FILTER:
-                Message response = new Message(MessageType.GET_WORKSTATIOS_WITH_FILTER, WorkstationLogic.getWorkstationsWithFilter((Workstation)message.getEntity()));
-                client.sendToClient(response);
+                ArrayList<Workstation> wsList = WorkstationLogic.getWorkstationsWithFilter((Workstation)message.getEntity());
+                if (wsList == null)
+                    client.sendToClient(new Message(MessageType.DB_PROBLEM, null, "DB Error"));
+                else
+                    client.sendToClient(new Message(MessageType.GET_WORKSTATIOS_WITH_FILTER, wsList, ""));
                 break;
             case GET_WORKSTATION_QUICKDIC:
                 client.sendToClient(WorkstationLogic.createQuickDic());
                 break;
             case ADD_WORKSTATION:
                 client.sendToClient(WorkstationLogic.addWorkstation((Workstation)message.getEntity()));
+                break;
+            case UPDATE_WORKSTATION:
+                client.sendToClient(WorkstationLogic.updateWorkstation((Workstation)message.getEntity()));
                 break;
             }
         } catch (IOException e) {

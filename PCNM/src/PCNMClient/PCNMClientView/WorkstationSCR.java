@@ -3,16 +3,11 @@ package PCNMClient.PCNMClientView;
 import PCNMClient.PCNMClientController.WorkstationCTRL;
 import PCNMClient.PCNMClientStart;
 import static PCNMClient.PCNMClientView.WindowMustHave.showDialog;
-import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import javax.swing.JLabel;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *

@@ -77,6 +77,11 @@ public enum MessageType {
     ADD_WORKSTATION,
     
     /**
+     * Update an existing Workstation
+     */
+    UPDATE_WORKSTATION,
+    
+    /**
      * SQL Exception was thrown
      */
     DB_PROBLEM
