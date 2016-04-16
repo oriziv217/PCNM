@@ -84,6 +84,9 @@ public class PCNMClient extends AbstractClient {
                 else
                     WorkstationCTRL.refreshWorkstationWindow(response.getMsgType(), (Workstation)response.getEntity());
                 break;
+            case MANAGE_WSTYPES:
+                WorkstationCTRL.openWSTypeMngScreen((ArrayList<WSType>)response.getEntity());
+                break;
             case DB_PROBLEM:
                 WindowMustHave.showDialog(null, response.getDataString(), DialogType.ERROR);
                 break;

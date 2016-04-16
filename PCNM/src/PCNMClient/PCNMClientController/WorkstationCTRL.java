@@ -9,6 +9,7 @@ import Entities.Workstation;
 import PCNMClient.PCNMClientModel;
 import PCNMClient.PCNMClientStart;
 import PCNMClient.PCNMClientView.NetMapSCR;
+import PCNMClient.PCNMClientView.WSTypeSCR;
 import PCNMClient.PCNMClientView.WorkStationSearchResaults;
 import PCNMClient.PCNMClientView.WorkstationSCR;
 import java.io.IOException;
@@ -79,12 +80,11 @@ public class WorkstationCTRL extends CTRL {
         PCNMClientStart.switchPanels(new WorkStationSearchResaults(ws_tbl));
     }
 
-    public static boolean isNameUnique(String name) throws IOException {
+    public static boolean isNameUnique(int ID, String name) throws IOException {
         if (wsQD == null) throw new IOException("Can't verify new workstation");
-        for (QuickDic qd : wsQD) {
-            if (qd.getFirstVal().equalsIgnoreCase(name))
+        for (QuickDic qd : wsQD)
+            if (qd.getID() != ID && qd.getFirstVal().equalsIgnoreCase(name))
                 return false;
-        }
         return true;
     }
 
@@ -120,8 +120,14 @@ public class WorkstationCTRL extends CTRL {
         if (msgType == MessageType.ADD_WORKSTATION) {
             PCNMClientStart.cur_ent.addToWorkstations(ws);
             wsQD.add(new QuickDic(ws.getID(), ws.getName()));
-        } else {
+        } else if (msgType == MessageType.UPDATE_WORKSTATION) {
             PCNMClientStart.cur_ent.updateWorkstations(ws);
+            for (QuickDic qd : wsQD)
+                if (qd.getID() == ws.getID()) {
+                    String[] vals = {ws.getName()};
+                    qd.setVals(vals);
+                }
+                    
         }
         workstation_pull = PCNMClientStart.cur_ent.getWorkstations();
         for (Workstation row : workstation_pull)
@@ -133,7 +139,7 @@ public class WorkstationCTRL extends CTRL {
         PCNMClientStart.switchPanels(new WorkstationSCR());
     }
 
-    public static void UpdateWorkstationBtnPressed(String id, String name, String description, double importance, String status,
+    public static void UpdateWorkstationBtnPressed(int id, String name, String description, double importance, String status,
                             String typeID, String typeName, String typeDescription, String typeMinScore, String typeStatus) throws IOException {
         Status sts, typSts;
         if (status.equals("Enabled")) sts = Status.ENABLE;
@@ -146,7 +152,7 @@ public class WorkstationCTRL extends CTRL {
         else typSts = Status.Error;
         
         PCNMClientModel.sendMessageToServer(new Message(MessageType.UPDATE_WORKSTATION,
-                                            new Workstation(Integer.parseInt(id),
+                                            new Workstation(id,
                                                             name,
                                                             description,
                                                             importance,
@@ -156,5 +162,36 @@ public class WorkstationCTRL extends CTRL {
                                                                         typeDescription,
                                                                         Integer.parseInt(typeMinScore),
                                                                         typSts))));
+    }
+
+    public static void manageTypesBtnPressed() throws IOException {
+        PCNMClientModel.sendMessageToServer(new Message(MessageType.MANAGE_WSTYPES));
+    }
+
+    public static void openWSTypeMngScreen(ArrayList<WSType> types_tbl) {
+        ArrayList<String> scr_tbl = new ArrayList<String>();
+        for (WSType typ : types_tbl)
+            scr_tbl.add(typ.toString());
+        PCNMClientStart.switchPanels(new WSTypeSCR(scr_tbl));
+    }
+
+    public static void AddWSTypeOKBtnPressed(String name, String description, int min_rate, String status) throws IOException {
+        Status sts, typSts;
+        if (status.equals("Enabled")) sts = Status.ENABLE;
+        else if (status.equals("Disabled")) sts = Status.DISABLE;
+        else if (status.equals("Suspended")) sts = Status.SUSPENDED;
+        else sts = Status.Error;
+        
+        PCNMClientModel.sendMessageToServer(new Message(MessageType.ADD_WSTYPE, new WSType (name, description, min_rate, sts)));
+    }
+
+    public static void UpdateWSTypeOKBtnPressed(int ID, String name, String description, int min_rate, String status) throws IOException {
+        Status sts, typSts;
+        if (status.equals("Enabled")) sts = Status.ENABLE;
+        else if (status.equals("Disabled")) sts = Status.DISABLE;
+        else if (status.equals("Suspended")) sts = Status.SUSPENDED;
+        else sts = Status.Error;
+                
+        PCNMClientModel.sendMessageToServer(new Message(MessageType.UPDATE_WSTYPE, new WSType (ID, name, description, min_rate, sts)));
     }
 }

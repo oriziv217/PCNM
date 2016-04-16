@@ -36,7 +36,7 @@ public class WorkstationLogic extends Logic {
         } catch (SQLException e) {
             return new Message(MessageType.DB_PROBLEM, null, e.getMessage());
         }
-        ArrayList<WSType> users_tbl = new ArrayList<WSType>();
+        ArrayList<WSType> types_tbl = new ArrayList<WSType>();
         WSType row = new WSType();
         
         while (rs.next()) {
@@ -47,9 +47,9 @@ public class WorkstationLogic extends Logic {
             row.setStatus(intToStatus(rs.getInt("status")));
             if (row.getStatus() != Status.Error)
                 //(int ID, String name, String description, int minimalScore, Status status)
-                users_tbl.add(new WSType(row.getID(), row.getName(), row.getDescription(), row.getMinimalScore(), row.getStatus()));
+                types_tbl.add(new WSType(row.getID(), row.getName(), row.getDescription(), row.getMinimalScore(), row.getStatus()));
         }
-        return new Message(MessageType.GET_ALL_WORKSTATION_TYPES, users_tbl);
+        return new Message(MessageType.GET_ALL_WORKSTATION_TYPES, types_tbl);
     }
 
     public static ArrayList<Workstation> getWorkstationsWithFilter(Workstation search_model) throws SQLException {

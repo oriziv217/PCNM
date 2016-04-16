@@ -13,6 +13,9 @@ import static PCNMClient.PCNMClientView.WindowMustHave.showDialog;
 import java.awt.Font;
 import java.io.IOException;
 import java.util.ArrayList;
+import javax.swing.event.RowSorterEvent;
+import javax.swing.event.RowSorterEvent.Type;
+import javax.swing.event.RowSorterListener;
 
 /**
  *
@@ -31,11 +34,11 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
     private FormFrame addWorkstationForm;
     private int rowCounter;
     private boolean[] rowsToShow;
-    private ArrayList<Integer> rowsIndexes;
     private ArrayList<String[]> types;
     private ArrayList<String> ws_tbl;
     private String[][] tableContent;
     private int selected;
+    private int onScreenWSID;
 
     /**
      * Creates new form WorkStationSearchResaults
@@ -64,7 +67,6 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
         this.ws_tbl = ws_tbl;
         rowCounter = ws_tbl.size();
         rowsToShow = new boolean[rowCounter];
-        rowsIndexes = new ArrayList<Integer>();
         Arrays.fill(rowsToShow, true);
         tableContent = new String[rowCounter][5];
         loadSearchResults();
@@ -358,11 +360,17 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
             .addComponent(lblResultsTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 1442, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnNewWorkstation, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnUpdateWorkstation, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnNewWorkstation, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnUpdateWorkstation, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblResultFilterBy)
+                        .addGap(5, 5, 5)
+                        .addComponent(cmbFltrField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -372,10 +380,7 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
                         .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createSequentialGroup()
-                                    .addComponent(lblResultFilterBy)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(cmbFltrField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(18, 18, 18)
+                                    .addGap(388, 388, 388)
                                     .addComponent(lblFilterStr)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(txtFilterStr, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -401,7 +406,11 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(lblResultsTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 691, Short.MAX_VALUE)
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbFltrField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblResultFilterBy))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 630, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnNewWorkstation, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -411,8 +420,6 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
                 .addGroup(layout.createSequentialGroup()
                     .addGap(81, 81, 81)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblResultFilterBy)
-                        .addComponent(cmbFltrField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblFilterStr)
                         .addComponent(txtFilterStr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(chbEnabledOnly))
@@ -463,6 +470,9 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
             else if (evt.getSource() == btnNewWorkstation) {
                 WorkStationSearchResaults.this.btnNewWorkstationActionPerformed(evt);
             }
+            else if (evt.getSource() == btnUpdateWorkstation) {
+                WorkStationSearchResaults.this.btnUpdateWorkstationActionPerformed(evt);
+            }
             else if (evt.getSource() == cmbAddWorkstationType) {
                 WorkStationSearchResaults.this.cmbAddWorkstationTypeActionPerformed(evt);
             }
@@ -471,9 +481,6 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
             }
             else if (evt.getSource() == btnAddWorkstationCancel) {
                 WorkStationSearchResaults.this.btnAddWorkstationCancelActionPerformed(evt);
-            }
-            else if (evt.getSource() == btnUpdateWorkstation) {
-                WorkStationSearchResaults.this.btnUpdateWorkstationActionPerformed(evt);
             }
         }
 
@@ -547,6 +554,7 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
 
     private void btnNewWorkstationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewWorkstationActionPerformed
         isUpdate = false;
+        onScreenWSID = 0;
         addWorkstationClearFields();
         addWorkstationForm = new FormFrame();
         addWorkstationForm.setSize(pnlAddWorkStationForm.getMinimumSize());
@@ -580,7 +588,7 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
             return;
         }
         try {
-            if (!WorkstationCTRL.isNameUnique(name)) {
+            if (!WorkstationCTRL.isNameUnique(onScreenWSID, name)) {
                 showDialog(pnlAddWorkStationForm, "Workstation Name must be unique.", DialogType.INFO);
                 return;
             }
@@ -594,7 +602,7 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
                                     types.get(type)[0], types.get(type)[1], types.get(type)[2], types.get(type)[3], types.get(type)[4]);
             }
             else {
-                WorkstationCTRL.UpdateWorkstationBtnPressed(tableContent[rowsIndexes.get(selected)][0],name, description, importance, status,
+                WorkstationCTRL.UpdateWorkstationBtnPressed(onScreenWSID ,name, description, importance, status,
                                     types.get(type)[0], types.get(type)[1], types.get(type)[2], types.get(type)[3], types.get(type)[4]);
             }
         } catch (IOException ex) {
@@ -621,7 +629,8 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
             return;
         }
         isUpdate = true;
-        int index = rowsIndexes.get(selected);
+        int index = tblSearchResault.convertRowIndexToModel(selected);
+        onScreenWSID = Integer.parseInt(tableContent[index][0]);
         txtAddWorkstationName.setText(tableContent[index][1]);
         txtAddWorkstationDescription.setText(tableContent[index][2]);
         spnAddWorkstationImportance.setValue(Double.parseDouble(tableContent[index][3]));
@@ -680,7 +689,6 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
         String row;
         DefaultTableModel dtm = (DefaultTableModel)tblSearchResault.getModel();
         dtm.setRowCount(rowCounter);
-        rowsIndexes.clear();
         int cur_row = 0;
         for (int i = 0 ; i < ws_tbl.size() ; i ++) {
             if (rowsToShow[i]) {
@@ -692,7 +700,6 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
                 dtm.setValueAt(tableContent[i][4], cur_row, 3);
                 dtm.setValueAt(tableContent[i][6], cur_row, 4);
                 dtm.setValueAt(Integer.parseInt(tableContent[i][8]), cur_row, 5);
-                rowsIndexes.add(i);
                 cur_row ++;
                 if (cur_row > rowCounter)
                     i = ws_tbl.size();

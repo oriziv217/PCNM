@@ -62,7 +62,7 @@ public class CurrentEntities {
     public void updateWorkstations(Workstation ws) {
         int index = Collections.binarySearch(workstations, ws);
         workstations.remove(index);
-        workstations.add(index, ws);
+        addToWorkstations(ws);
     }
     
     public ArrayList<String> getStringWstypes() {

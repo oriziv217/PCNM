@@ -9,9 +9,9 @@ import java.io.Serializable;
 public enum EmpType implements Serializable{
 
     /**
-     * CEO = 1
+     * Technician = 1
      */
-    CEO,
+    TECHNICIAN,
 
     /**
      * MCSE = 2
@@ -19,9 +19,9 @@ public enum EmpType implements Serializable{
     MCSE,
 
     /**
-     * Technician = 3
+     * CEO = 3
      */
-    TECHNICIAN,
+    CEO,
 
     /**
      * Administrator = 4

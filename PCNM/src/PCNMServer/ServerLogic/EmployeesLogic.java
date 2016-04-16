@@ -44,13 +44,13 @@ public class EmployeesLogic extends Logic {
                     int type = rs.getInt("type");
                     switch (type) {
                         case 1:
-                            emp.setType(EmpType.CEO);
+                            emp.setType(EmpType.TECHNICIAN);
                             break;
                         case 2:
                             emp.setType(EmpType.MCSE);
                             break;
                         case 3:
-                            emp.setType(EmpType.TECHNICIAN);
+                            emp.setType(EmpType.CEO);
                             break;
                         case 4:
                             emp.setType(EmpType.ADMINISTRATOR);

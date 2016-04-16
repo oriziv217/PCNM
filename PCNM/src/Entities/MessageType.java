@@ -82,6 +82,21 @@ public enum MessageType {
     UPDATE_WORKSTATION,
     
     /**
+     * Get all Workstation types from DB for management screen
+     */
+    MANAGE_WSTYPES,
+    
+    /**
+     * Add new Workstation Type
+     */
+    ADD_WSTYPE,
+    
+    /**
+     * Update an existing Workstation Type
+     */
+    UPDATE_WSTYPE,
+    
+    /**
      * SQL Exception was thrown
      */
     DB_PROBLEM
