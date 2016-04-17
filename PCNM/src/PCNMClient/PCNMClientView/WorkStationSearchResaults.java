@@ -570,7 +570,7 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
             txtAddWorkstationMinRate.setText("");
             return;
         }
-        String[] typ = types.get(selected);
+        String[] typ = types.get(getTypeIndex((String)cmbAddWorkstationType.getSelectedItem()));
         txtAddWorkstationMinRate.setText(typ[3]);
     }//GEN-LAST:event_cmbAddWorkstationTypeActionPerformed
 
@@ -638,7 +638,7 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
         txtAddWorkstationName.setText(tableContent[index][1]);
         txtAddWorkstationDescription.setText(tableContent[index][2]);
         spnAddWorkstationImportance.setValue(Double.parseDouble(tableContent[index][3]));
-        cmbAddWorkstationType.setSelectedIndex(getTypeIndex(tableContent[index][6]));
+        cmbAddWorkstationType.setSelectedItem(tableContent[index][6]);
         txtAddWorkstationMinRate.setText(tableContent[index][8]);
         cmbAddWorkstationStatus.setSelectedIndex(getStatusIndex(tableContent[index][4]));
         addWorkstationForm = new FormFrame();
