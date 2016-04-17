@@ -182,7 +182,6 @@ public class WorkstationLogic extends Logic {
 
     public static Message addWorkstation(Workstation newWS) throws SQLException {
         Connection conDB = DBConnect.mySQLConnection();
-        ResultSet rs;
         boolean isAdded;
         String resultString;
         String[] fields = { "name",
@@ -231,6 +230,64 @@ public class WorkstationLogic extends Logic {
         }
         resultString = "Not OK";
         return new Message(MessageType.UPDATE_WORKSTATION, null, resultString);
+    }
+
+    public static Message addWSType(WSType wst) throws SQLException {
+        Connection conDB = DBConnect.mySQLConnection();
+        ResultSet rs;
+        boolean isAdded;
+        String resultString;
+        String[] fields = { "name",
+                            "description",
+                            "minimalScore",
+                            "status" };
+        String[] values = { wst.getName(),
+                            wst.getDescription(),
+                            String.valueOf(wst.getMinimalScore()),
+                            String.valueOf(statusToInt(wst.getStatus())) };
+        isAdded = DBConnect.insertSingleRecord (conDB, "wstype", fields, values);
+        if (isAdded) {
+            resultString = "OK";
+            rs = DBConnect.selectWithFilter(conDB, "wstype", null, "name = '" + wst.getName() + "'");
+            rs.first();
+            wst.setID(rs.getInt("ID"));
+            return new Message (MessageType.ADD_WSTYPE, wst, resultString);
+        }
+        resultString = "Not OK";
+        return new Message(MessageType.ADD_WSTYPE, null, resultString);
+    }
+
+    public static Message updateWSType(WSType wst) throws SQLException {
+        Connection conDB = DBConnect.mySQLConnection();
+        ResultSet rs;
+        String resultString;
+        boolean isUpdated;
+        
+        if (wst.getStatus() != Status.ENABLE) {
+            rs = DBConnect.selectWithFilter(conDB, "workstation", "ID", "wstypeID = '" + wst.getID() + "'");
+            if (rs.next())
+                return new Message (MessageType.UPDATE_WSTYPE, wst, "Depandancy Error");
+        }
+        
+        String[] fields = { "id",
+                            "name",
+                            "description",
+                            "minimalScore",
+                            "status" };
+        String[] values = { Integer.toString(wst.getID()),
+                            wst.getName(),
+                            wst.getDescription(),
+                            String.valueOf(wst.getMinimalScore()),
+                            String.valueOf(statusToInt(wst.getStatus())) };
+        String[] keyName = { "id" };
+        String[] keyVal = { Integer.toString(wst.getID()) };
+        isUpdated = DBConnect.updateSingleRecord (conDB, "wstype", fields, values, keyName, keyVal);
+        if (isUpdated) {
+            resultString = "OK";
+            return new Message (MessageType.UPDATE_WSTYPE, wst, resultString);
+        }
+        resultString = "Not OK";
+        return new Message(MessageType.UPDATE_WSTYPE, null, resultString);
     }
     
 }

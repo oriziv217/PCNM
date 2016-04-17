@@ -460,6 +460,7 @@ public class WSTypeSCR extends javax.swing.JPanel {
     private void btnNewWorkstationTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewWorkstationTypeActionPerformed
         isUpdate = false;
         clearFields();
+        onScreenWSTypeID = 0;
         addWSType = new FormFrame();
         addWSType.setSize(pnlAddWSType.getMinimumSize());
         addWSType.setLocationRelativeTo(null);
@@ -510,7 +511,7 @@ public class WSTypeSCR extends javax.swing.JPanel {
         }
         
         for (String[] type : tableContent) {
-            if (type[1].equalsIgnoreCase(name)) {
+            if (onScreenWSTypeID != Integer.parseInt(type[0]) && type[1].equalsIgnoreCase(name)) {
                 showDialog(pnlAddWSType, "Workstation Type name must be unique.", DialogType.INFO);
                 return;
             }

@@ -35,6 +35,32 @@ public class CurrentEntities {
         Collections.sort(this.workstations);
     }
     
+    public void addToWstypes (WSType wst) {
+        wstypes.add(wst);
+    }
+    
+    public int wstypeIndexByID (int ID) {
+        for (int i = 0 ; i < wstypes.size() ; i ++)
+            if (ID == wstypes.get(i).getID())
+                return i;
+        return -1;
+    }
+    
+    public int wstypeIndexByName (String name) {
+        for (int i = 0 ; i < wstypes.size() ; i ++)
+            if (name.equals(wstypes.get(i).getName()))
+                return i;
+        return -1;
+    }
+    
+    public boolean wstypeUpdate (WSType wst) {
+        int index = wstypeIndexByID(wst.getID());
+        if (index == -1) return false;
+        wstypes.remove(index);
+        wstypes.add(wst);
+        return true;
+    }
+    
     public void addToWorkstations(Workstation ws) {
         // case list is empty
         if (workstations.isEmpty()) {
@@ -65,7 +91,7 @@ public class CurrentEntities {
         addToWorkstations(ws);
     }
     
-    public ArrayList<String> getStringWstypes() {
+    public ArrayList<String> wstypesToString() {
         ArrayList<String> wstStr = new ArrayList<String>();
         for (WSType row : wstypes)
             wstStr.add(row.toString());

@@ -93,6 +93,12 @@ public class PCNMServer extends AbstractServer {
             case MANAGE_WSTYPES:
                 client.sendToClient(new Message(MessageType.MANAGE_WSTYPES, WorkstationLogic.getAllTypes().getEntity()));
                 break;
+            case ADD_WSTYPE:
+                client.sendToClient(WorkstationLogic.addWSType((WSType)message.getEntity()));
+                break;
+            case UPDATE_WSTYPE:
+                client.sendToClient(WorkstationLogic.updateWSType((WSType)message.getEntity()));
+                break;
             }
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, String.format("Lost connection with client %s", client.toString()));

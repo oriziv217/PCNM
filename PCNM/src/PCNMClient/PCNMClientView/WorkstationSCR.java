@@ -6,8 +6,6 @@ import PCNMClient.PCNMClientStart;
 import static PCNMClient.PCNMClientView.WindowMustHave.showDialog;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -40,7 +38,7 @@ public class WorkstationSCR extends javax.swing.JPanel {
         fltrEnabled = false;
         fltrImp = 0;
         fltrType = "Show All";
-        ArrayList<String> wstypes = new ArrayList<String>(PCNMClientStart.cur_ent.getStringWstypes());
+        ArrayList<String> wstypes = new ArrayList<String>(PCNMClientStart.cur_ent.wstypesToString());
         String[] row;
         types = new ArrayList<String[]>();
         for (String typ : wstypes) {

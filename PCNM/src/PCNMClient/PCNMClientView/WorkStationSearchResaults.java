@@ -13,9 +13,6 @@ import static PCNMClient.PCNMClientView.WindowMustHave.showDialog;
 import java.awt.Font;
 import java.io.IOException;
 import java.util.ArrayList;
-import javax.swing.event.RowSorterEvent;
-import javax.swing.event.RowSorterEvent.Type;
-import javax.swing.event.RowSorterListener;
 
 /**
  *
@@ -50,7 +47,7 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
         fltrEnabled = false;
         fltrImp = 0;
         fltrType = "Show All";
-        ArrayList<String> wstypes = new ArrayList<String>(PCNMClientStart.cur_ent.getStringWstypes());
+        ArrayList<String> wstypes = new ArrayList<String>(PCNMClientStart.cur_ent.wstypesToString());
         String[] row;
         types = new ArrayList<String[]>();
         for (String typ : wstypes) {
@@ -240,7 +237,7 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
         );
 
         for (String[] typ : types) {
-            cmbAddWorkstationType.addItem(typ[1]);
+            if (typ[4].equals("Enabled")) cmbAddWorkstationType.addItem(typ[1]);
         }
 
         setBackground(java.awt.Color.white);
@@ -586,6 +583,13 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
         if (name.isEmpty() || description.isEmpty() || type == -1 || status.isEmpty()) {
             showDialog(pnlAddWorkStationForm, "All fields are mandatory.", DialogType.INFO);
             return;
+        }
+        String typ = (String)cmbAddWorkstationType.getSelectedItem();
+        for (int i = 0 ; i < types.size() ; i ++) {
+            if (types.get(i)[1].equals(typ)) {
+                type = i;
+                i = types.size();
+            }
         }
         try {
             if (!WorkstationCTRL.isNameUnique(onScreenWSID, name)) {

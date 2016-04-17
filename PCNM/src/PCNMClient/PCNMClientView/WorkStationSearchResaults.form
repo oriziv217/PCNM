@@ -214,7 +214,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbAddWorkstationTypeActionPerformed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="for (String[] typ : types) {&#xd;&#xa;    cmbAddWorkstationType.addItem(typ[1]);&#xd;&#xa;}"/>
+            <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="for (String[] typ : types) {&#xd;&#xa;    if (typ[4].equals(&quot;Enabled&quot;)) cmbAddWorkstationType.addItem(typ[1]);&#xd;&#xa;}"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JButton" name="btnAddWorkstationOK">

@@ -170,13 +170,14 @@ public class WorkstationCTRL extends CTRL {
 
     public static void openWSTypeMngScreen(ArrayList<WSType> types_tbl) {
         ArrayList<String> scr_tbl = new ArrayList<String>();
+        PCNMClientStart.cur_ent.setWstypes(types_tbl);
         for (WSType typ : types_tbl)
             scr_tbl.add(typ.toString());
         PCNMClientStart.switchPanels(new WSTypeSCR(scr_tbl));
     }
 
     public static void AddWSTypeOKBtnPressed(String name, String description, int min_rate, String status) throws IOException {
-        Status sts, typSts;
+        Status sts;
         if (status.equals("Enabled")) sts = Status.ENABLE;
         else if (status.equals("Disabled")) sts = Status.DISABLE;
         else if (status.equals("Suspended")) sts = Status.SUSPENDED;
@@ -186,12 +187,23 @@ public class WorkstationCTRL extends CTRL {
     }
 
     public static void UpdateWSTypeOKBtnPressed(int ID, String name, String description, int min_rate, String status) throws IOException {
-        Status sts, typSts;
+        Status sts;
         if (status.equals("Enabled")) sts = Status.ENABLE;
         else if (status.equals("Disabled")) sts = Status.DISABLE;
         else if (status.equals("Suspended")) sts = Status.SUSPENDED;
         else sts = Status.Error;
                 
         PCNMClientModel.sendMessageToServer(new Message(MessageType.UPDATE_WSTYPE, new WSType (ID, name, description, min_rate, sts)));
+    }
+
+    public static void refreshWSTypeWindow(MessageType msgType, WSType newWst) {
+        ArrayList<String>ws_tbl = new ArrayList<String>();
+        if (msgType == MessageType.ADD_WSTYPE)
+            PCNMClientStart.cur_ent.addToWstypes(newWst);
+        else if (newWst != null && msgType == MessageType.UPDATE_WSTYPE)
+            PCNMClientStart.cur_ent.wstypeUpdate(newWst);
+        workstation_pull = PCNMClientStart.cur_ent.getWorkstations();
+        
+        PCNMClientStart.switchPanels(new WSTypeSCR(PCNMClientStart.cur_ent.wstypesToString()));
     }
 }

@@ -87,6 +87,24 @@ public class PCNMClient extends AbstractClient {
             case MANAGE_WSTYPES:
                 WorkstationCTRL.openWSTypeMngScreen((ArrayList<WSType>)response.getEntity());
                 break;
+            case ADD_WSTYPE:
+                if (response.getDataString().equals("Not OK"))
+                    WindowMustHave.showDialog(null, "Error acurred while tring to add Waorkstation Type to the DB.\n"
+                            + "Please contact your System Administrator", DialogType.ERROR);
+                else
+                    WorkstationCTRL.refreshWSTypeWindow(response.getMsgType(), (WSType)response.getEntity());
+                break;
+            case UPDATE_WSTYPE:
+                if (response.getDataString().equals("Not OK"))
+                    WindowMustHave.showDialog(null, "Error acurred while tring to update Waorkstation Type to the DB.\n"
+                            + "Please contact your System Administrator", DialogType.ERROR);
+                else if (response.getDataString().equals("Depandancy Error")) {
+                    WindowMustHave.showDialog(null, "Can not update Workstation Type's status\n"
+                            + "while Workstations of this type exists.", DialogType.ERROR);
+                    WorkstationCTRL.refreshWSTypeWindow(MessageType.UPDATE_WSTYPE, null);
+                } else
+                    WorkstationCTRL.refreshWSTypeWindow(response.getMsgType(), (WSType)response.getEntity());
+                break;
             case DB_PROBLEM:
                 WindowMustHave.showDialog(null, response.getDataString(), DialogType.ERROR);
                 break;
