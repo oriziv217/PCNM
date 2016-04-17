@@ -28,6 +28,12 @@ public class WorkstationLogic extends Logic {
         }
         return keys;
     }
+
+    /**
+     * This method get all workstation types from the DB
+     * @return
+     * @throws SQLException
+     */
     public static Message getAllTypes() throws SQLException {
         Connection conDB = DBConnect.mySQLConnection();
         ResultSet rs;
@@ -52,6 +58,12 @@ public class WorkstationLogic extends Logic {
         return new Message(MessageType.GET_ALL_WORKSTATION_TYPES, types_tbl);
     }
 
+    /**
+     * This method get all workstation records (joined with their types) from the DB according to a given filter
+     * @param search_model
+     * @return
+     * @throws SQLException
+     */
     public static ArrayList<Workstation> getWorkstationsWithFilter(Workstation search_model) throws SQLException {
         ArrayList<Workstation> search_results = new ArrayList<Workstation>();
         Connection conDB = DBConnect.mySQLConnection();
@@ -168,6 +180,11 @@ public class WorkstationLogic extends Logic {
         return wst;
     }
 
+    /**
+     * This method get all workstations names and IDs from the DB in order to create quick dictionary on client side
+     * @return
+     * @throws SQLException
+     */
     public static Message createQuickDic() throws SQLException {
         ArrayList<QuickDic> dic = new ArrayList<QuickDic>();
         Connection conDB = DBConnect.mySQLConnection();
@@ -180,6 +197,12 @@ public class WorkstationLogic extends Logic {
         return new Message(MessageType.GET_WORKSTATION_QUICKDIC, dic);
     }
 
+    /**
+     * This method adds a new record of workstation to the DB
+     * @param newWS
+     * @return
+     * @throws SQLException
+     */
     public static Message addWorkstation(Workstation newWS) throws SQLException {
         Connection conDB = DBConnect.mySQLConnection();
         boolean isAdded;
@@ -204,6 +227,12 @@ public class WorkstationLogic extends Logic {
         return new Message(MessageType.ADD_WORKSTATION, null, resultString);
     }
 
+    /**
+     * This method updates an existing workstation record in the DB
+     * @param ws
+     * @return
+     * @throws SQLException
+     */
     public static Message updateWorkstation(Workstation ws) throws SQLException {
         Connection conDB = DBConnect.mySQLConnection();
         ResultSet rs;
@@ -232,6 +261,12 @@ public class WorkstationLogic extends Logic {
         return new Message(MessageType.UPDATE_WORKSTATION, null, resultString);
     }
 
+    /**
+     * This method adds a new workstation type record to the DB
+     * @param wst
+     * @return
+     * @throws SQLException
+     */
     public static Message addWSType(WSType wst) throws SQLException {
         Connection conDB = DBConnect.mySQLConnection();
         ResultSet rs;
@@ -257,6 +292,12 @@ public class WorkstationLogic extends Logic {
         return new Message(MessageType.ADD_WSTYPE, null, resultString);
     }
 
+    /**
+     * This method updates an existing record of workstation type in the DB
+     * @param wst
+     * @return
+     * @throws SQLException
+     */
     public static Message updateWSType(WSType wst) throws SQLException {
         Connection conDB = DBConnect.mySQLConnection();
         ResultSet rs;
@@ -289,5 +330,4 @@ public class WorkstationLogic extends Logic {
         resultString = "Not OK";
         return new Message(MessageType.UPDATE_WSTYPE, null, resultString);
     }
-    
 }

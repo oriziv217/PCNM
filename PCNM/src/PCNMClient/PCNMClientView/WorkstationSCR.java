@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- *
+ * This class implements Workstation search screen 
  * @author ori ziv
  */
 public class WorkstationSCR extends javax.swing.JPanel {
@@ -49,6 +49,10 @@ public class WorkstationSCR extends javax.swing.JPanel {
         doneInit = true;
     }
 
+    /**
+     * Creates new form WorkstationSCR with content
+     * @param filters
+     */
     public WorkstationSCR(ArrayList<String> filters) {
         this();
         doneInit = false;

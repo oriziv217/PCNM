@@ -3,10 +3,8 @@ package PCNMServer.ServerResources;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLDataException;
 import java.sql.SQLException;
 import java.sql.Statement;
-import javafx.collections.transformation.FilteredList;
 
 /**
  * This is a static class that provides DB connection services

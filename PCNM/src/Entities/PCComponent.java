@@ -1,7 +1,3 @@
-/*
- * Here comes the text of your license
- * Each line should be prefixed with  * 
- */
 package Entities;
 import java.util.Date;
 import java.io.Serializable;

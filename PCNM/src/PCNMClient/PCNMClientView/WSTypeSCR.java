@@ -11,14 +11,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.JLabel;
-import javax.swing.event.RowSorterEvent;
-import javax.swing.event.RowSorterEvent.Type;
-import javax.swing.event.RowSorterListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ * This class implements Workstation types management screen
  * @author ori ziv
  */
 public class WSTypeSCR extends javax.swing.JPanel {
@@ -45,6 +42,10 @@ public class WSTypeSCR extends javax.swing.JPanel {
         doneInit = true;
     }
 
+    /**
+     * Creates new form WSTypeSCR with content
+     * @param wst_rows
+     */
     public WSTypeSCR(ArrayList<String> wst_rows) {
         this();
         doneInit = false;

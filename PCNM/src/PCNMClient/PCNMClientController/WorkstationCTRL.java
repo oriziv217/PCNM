@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * This calls implements Workstation Screen controllers
+ * This class implements Workstation Screen controllers
  * @author ori ziv
  */
 public class WorkstationCTRL extends CTRL {
@@ -24,15 +24,31 @@ public class WorkstationCTRL extends CTRL {
     private static ArrayList<Workstation> workstation_pull;
     private static ArrayList<QuickDic> wsQD;
     
+    /**
+     * This method implements close button pressed event in workstation screen
+     */
     public static void closeBtnPressed () {
         PCNMClientStart.switchPanels(new NetMapSCR());
     }
 
+    /**
+     * This method implements open Workstation search screen
+     * @param wstypes
+     */
     public static void openWorkstationWindow(ArrayList<WSType> wstypes) {
         PCNMClientStart.cur_ent.setWstypes(wstypes);
         PCNMClientStart.switchPanels(new WorkstationSCR());
     }
 
+    /**
+     * This method implements search workstations button pressed event in search workstation screen
+     * @param name
+     * @param description
+     * @param importance
+     * @param type
+     * @param status
+     * @throws IOException
+     */
     public static void searchBtnPressed(String name, String description, String importance, String type, String status) throws IOException {
         double imp;
         WSType wst;
@@ -70,6 +86,10 @@ public class WorkstationCTRL extends CTRL {
         PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_WORKSTATIOS_WITH_FILTER, ws));
     }
 
+    /**
+     * This method implements processing of workstation search results and open workstation search results screen
+     * @param search_result
+     */
     public static void processSearchResults(ArrayList<Workstation> search_result) {
         PCNMClientStart.cur_ent.setWorkstations(search_result);
         workstation_pull = PCNMClientStart.cur_ent.getWorkstations();
@@ -80,6 +100,13 @@ public class WorkstationCTRL extends CTRL {
         PCNMClientStart.switchPanels(new WorkStationSearchResaults(ws_tbl));
     }
 
+    /**
+     * This method return true if workstation id+name combination is unique
+     * @param ID
+     * @param name
+     * @return
+     * @throws IOException
+     */
     public static boolean isNameUnique(int ID, String name) throws IOException {
         if (wsQD == null) throw new IOException("Can't verify new workstation");
         for (QuickDic qd : wsQD)
@@ -88,10 +115,27 @@ public class WorkstationCTRL extends CTRL {
         return true;
     }
 
+    /**
+     * This method sets Quick-Dictionary of workstations in order to lower DB transaction costs
+     * @param dic
+     */
     public static void setWSDic(ArrayList<QuickDic> dic) {
         wsQD = dic;
     }
 
+    /**
+     * This method implements client side add new workstation command
+     * @param name
+     * @param description
+     * @param importance
+     * @param status
+     * @param typeID
+     * @param typeName
+     * @param typeDescription
+     * @param typeMinScore
+     * @param typeStatus
+     * @throws IOException
+     */
     public static void AddWorkstationBtnPressed(String name, String description, double importance, String status,
                                                 String typeID, String typeName, String typeDescription, String typeMinScore, String typeStatus) throws IOException {
         Status sts, typSts;
@@ -115,6 +159,11 @@ public class WorkstationCTRL extends CTRL {
                                                                         typSts))));
     }
 
+    /**
+     * This Method implements processing add or update workstation command's results
+     * @param msgType
+     * @param ws
+     */
     public static void refreshWorkstationWindow(MessageType msgType, Workstation ws) {
         ArrayList<String>ws_tbl = new ArrayList<String>();
         if (msgType == MessageType.ADD_WORKSTATION) {
@@ -135,10 +184,27 @@ public class WorkstationCTRL extends CTRL {
         PCNMClientStart.switchPanels(new WorkStationSearchResaults(ws_tbl));
     }
 
+    /**
+     * This method implements Close button pressed event in the workstation's search results screen
+     */
     public static void searchResaultCloseBtnPressed() {
         PCNMClientStart.switchPanels(new WorkstationSCR());
     }
 
+    /**
+     * This method implements client side of update workstation command
+     * @param id
+     * @param name
+     * @param description
+     * @param importance
+     * @param status
+     * @param typeID
+     * @param typeName
+     * @param typeDescription
+     * @param typeMinScore
+     * @param typeStatus
+     * @throws IOException
+     */
     public static void UpdateWorkstationBtnPressed(int id, String name, String description, double importance, String status,
                             String typeID, String typeName, String typeDescription, String typeMinScore, String typeStatus) throws IOException {
         Status sts, typSts;
@@ -164,10 +230,18 @@ public class WorkstationCTRL extends CTRL {
                                                                         typSts))));
     }
 
+    /**
+     * This metho implements Manage Workstation types button pressed event
+     * @throws IOException
+     */
     public static void manageTypesBtnPressed() throws IOException {
         PCNMClientModel.sendMessageToServer(new Message(MessageType.MANAGE_WSTYPES));
     }
 
+    /**
+     * This method implements open workstation station types management screen
+     * @param types_tbl
+     */
     public static void openWSTypeMngScreen(ArrayList<WSType> types_tbl) {
         ArrayList<String> scr_tbl = new ArrayList<String>();
         PCNMClientStart.cur_ent.setWstypes(types_tbl);
@@ -176,6 +250,14 @@ public class WorkstationCTRL extends CTRL {
         PCNMClientStart.switchPanels(new WSTypeSCR(scr_tbl));
     }
 
+    /**
+     * This method implements client side of add new workstation type command
+     * @param name
+     * @param description
+     * @param min_rate
+     * @param status
+     * @throws IOException
+     */
     public static void AddWSTypeOKBtnPressed(String name, String description, int min_rate, String status) throws IOException {
         Status sts;
         if (status.equals("Enabled")) sts = Status.ENABLE;
@@ -186,6 +268,15 @@ public class WorkstationCTRL extends CTRL {
         PCNMClientModel.sendMessageToServer(new Message(MessageType.ADD_WSTYPE, new WSType (name, description, min_rate, sts)));
     }
 
+    /**
+     * This method implements client side of update workstation type command
+     * @param ID
+     * @param name
+     * @param description
+     * @param min_rate
+     * @param status
+     * @throws IOException
+     */
     public static void UpdateWSTypeOKBtnPressed(int ID, String name, String description, int min_rate, String status) throws IOException {
         Status sts;
         if (status.equals("Enabled")) sts = Status.ENABLE;
@@ -196,6 +287,11 @@ public class WorkstationCTRL extends CTRL {
         PCNMClientModel.sendMessageToServer(new Message(MessageType.UPDATE_WSTYPE, new WSType (ID, name, description, min_rate, sts)));
     }
 
+    /**
+     * This method implements processing add or update workstation type command's result
+     * @param msgType
+     * @param newWst
+     */
     public static void refreshWSTypeWindow(MessageType msgType, WSType newWst) {
         ArrayList<String>ws_tbl = new ArrayList<String>();
         if (msgType == MessageType.ADD_WSTYPE)

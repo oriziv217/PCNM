@@ -7,6 +7,12 @@ import Entities.Status;
  * @author ori ziv
  */
 public class Logic {
+
+    /**
+     * convert integer to Status
+     * @param dbStatus
+     * @return
+     */
     protected static Status intToStatus(int dbStatus) {
         switch (dbStatus) {
             case 1:
@@ -19,6 +25,11 @@ public class Logic {
         return Status.Error;
     }
     
+    /**
+     * Convert Status to integer
+     * @param status
+     * @return
+     */
     protected static int statusToInt(Status status) {
         switch (status) {
             case ENABLE:

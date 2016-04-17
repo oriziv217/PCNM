@@ -1,13 +1,9 @@
-/*
- * Here comes the text of your license
- * Each line should be prefixed with  * 
- */
 package Entities;
 
 import java.io.Serializable;
 
 /**
- *This class represents a record in Workstations table
+ * This class represents a record in Workstations table
  * @author Sivan Yehuda
  * @author Ori Ziv
  */
@@ -19,57 +15,115 @@ public class Workstation implements Serializable, Comparable<Workstation> {
     private Status status;
     private WSType type;
 
+    /**
+     * ID getter
+     * @return
+     */
     public int getID() {
         return ID;
     }
 
+    /**
+     * ID setter
+     * @param ID
+     */
     public void setID(int ID) {
         this.ID = ID;
     }
 
+    /**
+     * Name getter
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Name setter
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Description getter
+     * @return
+     */
     public String getDiscription() {
         return description;
     }
 
+    /**
+     * Description setter
+     * @param description
+     */
     public void setDiscription(String description) {
         this.description = description;
     }
 
+    /**
+     * Importance factor getter
+     * @return
+     */
     public double getImportanceFactor() {
         return importanceFactor;
     }
 
+    /**
+     * Importance factor getter
+     * @param importanceFactor
+     */
     public void setImportanceFactor(double importanceFactor) {
         this.importanceFactor = importanceFactor;
     }
 
+    /**
+     * Status getter
+     * @return
+     */
     public Status getStatus() {
         return status;
     }
 
+    /**
+     * Status setter
+     * @param status
+     */
     public void setStatus(Status status) {
         this.status = status;
     }
 
+    /**
+     * Workstation type getter
+     * @return
+     */
     public WSType getType() {
         return type;
     }
 
+    /**
+     * Workstation type setter
+     * @param type
+     */
     public void setType(WSType type) {
         this.type = type;
     }
     
+    /**
+     * Default constructor
+     */
     public Workstation() {
     }
 
+    /**
+     * No ID and no type constructor - used for new Workstations and for search filters
+     * @param name
+     * @param description
+     * @param importanceFactor
+     * @param status
+     */
     public Workstation(String name, String description, double importanceFactor, Status status) {
         this.name = name;
         this.description = description;
@@ -77,6 +131,14 @@ public class Workstation implements Serializable, Comparable<Workstation> {
         this.status = status;
     }
 
+    /**
+     * No ID constructor - used for new Workstations and for search filters
+     * @param name
+     * @param description
+     * @param importanceFactor
+     * @param status
+     * @param type
+     */
     public Workstation(String name, String description, double importanceFactor, Status status, WSType type) {
         this.name = name;
         this.description = description;
@@ -85,6 +147,15 @@ public class Workstation implements Serializable, Comparable<Workstation> {
         this.type = type;
     }
 
+    /**
+     * Full constructor
+     * @param ID
+     * @param name
+     * @param description
+     * @param importanceFactor
+     * @param status
+     * @param type
+     */
     public Workstation(int ID, String name, String description, double importanceFactor, Status status, WSType type) {
         this.ID = ID;
         this.name = name;
@@ -95,7 +166,7 @@ public class Workstation implements Serializable, Comparable<Workstation> {
     }
 
     /**
-     *
+     * Overriding toString: return a comma separated representer
      * @return
      */
     @Override

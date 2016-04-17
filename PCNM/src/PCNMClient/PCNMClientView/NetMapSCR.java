@@ -1,13 +1,10 @@
 package PCNMClient.PCNMClientView;
 
-import Entities.EmpType;
-import PCNMClient.PCNMClientController.HomeCTRL;
 import PCNMClient.PCNMClientController.NetMapCTRL;
-import PCNMClient.PCNMClientStart;
 import java.io.IOException;
 
 /**
- *
+ * This class implements Network mapping screen
  * @author ori ziv
  */
 public class NetMapSCR extends javax.swing.JPanel {
@@ -34,6 +31,7 @@ public class NetMapSCR extends javax.swing.JPanel {
         btnQuit = new javax.swing.JButton();
         btnMngUserTyp = new javax.swing.JButton();
         btnMngWorkstation = new javax.swing.JButton();
+        btnMngPCComp = new javax.swing.JButton();
 
         setBackground(java.awt.Color.white);
         setAlignmentX(0.0F);
@@ -126,6 +124,21 @@ public class NetMapSCR extends javax.swing.JPanel {
             }
         });
 
+        btnMngPCComp.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnMngPCComp.setForeground(java.awt.Color.red);
+        btnMngPCComp.setText("Manage PC Components");
+        btnMngPCComp.setToolTipText("Manage users and roles witjin the system");
+        btnMngPCComp.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnMngPCComp.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnMngPCComp.setInheritsPopupMenu(true);
+        btnMngPCComp.setMinimumSize(new java.awt.Dimension(880, 700));
+        btnMngPCComp.setName("btnMngUserTyp"); // NOI18N
+        btnMngPCComp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMngPCCompActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -139,8 +152,11 @@ public class NetMapSCR extends javax.swing.JPanel {
                         .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnMngUserTyp, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnMngWorkstation, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnMngWorkstation, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnMngUserTyp, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnMngPCComp, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addComponent(jplScreenLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -150,7 +166,9 @@ public class NetMapSCR extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jplScreenLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnMngUserTyp, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnMngUserTyp, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnMngPCComp, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnMngWorkstation, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 195, Short.MAX_VALUE)
@@ -187,9 +205,14 @@ public class NetMapSCR extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnMngWorkstationActionPerformed
 
+    private void btnMngPCCompActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMngPCCompActionPerformed
+        NetMapCTRL.btnMngPCCompPressed();
+    }//GEN-LAST:event_btnMngPCCompActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClose;
+    private javax.swing.JButton btnMngPCComp;
     private javax.swing.JButton btnMngUserTyp;
     private javax.swing.JButton btnMngWorkstation;
     private javax.swing.JButton btnQuit;

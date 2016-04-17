@@ -36,6 +36,9 @@ public class HomeCTRL extends CTRL {
         return search_results;
     }
 
+    /**
+     * This method implements Network mapping button pressed event
+     */
     public static void btnNetMapPressed() {
         PCNMClientStart.switchPanels(new NetMapSCR());
     }

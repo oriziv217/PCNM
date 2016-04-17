@@ -21,12 +21,19 @@ public class PCNMClientStart {
      */
     public static Employee user;
 
+    /**
+     * Current entities (workstations, workstation types and so on...)
+     */
     public static CurrentEntities cur_ent = new CurrentEntities();
+    
     /**
      * GUI's frame
      */
     public static LoginSCR appWindow;
     
+    /**
+     * saved workstation search filters
+     */
     public static ArrayList<String>workstationSearchFilters = new ArrayList<String>();
     
     /**

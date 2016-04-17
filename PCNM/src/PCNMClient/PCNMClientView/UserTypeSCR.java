@@ -1,5 +1,6 @@
 package PCNMClient.PCNMClientView;
 
+import Entities.EmpType;
 import PCNMClient.PCNMClientController.UserTypesCTRL;
 import PCNMClient.PCNMClientStart;
 import static PCNMClient.PCNMClientView.WindowMustHave.showDialog;
@@ -10,7 +11,7 @@ import java.util.Arrays;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ * This class implements manage PC-User types screen
  * @author ori ziv
  */
 public class UserTypeSCR extends javax.swing.JPanel {
@@ -377,6 +378,11 @@ public class UserTypeSCR extends javax.swing.JPanel {
                     .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
+
+        if (PCNMClientStart.user.getType() == EmpType.TECHNICIAN)
+        btnNewPCUserType.setEnabled(false);
+        if (PCNMClientStart.user.getType() == EmpType.TECHNICIAN)
+        btnUpdate.setEnabled(false);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed

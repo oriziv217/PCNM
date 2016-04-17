@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- *
+ * This class implements PC user types server side commands
  * @author ori ziv
  */
 public class UserTypesLogic extends Logic {
@@ -40,6 +40,12 @@ public class UserTypesLogic extends Logic {
         return new Message(MessageType.GET_ALL_USERS, users_tbl);
     }
 
+    /**
+     * This method implements server side add PC user type command
+     * @param pcUserType
+     * @return
+     * @throws SQLException
+     */
     public static Object addPCUserType(PCUserType pcUserType) throws SQLException {
         int sts = statusToInt(pcUserType.getStatus());
         if (sts == 4) throw new SQLException("Invalid input");
@@ -56,6 +62,12 @@ public class UserTypesLogic extends Logic {
         throw new SQLDataException("Error adding user " + pcUserType.getName());
     }
 
+    /**
+     * This method implements server side update PC user type command
+     * @param pcUserType
+     * @return
+     * @throws SQLException
+     */
     public static Object updatePCUserType(PCUserType pcUserType) throws SQLException {
         int sts = statusToInt(pcUserType.getStatus());
         if (sts == 4) throw new SQLException("Invalid input");

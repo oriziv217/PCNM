@@ -1,5 +1,6 @@
 package PCNMClient.PCNMClientView;
 
+import Entities.EmpType;
 import PCNMClient.PCNMClientController.WorkstationCTRL;
 import PCNMClient.PCNMClientStart;
 import java.awt.event.WindowAdapter;
@@ -15,7 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- *
+ * This class implements Workstation search-results screen
  * @author Ori Ziv
  */
 public class WorkStationSearchResaults extends javax.swing.JPanel {
@@ -58,6 +59,10 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
         doneInit = true;
     }
 
+    /**
+     * Creates new form WorkStationSearchResaults with content
+     * @param ws_tbl
+     */
     public WorkStationSearchResaults(ArrayList<String> ws_tbl) {
         this();
         doneInit = false;
@@ -436,6 +441,8 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
         for (String[] typ : types) {
             cmbFltrType.addItem(typ[1]);
         }
+        if (PCNMClientStart.user.getType() == EmpType.TECHNICIAN)
+        btnNewWorkstation.setEnabled(false);
     }
 
     // Code for dispatching events from components to event handlers.
