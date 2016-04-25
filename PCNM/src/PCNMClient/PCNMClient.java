@@ -109,6 +109,7 @@ public class PCNMClient extends AbstractClient {
                 break;
             case GET_COMP_WITH_FILTER:
                 ComponentCTRL.processSearchResults((ArrayList<Component>)response.getEntity());
+                break;
             case DB_PROBLEM:
                 WindowMustHave.showDialog(null, response.getDataString(), DialogType.ERROR);
                 break;

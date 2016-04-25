@@ -1,22 +1,57 @@
 package PCNMClient.PCNMClientView;
 
+import PCNMClient.PCNMClientController.ComponentCTRL;
+import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Arrays;
+import javax.swing.JLabel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Ori Ziv
  */
 public class ComponentSearchResultSCR extends javax.swing.JPanel {
+    private boolean doneInit;
+    private int fltrField;
+    private String fltrStirng;
+    private float fltrPrice;
+    private int prFltrSelected;
+    private int vaFltrSelected;
+    private float fltrValAdd;
+    private boolean fltrEnabled;
+    private ArrayList<String> ws_tbl;
+    private int rowCounter;
+    private boolean[] rowsToShow;
+    private String[][] tableContent;
 
     /**
      * Creates new form ComponentSearchResultSCR
      */
     public ComponentSearchResultSCR() {
+        doneInit = false;
+        fltrField = 0;
+        fltrStirng = "";
+        fltrPrice = 0;
+        prFltrSelected = -1;
+        vaFltrSelected = -1;
+        fltrValAdd = 0;
+        fltrEnabled = false;
         initComponents();
+        doneInit = true;
     }
 
     public ComponentSearchResultSCR(ArrayList<String> ws_tbl) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this();
+        doneInit = false;
+        this.ws_tbl = ws_tbl;
+        rowCounter = ws_tbl.size();
+        rowsToShow = new boolean[rowCounter];
+        Arrays.fill(rowsToShow, true);
+        tableContent = new String[rowCounter][5];
+        loadSearchResults();
+        doneInit = true;
     }
 
     /**
@@ -36,12 +71,13 @@ public class ComponentSearchResultSCR extends javax.swing.JPanel {
         lblFilterStr = new javax.swing.JLabel();
         txtFilterStr = new javax.swing.JTextField();
         chbEnabledOnly = new javax.swing.JCheckBox();
-        lblImportanceFilter = new javax.swing.JLabel();
-        cmbMoreLess = new javax.swing.JComboBox();
-        spnPrice = new javax.swing.JSpinner();
-        lblImportanceFilter1 = new javax.swing.JLabel();
-        cmbMoreLessValAdd = new javax.swing.JComboBox();
-        spnValAd = new javax.swing.JSpinner();
+        lblPriceFilter = new javax.swing.JLabel();
+        cmbPriceFilter = new javax.swing.JComboBox();
+        spnPriceFilter = new javax.swing.JSpinner();
+        lblValAddFilter = new javax.swing.JLabel();
+        cmbValAddFilter = new javax.swing.JComboBox();
+        spnValAddFilter = new javax.swing.JSpinner();
+        btnClose = new javax.swing.JButton();
 
         FormListener formListener = new FormListener();
 
@@ -87,7 +123,6 @@ public class ComponentSearchResultSCR extends javax.swing.JPanel {
             }
         });
         tblSearchResault.setRowHeight(32);
-        tblSearchResault.setSelectionMode();
         jScrollPane1.setViewportView(tblSearchResault);
         if (tblSearchResault.getColumnModel().getColumnCount() > 0) {
             tblSearchResault.getColumnModel().getColumn(0).setPreferredWidth(120);
@@ -99,7 +134,7 @@ public class ComponentSearchResultSCR extends javax.swing.JPanel {
         tblSearchResault.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 24));
 
         cmbFltrField.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
-        cmbFltrField.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Show All", "Workstation Name", "Workstation Description" }));
+        cmbFltrField.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Show All", "Component Name", "Component Description" }));
         cmbFltrField.addActionListener(formListener);
 
         lblFilterStr.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
@@ -113,27 +148,39 @@ public class ComponentSearchResultSCR extends javax.swing.JPanel {
         chbEnabledOnly.setText("Show Enabled Only");
         chbEnabledOnly.addActionListener(formListener);
 
-        lblImportanceFilter.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
-        lblImportanceFilter.setText("Price Filter:");
+        lblPriceFilter.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        lblPriceFilter.setText("Price Filter:");
 
-        cmbMoreLess.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
-        cmbMoreLess.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "All", "More Then", "Less Then" }));
-        cmbMoreLess.addActionListener(formListener);
+        cmbPriceFilter.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        cmbPriceFilter.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "All", "More Then", "Less Then" }));
+        cmbPriceFilter.addActionListener(formListener);
 
-        spnPrice.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-        spnPrice.setModel(new javax.swing.SpinnerNumberModel(0.0f, 0.0f, null, 1.0f));
-        spnPrice.setEnabled(false);
+        spnPriceFilter.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        spnPriceFilter.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.0f), Float.valueOf(0.0f), null, Float.valueOf(1.0f)));
+        spnPriceFilter.setEnabled(false);
+        spnPriceFilter.addChangeListener(formListener);
 
-        lblImportanceFilter1.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
-        lblImportanceFilter1.setText("Value Add Filter:");
+        lblValAddFilter.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        lblValAddFilter.setText("Value Add Filter:");
 
-        cmbMoreLessValAdd.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
-        cmbMoreLessValAdd.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "All", "More Then", "Less Then" }));
-        cmbMoreLessValAdd.addActionListener(formListener);
+        cmbValAddFilter.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        cmbValAddFilter.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "All", "More Then", "Less Then" }));
+        cmbValAddFilter.addActionListener(formListener);
 
-        spnValAd.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-        spnValAd.setModel(new javax.swing.SpinnerNumberModel(1.0d, 0.1d, 1.9d, 0.1d));
-        spnValAd.setEnabled(false);
+        spnValAddFilter.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        spnValAddFilter.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(1.0f), Float.valueOf(1.0f), Float.valueOf(1.99f), Float.valueOf(0.1f)));
+        spnValAddFilter.setEnabled(false);
+        spnValAddFilter.addChangeListener(formListener);
+
+        btnClose.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnClose.setForeground(java.awt.Color.red);
+        btnClose.setToolTipText("Close screen and return to log-in screen");
+        btnClose.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnClose.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnClose.setInheritsPopupMenu(true);
+        btnClose.setLabel("Close");
+        btnClose.setName("btnClose"); // NOI18N
+        btnClose.addActionListener(formListener);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -154,20 +201,23 @@ public class ComponentSearchResultSCR extends javax.swing.JPanel {
                         .addContainerGap())
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblImportanceFilter)
+                        .addComponent(lblPriceFilter)
                         .addGap(18, 18, 18)
-                        .addComponent(cmbMoreLess, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cmbPriceFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(spnPrice)
+                        .addComponent(spnPriceFilter)
                         .addGap(18, 18, 18)
-                        .addComponent(lblImportanceFilter1)
+                        .addComponent(lblValAddFilter)
                         .addGap(18, 18, 18)
-                        .addComponent(cmbMoreLessValAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cmbValAddFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(spnValAd)
+                        .addComponent(spnValAddFilter)
                         .addGap(18, 18, 18)
                         .addComponent(chbEnabledOnly)
-                        .addGap(94, 94, 94))))
+                        .addGap(94, 94, 94))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -183,28 +233,27 @@ public class ComponentSearchResultSCR extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblImportanceFilter)
-                        .addComponent(cmbMoreLess, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(spnPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblImportanceFilter1)
-                        .addComponent(cmbMoreLessValAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(lblPriceFilter)
+                        .addComponent(cmbPriceFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(spnPriceFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblValAddFilter)
+                        .addComponent(cmbValAddFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(spnValAd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(spnValAddFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(chbEnabledOnly)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 505, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(128, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
-        cmbMoreLess.setSelectedIndex(ComponentCTRL.getPriceCmb());
-        spnPrice.setValue(ComponentCTRL.getPriceFilter());
-        cmbMoreLessValAdd.setSelectedIndex(ComponentCTRL.getValAddCmb());
-        spnValAd.setValue(ComponentCTRL.getValAddFilter());
+        spnPriceFilter.setValue(ComponentCTRL.getPriceFilter());
     }
 
     // Code for dispatching events from components to event handlers.
 
-    private class FormListener implements java.awt.event.ActionListener, java.awt.event.FocusListener {
+    private class FormListener implements java.awt.event.ActionListener, java.awt.event.FocusListener, javax.swing.event.ChangeListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == cmbFltrField) {
@@ -216,11 +265,14 @@ public class ComponentSearchResultSCR extends javax.swing.JPanel {
             else if (evt.getSource() == chbEnabledOnly) {
                 ComponentSearchResultSCR.this.chbEnabledOnlyActionPerformed(evt);
             }
-            else if (evt.getSource() == cmbMoreLess) {
-                ComponentSearchResultSCR.this.cmbMoreLessActionPerformed(evt);
+            else if (evt.getSource() == cmbPriceFilter) {
+                ComponentSearchResultSCR.this.cmbPriceFilterActionPerformed(evt);
             }
-            else if (evt.getSource() == cmbMoreLessValAdd) {
-                ComponentSearchResultSCR.this.cmbMoreLessValAddActionPerformed(evt);
+            else if (evt.getSource() == cmbValAddFilter) {
+                ComponentSearchResultSCR.this.cmbValAddFilterActionPerformed(evt);
+            }
+            else if (evt.getSource() == btnClose) {
+                ComponentSearchResultSCR.this.btnCloseActionPerformed(evt);
             }
         }
 
@@ -230,6 +282,15 @@ public class ComponentSearchResultSCR extends javax.swing.JPanel {
         public void focusLost(java.awt.event.FocusEvent evt) {
             if (evt.getSource() == txtFilterStr) {
                 ComponentSearchResultSCR.this.txtFilterStrFocusLost(evt);
+            }
+        }
+
+        public void stateChanged(javax.swing.event.ChangeEvent evt) {
+            if (evt.getSource() == spnPriceFilter) {
+                ComponentSearchResultSCR.this.spnPriceFilterStateChanged(evt);
+            }
+            else if (evt.getSource() == spnValAddFilter) {
+                ComponentSearchResultSCR.this.spnValAddFilterStateChanged(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
@@ -266,35 +327,120 @@ public class ComponentSearchResultSCR extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_chbEnabledOnlyActionPerformed
 
-    private void cmbMoreLessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbMoreLessActionPerformed
-        int selected = cmbMoreLess.getSelectedIndex();
-        if (selected == -1) return;
-        if (selected == 0) spnPrice.setEnabled(false);
-        else spnPrice.setEnabled(true);
-    }//GEN-LAST:event_cmbMoreLessActionPerformed
+    private void cmbPriceFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbPriceFilterActionPerformed
+        if (doneInit) {
+            prFltrSelected = cmbPriceFilter.getSelectedIndex();
+            if (prFltrSelected == -1) return;
+            if (prFltrSelected == 0) spnPriceFilter.setEnabled(false);
+            else {
+                spnPriceFilter.setEnabled(true);
+                fltrPrice = (Float)spnPriceFilter.getValue();
+                if (fltrPrice > 0) applyFilter();
+            }
+        }
+    }//GEN-LAST:event_cmbPriceFilterActionPerformed
 
-    private void cmbMoreLessValAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbMoreLessValAddActionPerformed
-        int selected = cmbMoreLessValAdd.getSelectedIndex();
-        if (selected == -1) return;
-        if (selected == 0) spnValAd.setEnabled(false);
-        else spnValAd.setEnabled(true);
-    }//GEN-LAST:event_cmbMoreLessValAddActionPerformed
+    private void cmbValAddFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbValAddFilterActionPerformed
+        if (doneInit) {
+            vaFltrSelected = cmbValAddFilter.getSelectedIndex();
+            if (vaFltrSelected == -1) return;
+            if (vaFltrSelected == 0) spnValAddFilter.setEnabled(false);
+            else {
+                spnValAddFilter.setEnabled(true);
+                fltrValAdd = (Float)spnValAddFilter.getValue();
+                if (fltrValAdd > 0) applyFilter();
+            }
+        }
+    }//GEN-LAST:event_cmbValAddFilterActionPerformed
+
+    private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
+        doneInit = false;
+        ComponentCTRL.searchResaultCloseBtnPressed();
+    }//GEN-LAST:event_btnCloseActionPerformed
+
+    private void spnPriceFilterStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnPriceFilterStateChanged
+        if (doneInit) {
+            prFltrSelected = cmbPriceFilter.getSelectedIndex();
+            if (prFltrSelected < 1) return;
+            fltrPrice = (Float)spnPriceFilter.getValue();
+            applyFilter();
+        }
+    }//GEN-LAST:event_spnPriceFilterStateChanged
+
+    private void spnValAddFilterStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnValAddFilterStateChanged
+        if (doneInit) {
+            vaFltrSelected = cmbValAddFilter.getSelectedIndex();
+            if (vaFltrSelected < 1) return;
+            fltrValAdd = (Float)spnValAddFilter.getValue();
+            applyFilter();
+        }
+    }//GEN-LAST:event_spnValAddFilterStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnClose;
     private javax.swing.JCheckBox chbEnabledOnly;
     private javax.swing.JComboBox cmbFltrField;
-    private javax.swing.JComboBox cmbMoreLess;
-    private javax.swing.JComboBox cmbMoreLessValAdd;
+    private javax.swing.JComboBox cmbPriceFilter;
+    private javax.swing.JComboBox cmbValAddFilter;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblFilterStr;
-    private javax.swing.JLabel lblImportanceFilter;
-    private javax.swing.JLabel lblImportanceFilter1;
+    private javax.swing.JLabel lblPriceFilter;
     private javax.swing.JLabel lblResultFilterBy;
     private javax.swing.JLabel lblResultsTitle;
-    private javax.swing.JSpinner spnPrice;
-    private javax.swing.JSpinner spnValAd;
+    private javax.swing.JLabel lblValAddFilter;
+    private javax.swing.JSpinner spnPriceFilter;
+    private javax.swing.JSpinner spnValAddFilter;
     private javax.swing.JTable tblSearchResault;
     private javax.swing.JTextField txtFilterStr;
     // End of variables declaration//GEN-END:variables
+
+    private void loadSearchResults() {
+        String row;
+        DefaultTableModel dtm = (DefaultTableModel)tblSearchResault.getModel();
+        dtm.setRowCount(rowCounter);
+        int cur_row = 0;
+        for (int i = 0 ; i < ws_tbl.size() ; i ++) {
+            if (rowsToShow[i]) {
+                row = ws_tbl.get(i);
+                tableContent[i] = row.split(",");
+                dtm.setValueAt(tableContent[i][1], cur_row, 0);
+                dtm.setValueAt(tableContent[i][2], cur_row, 1);
+                dtm.setValueAt(Float.parseFloat(tableContent[i][3]), cur_row, 2);
+                dtm.setValueAt(Float.parseFloat(tableContent[i][4]), cur_row, 3);
+                dtm.setValueAt(tableContent[i][5], cur_row, 4);
+                cur_row ++;
+                if (cur_row > rowCounter)
+                    i = ws_tbl.size();
+            }
+        }
+        DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
+        leftRenderer.setHorizontalAlignment(JLabel.LEFT);
+        tblSearchResault.getColumnModel().getColumn(2).setCellRenderer(leftRenderer);
+        tblSearchResault.getColumnModel().getColumn(3).setCellRenderer(leftRenderer);
+    }
+
+    private void applyFilter() {
+        Arrays.fill(rowsToShow, true);
+        rowCounter = tableContent.length;
+        for (int i = 0 ; i < tableContent.length ; i ++) {
+            // apply filter by name
+            if (rowsToShow[i] && fltrField == 1 && !fltrStirng.isEmpty() && tableContent[i][1].toLowerCase().indexOf(fltrStirng) == -1) rowsToShow[i] = false;
+            // apply filter by decription
+            if (rowsToShow[i] && fltrField == 2 && !fltrStirng.isEmpty() && tableContent[i][2].toLowerCase().indexOf(fltrStirng) == -1) rowsToShow[i] = false;
+            // apply filter by price - more then x
+            if (rowsToShow[i] && prFltrSelected == 1 && Float.parseFloat(tableContent[i][3]) <= fltrPrice) rowsToShow[i] = false;
+            // apply filter by by price - less then x
+            if (rowsToShow[i] && prFltrSelected == 2 && Float.parseFloat(tableContent[i][3]) >= fltrPrice) rowsToShow[i] = false;
+            // apply filter by value add - more then x
+            if (rowsToShow[i] && vaFltrSelected == 1 && Float.parseFloat(tableContent[i][4]) <= fltrValAdd) rowsToShow[i] = false;
+            // apply filter by value add - less then x
+            if (rowsToShow[i] && vaFltrSelected == 2 && Float.parseFloat(tableContent[i][4]) >= fltrValAdd) rowsToShow[i] = false;
+            // apply filter by status (enabled only)
+            if (rowsToShow[i] && fltrEnabled && !tableContent[i][5].equals("Enabled")) rowsToShow[i] = false;
+            
+            if (!rowsToShow[i]) rowCounter --;
+        }
+        loadSearchResults();
+    }
 }

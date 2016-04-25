@@ -311,7 +311,7 @@
           <Font name="Times New Roman" size="18" style="0"/>
         </Property>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-          <SpinnerModel initial="1.0" maximum="1.9" minimum="0.1" numberType="java.lang.Double" stepSize="0.1" type="number"/>
+          <SpinnerModel initial="1.0" maximum="1.99" minimum="1.0" numberType="java.lang.Float" stepSize="0.1" type="number"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>

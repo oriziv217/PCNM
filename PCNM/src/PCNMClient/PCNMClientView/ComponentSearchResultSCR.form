@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <Properties>
     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
       <Color blue="ff" green="ff" id="white" palette="1" red="ff" type="palette"/>
@@ -40,20 +40,24 @@
                   </Group>
                   <Component id="jScrollPane1" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="lblImportanceFilter" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblPriceFilter" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="cmbMoreLess" min="-2" pref="200" max="-2" attributes="0"/>
+                      <Component id="cmbPriceFilter" min="-2" pref="200" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="spnPrice" max="32767" attributes="0"/>
+                      <Component id="spnPriceFilter" max="32767" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="lblImportanceFilter1" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblValAddFilter" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="cmbMoreLessValAdd" min="-2" pref="200" max="-2" attributes="0"/>
+                      <Component id="cmbValAddFilter" min="-2" pref="200" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="spnValAd" max="32767" attributes="0"/>
+                      <Component id="spnValAddFilter" max="32767" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="chbEnabledOnly" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="94" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="btnClose" min="-2" pref="120" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -74,20 +78,22 @@
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lblImportanceFilter" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="cmbMoreLess" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="spnPrice" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblImportanceFilter1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="cmbMoreLessValAdd" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblPriceFilter" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cmbPriceFilter" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="spnPriceFilter" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblValAddFilter" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cmbValAddFilter" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                      <Component id="spnValAd" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="spnValAddFilter" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="chbEnabledOnly" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="jScrollPane1" min="-2" pref="505" max="-2" attributes="0"/>
-              <EmptySpace pref="128" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" pref="544" max="32767" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="btnClose" min="-2" pref="60" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -171,9 +177,6 @@
               </TableColumnModel>
             </Property>
             <Property name="rowHeight" type="int" value="32"/>
-            <Property name="selectionModel" type="javax.swing.ListSelectionModel" editor="org.netbeans.modules.form.editors2.JTableSelectionModelEditor">
-              <JTableSelectionModel selectionMode="-1"/>
-            </Property>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
             </Property>
@@ -192,8 +195,8 @@
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="3">
             <StringItem index="0" value="Show All"/>
-            <StringItem index="1" value="Workstation Name"/>
-            <StringItem index="2" value="Workstation Description"/>
+            <StringItem index="1" value="Component Name"/>
+            <StringItem index="2" value="Component Description"/>
           </StringArray>
         </Property>
       </Properties>
@@ -231,7 +234,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chbEnabledOnlyActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="lblImportanceFilter">
+    <Component class="javax.swing.JLabel" name="lblPriceFilter">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Times New Roman" size="24" style="0"/>
@@ -239,7 +242,7 @@
         <Property name="text" type="java.lang.String" value="Price Filter:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="cmbMoreLess">
+    <Component class="javax.swing.JComboBox" name="cmbPriceFilter">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Times New Roman" size="24" style="0"/>
@@ -253,13 +256,10 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbMoreLessActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbPriceFilterActionPerformed"/>
       </Events>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="cmbMoreLess.setSelectedIndex(ComponentCTRL.getPriceCmb());&#xd;&#xa;"/>
-      </AuxValues>
     </Component>
-    <Component class="javax.swing.JSpinner" name="spnPrice">
+    <Component class="javax.swing.JSpinner" name="spnPriceFilter">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Times New Roman" size="18" style="0"/>
@@ -269,11 +269,14 @@
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="spnPriceFilterStateChanged"/>
+      </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="spnPrice.setValue(ComponentCTRL.getPriceFilter());&#xd;&#xa;"/>
+        <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="spnPriceFilter.setValue(ComponentCTRL.getPriceFilter());&#xd;&#xa;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JLabel" name="lblImportanceFilter1">
+    <Component class="javax.swing.JLabel" name="lblValAddFilter">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Times New Roman" size="24" style="0"/>
@@ -281,7 +284,7 @@
         <Property name="text" type="java.lang.String" value="Value Add Filter:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="cmbMoreLessValAdd">
+    <Component class="javax.swing.JComboBox" name="cmbValAddFilter">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Times New Roman" size="24" style="0"/>
@@ -295,25 +298,47 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbMoreLessValAddActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbValAddFilterActionPerformed"/>
       </Events>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="cmbMoreLessValAdd.setSelectedIndex(ComponentCTRL.getValAddCmb());"/>
-      </AuxValues>
     </Component>
-    <Component class="javax.swing.JSpinner" name="spnValAd">
+    <Component class="javax.swing.JSpinner" name="spnValAddFilter">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Times New Roman" size="18" style="0"/>
         </Property>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-          <SpinnerModel initial="1.0" maximum="1.9" minimum="0.1" numberType="java.lang.Double" stepSize="0.1" type="number"/>
+          <SpinnerModel initial="1.0" maximum="1.99" minimum="1.0" numberType="java.lang.Float" stepSize="0.1" type="number"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="spnValAd.setValue(ComponentCTRL.getValAddFilter());"/>
-      </AuxValues>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="spnValAddFilterStateChanged"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnClose">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Times New Roman" size="24" style="1"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" id="red" palette="1" red="ff" type="palette"/>
+        </Property>
+        <Property name="toolTipText" type="java.lang.String" value="Close screen and return to log-in screen"/>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
+            <BevelBorder/>
+          </Border>
+        </Property>
+        <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+          <Color id="Default Cursor"/>
+        </Property>
+        <Property name="inheritsPopupMenu" type="boolean" value="true"/>
+        <Property name="label" type="java.lang.String" value="Close"/>
+        <Property name="name" type="java.lang.String" value="btnClose" noResource="true"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCloseActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

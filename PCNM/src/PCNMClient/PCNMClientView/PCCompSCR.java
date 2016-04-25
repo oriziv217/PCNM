@@ -99,7 +99,7 @@ public class PCCompSCR extends javax.swing.JPanel {
         });
 
         spnPrice.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-        spnPrice.setModel(new javax.swing.SpinnerNumberModel(0.0f, 0.0f, null, 1.0f));
+        spnPrice.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.0f), Float.valueOf(0.0f), null, Float.valueOf(1.0f)));
         spnPrice.setEnabled(false);
 
         cmbMoreLessValAdd.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
@@ -111,7 +111,7 @@ public class PCCompSCR extends javax.swing.JPanel {
         });
 
         spnValAd.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-        spnValAd.setModel(new javax.swing.SpinnerNumberModel(1.0d, 0.1d, 1.9d, 0.1d));
+        spnValAd.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(1.0f), Float.valueOf(1.0f), Float.valueOf(1.99f), Float.valueOf(0.1f)));
         spnValAd.setEnabled(false);
 
         cmbStatus.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N

@@ -8,6 +8,7 @@ import PCNMClient.PCNMClientModel;
 import PCNMClient.PCNMClientStart;
 import PCNMClient.PCNMClientView.ComponentSearchResultSCR;
 import PCNMClient.PCNMClientView.NetMapSCR;
+import PCNMClient.PCNMClientView.PCCompSCR;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -199,5 +200,9 @@ public class ComponentCTRL extends CTRL {
             ws_tbl.add(cmp.toString());
         }
         PCNMClientStart.switchPanels(new ComponentSearchResultSCR(ws_tbl));
+    }
+
+    public static void searchResaultCloseBtnPressed() {
+        PCNMClientStart.switchPanels(new PCCompSCR());
     }
 }
