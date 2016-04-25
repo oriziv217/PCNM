@@ -97,6 +97,11 @@ public enum MessageType {
     UPDATE_WSTYPE,
     
     /**
+     * Get Components from DB by filter
+     */
+    GET_COMP_WITH_FILTER,
+    
+    /**
      * SQL Exception was thrown
      */
     DB_PROBLEM

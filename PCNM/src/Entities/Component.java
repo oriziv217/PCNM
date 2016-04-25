@@ -10,7 +10,7 @@ public class Component implements Serializable, Comparable<Component> {
     private int ID;
     private String name;
     private String description;
-    private int price;
+    private float price;
     private float valueAdd;
     private Status status;
 
@@ -34,7 +34,7 @@ public class Component implements Serializable, Comparable<Component> {
      * @param valueAdd
      * @param status
      */
-    public Component(String name, String description, int price, float valueAdd, Status status) {
+    public Component(String name, String description, float price, float valueAdd, Status status) {
         this.ID = 0;
         this.name = name;
         this.description = description;
@@ -52,7 +52,7 @@ public class Component implements Serializable, Comparable<Component> {
      * @param valueAdd
      * @param status
      */
-    public Component(int ID, String name, String description, int price, float valueAdd, Status status) {
+    public Component(int ID, String name, String description, float price, float valueAdd, Status status) {
         this.ID = ID;
         this.name = name;
         this.description = description;
@@ -126,7 +126,7 @@ public class Component implements Serializable, Comparable<Component> {
      * Price getter
      * @return
      */
-    public int getPrice() {
+    public float getPrice() {
         return price;
     }
 
@@ -134,7 +134,7 @@ public class Component implements Serializable, Comparable<Component> {
      * Price setter
      * @param price
      */
-    public void setPrice(int price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 

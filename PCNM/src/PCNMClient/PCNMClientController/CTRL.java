@@ -3,13 +3,14 @@ package PCNMClient.PCNMClientController;
 
 import PCNMClient.PCNMClientModel;
 import PCNMClient.PCNMClientStart;
+import PCNMServer.ServerLogic.Logic;
 import java.io.IOException;
 
 /**
  * This class implements some common controller functionality
  * @author ori ziv
  */
-public class CTRL {
+public class CTRL extends Logic {
     /**
      * This method implements close button pressed event
      */

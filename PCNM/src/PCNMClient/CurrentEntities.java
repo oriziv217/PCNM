@@ -1,5 +1,6 @@
 package PCNMClient;
 
+import Entities.Component;
 import Entities.WSType;
 import Entities.Workstation;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.Collections;
 public class CurrentEntities {
     private ArrayList<WSType> wstypes;
     private ArrayList<Workstation> workstations;
+    private ArrayList<Component> components;
 
     /**
      * Default constructor
@@ -43,6 +45,22 @@ public class CurrentEntities {
      */
     public void setWstypes(ArrayList<WSType> wstypes) {
         this.wstypes = wstypes;
+    }
+    
+    /**
+     * current components getter
+     * @return
+     */
+    public ArrayList<Component> getComponents() {
+        return components;
+    }
+    
+    /**
+     * current components setter
+     * @param components
+     */
+    public void setCompnents (ArrayList<Component> components) {
+        this.components = components;
     }
     
     /**

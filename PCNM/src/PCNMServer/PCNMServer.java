@@ -3,6 +3,7 @@ package PCNMServer;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import Entities.*;
+import PCNMServer.ServerLogic.ComponentLogic;
 import PCNMServer.ServerLogic.EmployeesLogic;
 import PCNMServer.ServerLogic.UserTypesLogic;
 import PCNMServer.ServerLogic.WorkstationLogic;
@@ -98,6 +99,9 @@ public class PCNMServer extends AbstractServer {
                 break;
             case UPDATE_WSTYPE:
                 client.sendToClient(WorkstationLogic.updateWSType((WSType)message.getEntity()));
+                break;
+            case GET_COMP_WITH_FILTER:
+                client.sendToClient(ComponentLogic.getComponentsWithFilter((Component)message.getEntity()));
                 break;
             }
         } catch (IOException e) {

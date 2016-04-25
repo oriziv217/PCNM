@@ -1,5 +1,6 @@
 package PCNMClient;
 
+import Entities.Component;
 import Entities.Employee;
 import Entities.Message;
 import Entities.MessageType;
@@ -7,6 +8,7 @@ import Entities.PCUserType;
 import Entities.QuickDic;
 import Entities.WSType;
 import Entities.Workstation;
+import PCNMClient.PCNMClientController.ComponentCTRL;
 import PCNMClient.PCNMClientController.HomeCTRL;
 import PCNMClient.PCNMClientController.UserTypesCTRL;
 import PCNMClient.PCNMClientController.WorkstationCTRL;
@@ -105,6 +107,8 @@ public class PCNMClient extends AbstractClient {
                 } else
                     WorkstationCTRL.refreshWSTypeWindow(response.getMsgType(), (WSType)response.getEntity());
                 break;
+            case GET_COMP_WITH_FILTER:
+                ComponentCTRL.processSearchResults((ArrayList<Component>)response.getEntity());
             case DB_PROBLEM:
                 WindowMustHave.showDialog(null, response.getDataString(), DialogType.ERROR);
                 break;

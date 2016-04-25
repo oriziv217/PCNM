@@ -76,7 +76,7 @@ public class DBConnect {
          * 					You can use SQL aggregation functions here if you need to as long as you keep SQL syntax.
          * 					Fields string shell look like this: "field1, field2" or: "MAX(field1)"
          * @param filter - query filter.
-         * 					If null is supplied then no WHERE clause will be added to the query.
+         * 					If null is supplied or if filter is an empty string then no WHERE clause will be added to the query.
          * 					You can add ORDER BY clause here as long as you keep SQL syntax.
          * 					You can add GROUP BY clause here if necessary as you keep SQL syntax.
          * 					Filter string shell look like this: field1 = 'value1' AND field2 = 'value2'"
@@ -99,7 +99,7 @@ public class DBConnect {
                 String query = "SELECT " + select + " FROM " + table;
 
                 // add filter if necessary
-                if (filter != null) query = query + " WHERE " + filter;
+                if (filter != null && !filter.isEmpty()) query = query + " WHERE " + filter;
 
                 // execute query
                 Statement stmnt = conDB.createStatement();
