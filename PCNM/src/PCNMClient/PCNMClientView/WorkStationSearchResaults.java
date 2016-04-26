@@ -640,7 +640,7 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
             return;
         }
         isUpdate = true;
-        int index = tblSearchResault.convertRowIndexToModel(selected);
+        int index = getIDByName(tblSearchResault.convertRowIndexToModel(selected));
         onScreenWSID = Integer.parseInt(tableContent[index][0]);
         txtAddWorkstationName.setText(tableContent[index][1]);
         txtAddWorkstationDescription.setText(tableContent[index][2]);
@@ -773,6 +773,15 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
             case "Suspended":
                 return 2;
         }
+        return -1;
+    }
+    
+    private int getIDByName(int row) {
+        DefaultTableModel dtm = (DefaultTableModel)tblSearchResault.getModel();
+        String name = (String)dtm.getValueAt(row, 0);
+        for (int i = 0 ; i < tableContent.length ; i ++)
+            if (name.equals(tableContent[i][1]))
+                return i;
         return -1;
     }
 }

@@ -89,8 +89,8 @@ public class ComponentLogic extends Logic {
             search_results.add(new Component(rs.getInt("ID"),
                                                 rs.getString("name"),
                                                 rs.getString("description"),
-                                                rs.getFloat("price"),
-                                                rs.getFloat("valueAdd"),
+                                                roundFloat(rs.getFloat("price"), 2),
+                                                roundFloat(rs.getFloat("valueAdd"), 2),
                                                 intToStatus(rs.getInt("status"))));
         }
         return new Message(MessageType.GET_COMP_WITH_FILTER, search_results);
@@ -183,9 +183,9 @@ public class ComponentLogic extends Logic {
             rs = DBConnect.selectWithFilter(conDB, "component", null, "name = '" + comp.getName() + "'");
             rs.first();
             comp.setID(rs.getInt("ID"));
-            return new Message (MessageType.ADD_WSTYPE, comp, resultString);
+            return new Message (MessageType.ADD_COMPONENT, comp, resultString);
         }
         resultString = "Not OK";
-        return new Message(MessageType.ADD_WSTYPE, null, resultString);
+        return new Message(MessageType.ADD_COMPONENT, null, resultString);
     }
 }
