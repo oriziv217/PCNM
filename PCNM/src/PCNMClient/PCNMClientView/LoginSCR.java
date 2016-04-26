@@ -263,6 +263,7 @@ public class LoginSCR extends javax.swing.JFrame {
         // check rather login button should turnned on
         if (chbxDefaultPort.isSelected()) {
             txtPort.setEditable(false);
+            txtPort.setText("11111");
             port = 11111;
             canLogin();
         } else

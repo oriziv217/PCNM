@@ -103,7 +103,7 @@ public class HomeSCR extends javax.swing.JPanel {
         btnEmployees.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         btnEmployees.setForeground(java.awt.Color.red);
         btnEmployees.setText("System Users Management");
-        btnEmployees.setToolTipText("Manage users and roles witjin the system");
+        btnEmployees.setToolTipText("Manage users and roles within the system");
         btnEmployees.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnEmployees.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnEmployees.setInheritsPopupMenu(true);

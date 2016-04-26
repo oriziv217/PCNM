@@ -100,12 +100,17 @@ public class NetMapSCR extends javax.swing.JPanel {
         btnMngUserTyp.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         btnMngUserTyp.setForeground(java.awt.Color.red);
         btnMngUserTyp.setText("Manage User Types");
-        btnMngUserTyp.setToolTipText("Manage users and roles witjin the system");
+        btnMngUserTyp.setToolTipText("Manage users and roles within the system");
         btnMngUserTyp.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnMngUserTyp.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnMngUserTyp.setInheritsPopupMenu(true);
         btnMngUserTyp.setMinimumSize(new java.awt.Dimension(880, 700));
         btnMngUserTyp.setName("btnMngUserTyp"); // NOI18N
+        btnMngUserTyp.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                btnMngUserTypMouseDragged(evt);
+            }
+        });
         btnMngUserTyp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnMngUserTypActionPerformed(evt);
@@ -115,7 +120,7 @@ public class NetMapSCR extends javax.swing.JPanel {
         btnMngWorkstation.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         btnMngWorkstation.setForeground(java.awt.Color.red);
         btnMngWorkstation.setText("Manage Workstations");
-        btnMngWorkstation.setToolTipText("Manage users and roles witjin the system");
+        btnMngWorkstation.setToolTipText("Manage Workstations");
         btnMngWorkstation.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnMngWorkstation.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnMngWorkstation.setInheritsPopupMenu(true);
@@ -130,7 +135,7 @@ public class NetMapSCR extends javax.swing.JPanel {
         btnMngPCComp.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         btnMngPCComp.setForeground(java.awt.Color.red);
         btnMngPCComp.setText("Manage PC Components");
-        btnMngPCComp.setToolTipText("Manage users and roles witjin the system");
+        btnMngPCComp.setToolTipText("Manage PC Components");
         btnMngPCComp.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnMngPCComp.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnMngPCComp.setInheritsPopupMenu(true);
@@ -223,6 +228,10 @@ public class NetMapSCR extends javax.swing.JPanel {
         frame.setTitle("PCNM - Manage PC components");
         NetMapCTRL.btnMngPCCompPressed();
     }//GEN-LAST:event_btnMngPCCompActionPerformed
+
+    private void btnMngUserTypMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnMngUserTypMouseDragged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnMngUserTypMouseDragged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

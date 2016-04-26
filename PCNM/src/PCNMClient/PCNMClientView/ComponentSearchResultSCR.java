@@ -309,7 +309,7 @@ public class ComponentSearchResultSCR extends javax.swing.JPanel {
 
         btnClose.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         btnClose.setForeground(java.awt.Color.red);
-        btnClose.setToolTipText("Close screen and return to log-in screen");
+        btnClose.setToolTipText("Close screen and return to PC component management screen");
         btnClose.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnClose.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnClose.setInheritsPopupMenu(true);
@@ -319,7 +319,7 @@ public class ComponentSearchResultSCR extends javax.swing.JPanel {
 
         btnNewComponent.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         btnNewComponent.setText("New Component");
-        btnNewComponent.setToolTipText("Add new system user");
+        btnNewComponent.setToolTipText("Add new component");
         btnNewComponent.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnNewComponent.setMaximumSize(new java.awt.Dimension(99, 33));
         btnNewComponent.setMinimumSize(new java.awt.Dimension(99, 33));
@@ -328,7 +328,7 @@ public class ComponentSearchResultSCR extends javax.swing.JPanel {
 
         btnUpdateComponent.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         btnUpdateComponent.setText("Update Selected");
-        btnUpdateComponent.setToolTipText("Add new system user");
+        btnUpdateComponent.setToolTipText("Update selected component");
         btnUpdateComponent.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnUpdateComponent.setMaximumSize(new java.awt.Dimension(99, 33));
         btnUpdateComponent.setMinimumSize(new java.awt.Dimension(99, 33));
@@ -439,14 +439,14 @@ public class ComponentSearchResultSCR extends javax.swing.JPanel {
             else if (evt.getSource() == btnNewComponent) {
                 ComponentSearchResultSCR.this.btnNewComponentActionPerformed(evt);
             }
+            else if (evt.getSource() == btnUpdateComponent) {
+                ComponentSearchResultSCR.this.btnUpdateComponentActionPerformed(evt);
+            }
             else if (evt.getSource() == btnAddComponentOK) {
                 ComponentSearchResultSCR.this.btnAddComponentOKActionPerformed(evt);
             }
             else if (evt.getSource() == btnAddComponentCancel) {
                 ComponentSearchResultSCR.this.btnAddComponentCancelActionPerformed(evt);
-            }
-            else if (evt.getSource() == btnUpdateComponent) {
-                ComponentSearchResultSCR.this.btnUpdateComponentActionPerformed(evt);
             }
         }
 

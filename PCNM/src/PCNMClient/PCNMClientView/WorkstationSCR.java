@@ -103,7 +103,7 @@ public class WorkstationSCR extends javax.swing.JPanel {
 
         btnSearch.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         btnSearch.setText("Search");
-        btnSearch.setToolTipText("Close screen and return to log-in screen");
+        btnSearch.setToolTipText("Search Workstations");
         btnSearch.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnSearch.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnSearch.setInheritsPopupMenu(true);
@@ -176,7 +176,7 @@ public class WorkstationSCR extends javax.swing.JPanel {
 
         btnClose.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         btnClose.setForeground(java.awt.Color.red);
-        btnClose.setToolTipText("Close screen and return to log-in screen");
+        btnClose.setToolTipText("Close screen and return to Network Mapping screen");
         btnClose.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnClose.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnClose.setInheritsPopupMenu(true);
@@ -195,7 +195,7 @@ public class WorkstationSCR extends javax.swing.JPanel {
 
         btnMngTypes.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         btnMngTypes.setText("Manage Types");
-        btnMngTypes.setToolTipText("Close screen and return to log-in screen");
+        btnMngTypes.setToolTipText("Manage types of workstations");
         btnMngTypes.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnMngTypes.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnMngTypes.setInheritsPopupMenu(true);

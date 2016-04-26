@@ -221,7 +221,7 @@ public class UserTypeSCR extends javax.swing.JPanel {
 
         btnClose.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         btnClose.setForeground(java.awt.Color.red);
-        btnClose.setToolTipText("Close screen and return to log-in screen");
+        btnClose.setToolTipText("Close screen and return to Network Mapping screen");
         btnClose.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnClose.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnClose.setInheritsPopupMenu(true);
@@ -262,7 +262,7 @@ public class UserTypeSCR extends javax.swing.JPanel {
 
         btnUpdate.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         btnUpdate.setText("Update Selected");
-        btnUpdate.setToolTipText("Update Selected");
+        btnUpdate.setToolTipText("Update Selected PC user's type");
         btnUpdate.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnUpdate.setMaximumSize(new java.awt.Dimension(99, 33));
         btnUpdate.setMinimumSize(new java.awt.Dimension(99, 33));

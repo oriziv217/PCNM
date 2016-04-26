@@ -155,7 +155,9 @@
           <Color blue="0" green="0" id="red" palette="1" red="ff" type="palette"/>
         </Property>
         <Property name="text" type="java.lang.String" value="System Users Management"/>
-        <Property name="toolTipText" type="java.lang.String" value="Manage users and roles witjin the system"/>
+        <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="&quot;Manage users and roles within the system&quot;" type="code"/>
+        </Property>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
             <BevelBorder/>
@@ -174,7 +176,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEmployeesActionPerformed"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="if (PCNMClientStart.user.getType() != EmpType.ADMINISTRATOR)&#xd;&#xa;btnEmployees.setEnabled(false);"/>
+        <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="if (PCNMClientStart.user.getType() != EmpType.ADMINISTRATOR)&#xa;btnEmployees.setEnabled(false);"/>
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">

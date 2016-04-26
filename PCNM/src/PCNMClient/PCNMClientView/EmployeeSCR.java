@@ -282,7 +282,7 @@ public class EmployeeSCR extends javax.swing.JPanel implements TableModelListene
 
         btnApply.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         btnApply.setText("Apply");
-        btnApply.setToolTipText("Add new system user");
+        btnApply.setToolTipText("Apply changes on system user");
         btnApply.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnApply.setMaximumSize(new java.awt.Dimension(99, 33));
         btnApply.setMinimumSize(new java.awt.Dimension(99, 33));
@@ -295,7 +295,7 @@ public class EmployeeSCR extends javax.swing.JPanel implements TableModelListene
 
         btnRevertChanges.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         btnRevertChanges.setText("Revert Changes");
-        btnRevertChanges.setToolTipText("Add new system user");
+        btnRevertChanges.setToolTipText("Revert changes");
         btnRevertChanges.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnRevertChanges.setMaximumSize(new java.awt.Dimension(99, 33));
         btnRevertChanges.setMinimumSize(new java.awt.Dimension(99, 33));

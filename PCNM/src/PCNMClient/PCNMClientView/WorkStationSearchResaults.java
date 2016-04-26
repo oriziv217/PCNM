@@ -329,7 +329,7 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
 
         btnClose.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         btnClose.setForeground(java.awt.Color.red);
-        btnClose.setToolTipText("Close screen and return to log-in screen");
+        btnClose.setToolTipText("Close screen and return to Manage Workstations screen");
         btnClose.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnClose.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnClose.setInheritsPopupMenu(true);
@@ -339,7 +339,7 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
 
         btnNewWorkstation.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         btnNewWorkstation.setText("New Workstation");
-        btnNewWorkstation.setToolTipText("Add new system user");
+        btnNewWorkstation.setToolTipText("Add new workstation");
         btnNewWorkstation.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnNewWorkstation.setMaximumSize(new java.awt.Dimension(99, 33));
         btnNewWorkstation.setMinimumSize(new java.awt.Dimension(99, 33));
@@ -348,7 +348,7 @@ public class WorkStationSearchResaults extends javax.swing.JPanel {
 
         btnUpdateWorkstation.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         btnUpdateWorkstation.setText("Update Selected");
-        btnUpdateWorkstation.setToolTipText("Add new system user");
+        btnUpdateWorkstation.setToolTipText("Update selected workstation");
         btnUpdateWorkstation.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         btnUpdateWorkstation.setMaximumSize(new java.awt.Dimension(99, 33));
         btnUpdateWorkstation.setMinimumSize(new java.awt.Dimension(99, 33));
