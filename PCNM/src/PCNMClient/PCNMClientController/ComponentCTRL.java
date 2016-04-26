@@ -3,6 +3,7 @@ package PCNMClient.PCNMClientController;
 import Entities.Component;
 import Entities.Message;
 import Entities.MessageType;
+import Entities.QuickDic;
 import Entities.Status;
 import PCNMClient.PCNMClientModel;
 import PCNMClient.PCNMClientStart;
@@ -25,6 +26,8 @@ public class ComponentCTRL extends CTRL {
     private static int valAddCmb = 0;
     private static float valAddFilter = 0;
     private static int statusCmb = 0;
+    private static ArrayList<Component> comp_pull;
+    private static ArrayList<QuickDic> compQD;
 
     /**
      *
@@ -159,6 +162,14 @@ public class ComponentCTRL extends CTRL {
     }
     
     /**
+     * This method sets Quick-Dictionary of components in order to lower DB transaction costs
+     * @param dic
+     */
+    public static void setCompDic(ArrayList<QuickDic> dic) {
+        compQD = dic;
+    }
+    
+    /**
      * This method implements close button pressed event in Components search screen
      */
     public static void closeBtnPressed () {
@@ -195,14 +206,64 @@ public class ComponentCTRL extends CTRL {
 
     public static void processSearchResults(ArrayList<Component> search_result) {
         PCNMClientStart.cur_ent.setCompnents(search_result);
-        ArrayList<String>ws_tbl = new ArrayList<String>();
+        comp_pull = search_result;
+        ArrayList<String>cmp_tbl = new ArrayList<String>();
         for (Component cmp : search_result) {
-            ws_tbl.add(cmp.toString());
+            cmp_tbl.add(cmp.toString());
         }
-        PCNMClientStart.switchPanels(new ComponentSearchResultSCR(ws_tbl));
+        PCNMClientStart.switchPanels(new ComponentSearchResultSCR(cmp_tbl));
     }
 
     public static void searchResaultCloseBtnPressed() {
         PCNMClientStart.switchPanels(new PCCompSCR());
+    }
+
+    /**
+     * This method return true if Component's id+name combination is unique
+     * @param ID
+     * @param name
+     * @return
+     * @throws IOException
+     */
+    public static boolean isNameUnique(int ID, String name) throws IOException {
+        if (compQD == null) throw new IOException("Can't verify new component");
+        for (QuickDic qd : compQD)
+            if (qd.getID() != ID && qd.getFirstVal().equalsIgnoreCase(name))
+                return false;
+        return true;
+    }
+
+    public static void AddComponentBtnPressed(String name, String description, float price, float valueAdd, String status) throws IOException {
+        Status sts = stringToStatus(status);
+        PCNMClientModel.sendMessageToServer(new Message(MessageType.ADD_COMPONENT, new Component(name, description, price, valueAdd, sts)));
+    }
+
+    public static void UpdateComponentBtnPressed(int ID, String name, String description, float price, float valueAdd, String status) throws IOException {
+        Status sts = stringToStatus(status);
+        PCNMClientModel.sendMessageToServer(new Message(MessageType.UPDATE_COMPONENT, new Component(ID, name, description, price, valueAdd, sts)));
+    }
+
+    /**
+     * This Method implements processing add or update component command's results
+     * @param msgType
+     * @param comp
+     */
+    public static void refreshComponentWindow(MessageType msgType, Component comp) {
+        ArrayList<String>cmp_tbl = new ArrayList<String>();
+        if (comp != null && msgType == MessageType.ADD_COMPONENT) {
+            PCNMClientStart.cur_ent.addToComponents(comp);
+            compQD.add(new QuickDic(comp.getID(), comp.getName()));
+        } else if (comp != null && msgType == MessageType.UPDATE_COMPONENT) {
+            PCNMClientStart.cur_ent.updateComponents(comp);
+            for (QuickDic qd : compQD)
+                if (qd.getID() == comp.getID()) {
+                    String[] vals = {comp.getName()};
+                    qd.setVals(vals);
+                }
+        }
+        comp_pull = PCNMClientStart.cur_ent.getComponents();
+        for (Component row : comp_pull)
+            cmp_tbl.add(row.toString());
+        PCNMClientStart.switchPanels(new ComponentSearchResultSCR(cmp_tbl));
     }
 }

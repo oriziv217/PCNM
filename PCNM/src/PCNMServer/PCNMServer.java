@@ -103,6 +103,15 @@ public class PCNMServer extends AbstractServer {
             case GET_COMP_WITH_FILTER:
                 client.sendToClient(ComponentLogic.getComponentsWithFilter((Component)message.getEntity()));
                 break;
+            case GET_COMP_QUICKDIC:
+                client.sendToClient(ComponentLogic.createQuickDic());
+                break;
+            case ADD_COMPONENT:
+                client.sendToClient(ComponentLogic.addComponent((Component)message.getEntity()));
+                break;
+            case UPDATE_COMPONENT:
+                client.sendToClient(ComponentLogic.updateComponent((Component)message.getEntity()));
+                break;
             }
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, String.format("Lost connection with client %s", client.toString()));

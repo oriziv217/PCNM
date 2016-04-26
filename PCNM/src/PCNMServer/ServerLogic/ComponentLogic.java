@@ -3,6 +3,7 @@ package PCNMServer.ServerLogic;
 import Entities.Component;
 import Entities.Message;
 import Entities.MessageType;
+import Entities.QuickDic;
 import Entities.Status;
 import PCNMServer.ServerResources.DBConnect;
 import java.sql.Connection;
@@ -93,5 +94,98 @@ public class ComponentLogic extends Logic {
                                                 intToStatus(rs.getInt("status"))));
         }
         return new Message(MessageType.GET_COMP_WITH_FILTER, search_results);
+    }
+    
+    /**
+     * This method get all components names and IDs from the DB in order to create quick dictionary on client side
+     * @return
+     * @throws SQLException
+     */
+    public static Message createQuickDic() throws SQLException {
+        ArrayList<QuickDic> dic = new ArrayList<QuickDic>();
+        Connection conDB = DBConnect.mySQLConnection();
+        ResultSet rs;
+        String fields = "ID, name";
+        rs = DBConnect.selectWithFilter(conDB, "component", fields, null);
+        while (rs.next()) {
+            dic.add(new QuickDic(rs.getInt("ID"), rs.getString("name")));
+        }
+        return new Message(MessageType.GET_COMP_QUICKDIC, dic);
+    }
+
+    /**
+     * This method updates an existing Component record in the DB
+     * @param comp
+     * @return
+     * @throws SQLException
+     */
+    public static Message updateComponent(Component comp) throws SQLException {
+        Connection conDB = DBConnect.mySQLConnection();
+        boolean isUpdated;
+        String resultString;
+        
+        // check if comp is installed on a pc
+        if (comp.getStatus() != Status.ENABLE) {
+            ResultSet rs = DBConnect.selectWithFilter(conDB, "pccomp", "ID", "componentID = '" + comp.getID() + "' "
+                    + "AND EndDate = null");
+            if (rs.next())
+                return new Message (MessageType.UPDATE_COMPONENT, comp, "This component is installed on PC(s)");
+        }
+        
+        // update DB record
+        String[] fields = { "id",
+                            "name",
+                            "description",
+                            "price",
+                            "valueAdd",
+                            "status" };
+        String[] values = { Integer.toString(comp.getID()),
+                            comp.getName(),
+                            comp.getDescription(),
+                            String.valueOf(comp.getPrice()),
+                            String.valueOf(comp.getValueAdd()),
+                            String.valueOf(statusToInt(comp.getStatus())) };
+        String[] keyName = { "id" };
+        String[] keyVal = { Integer.toString(comp.getID()) };
+        isUpdated = DBConnect.updateSingleRecord (conDB, "component", fields, values, keyName, keyVal);
+        if (isUpdated) {
+            resultString = "OK";
+            return new Message (MessageType.UPDATE_COMPONENT, comp, resultString);
+        }
+        resultString = "Not OK";
+        return new Message(MessageType.UPDATE_COMPONENT, null, resultString);
+    }
+
+    /**
+     * This method adds a new component record to the DB
+     * @param comp
+     * @return
+     * @throws SQLException
+     */
+    public static Message addComponent(Component comp) throws SQLException {
+        Connection conDB = DBConnect.mySQLConnection();
+        ResultSet rs;
+        boolean isAdded;
+        String resultString;
+        String[] fields = { "name",
+                            "description",
+                            "price",
+                            "valueAdd",
+                            "status" };
+        String[] values = { comp.getName(),
+                            comp.getDescription(),
+                            String.valueOf(comp.getPrice()),
+                            String.valueOf(comp.getValueAdd()),
+                            String.valueOf(statusToInt(comp.getStatus())) };
+        isAdded = DBConnect.insertSingleRecord (conDB, "component", fields, values);
+        if (isAdded) {
+            resultString = "OK";
+            rs = DBConnect.selectWithFilter(conDB, "component", null, "name = '" + comp.getName() + "'");
+            rs.first();
+            comp.setID(rs.getInt("ID"));
+            return new Message (MessageType.ADD_WSTYPE, comp, resultString);
+        }
+        resultString = "Not OK";
+        return new Message(MessageType.ADD_WSTYPE, null, resultString);
     }
 }

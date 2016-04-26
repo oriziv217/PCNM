@@ -102,6 +102,21 @@ public enum MessageType {
     GET_COMP_WITH_FILTER,
     
     /**
+     * Get all Component's ID and name for quick-dic list
+     */
+    GET_COMP_QUICKDIC,
+    
+    /**
+     * Add new component
+     */
+    ADD_COMPONENT,
+    
+    /**
+     * Update an existing Component
+     */
+    UPDATE_COMPONENT,
+    
+    /**
      * SQL Exception was thrown
      */
     DB_PROBLEM

@@ -102,13 +102,37 @@ public class PCNMClient extends AbstractClient {
                             + "Please contact your System Administrator", DialogType.ERROR);
                 else if (response.getDataString().equals("Depandancy Error")) {
                     WindowMustHave.showDialog(null, "Can not update Workstation Type's status\n"
-                            + "while Workstations of this type exists.", DialogType.ERROR);
+                            + "while Workstations of this type exists.", DialogType.INFO);
                     WorkstationCTRL.refreshWSTypeWindow(MessageType.UPDATE_WSTYPE, null);
                 } else
                     WorkstationCTRL.refreshWSTypeWindow(response.getMsgType(), (WSType)response.getEntity());
                 break;
             case GET_COMP_WITH_FILTER:
                 ComponentCTRL.processSearchResults((ArrayList<Component>)response.getEntity());
+                try {
+                    PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_COMP_QUICKDIC));
+                } catch (IOException ex) {}
+                break;
+            case GET_COMP_QUICKDIC:
+                ComponentCTRL.setCompDic((ArrayList<QuickDic>) response.getEntity());
+                break;
+            case ADD_COMPONENT:
+                if (response.getDataString().equals("Not OK"))
+                    WindowMustHave.showDialog(null, "Error acurred while tring to add Component to the DB.\n"
+                            + "Please contact your System Administrator", DialogType.ERROR);
+                else
+                    ComponentCTRL.refreshComponentWindow(response.getMsgType(), (Component)response.getEntity());
+                break;
+            case UPDATE_COMPONENT:
+                if (response.getDataString().equals("Not OK"))
+                    WindowMustHave.showDialog(null, "Error acurred while tring to update Component to the DB.\n"
+                            + "Please contact your System Administrator", DialogType.ERROR);
+                else if (response.getDataString().equals("This component is installed on PC(s)")) {
+                    WindowMustHave.showDialog(null, "This component is installed on PC(s)."
+                            + "You must unintall this component before you can disable it.", DialogType.INFO);
+                    ComponentCTRL.refreshComponentWindow(response.getMsgType(), null);
+                } else
+                    ComponentCTRL.refreshComponentWindow(response.getMsgType(), (Component)response.getEntity());
                 break;
             case DB_PROBLEM:
                 WindowMustHave.showDialog(null, response.getDataString(), DialogType.ERROR);

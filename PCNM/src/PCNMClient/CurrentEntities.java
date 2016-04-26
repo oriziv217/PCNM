@@ -81,6 +81,54 @@ public class CurrentEntities {
     }
     
     /**
+     * add component to current array
+     * @param comp
+     */
+    public void addToComponents (Component comp) {
+        components.add(comp);
+    }
+    
+    /**
+     * update component with a specific ID
+     * return true if updated
+     * @param comp
+     * @return
+     */
+    public boolean updateComponents (Component comp) {
+        int index = componentIndexByID(comp.getID());
+        if (index == -1) return false;
+        components.remove(index);
+        components.add(comp);
+        return true;
+    }
+    
+    /**
+     * get the index of a specific component (by ID)
+     * if no match return -1
+     * @param ID
+     * @return
+     */
+    public int componentIndexByID (int ID) {
+        for (int i = 0 ; i < components.size() ; i ++)
+            if (ID == components.get(i).getID())
+                return i;
+        return -1;
+    }
+    
+    /**
+     * return the index of the first occurrence of component with a specific name
+     * if no occurrence found return -1
+     * @param name
+     * @return
+     */
+    public int componentIndexByName (String name) {
+        for (int i = 0 ; i < components.size() ; i ++)
+            if (name.equals(components.get(i).getName()))
+                return i;
+        return -1;
+    }
+    
+    /**
      * get the index of a specific workstation type (by ID)
      * if no match return -1
      * @param ID

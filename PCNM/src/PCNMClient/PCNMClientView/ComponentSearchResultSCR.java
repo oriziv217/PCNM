@@ -1,7 +1,14 @@
 package PCNMClient.PCNMClientView;
 
+import Entities.EmpType;
 import PCNMClient.PCNMClientController.ComponentCTRL;
+import PCNMClient.PCNMClientStart;
+import static PCNMClient.PCNMClientView.WindowMustHave.showDialog;
 import java.awt.Font;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.JLabel;
@@ -25,6 +32,10 @@ public class ComponentSearchResultSCR extends javax.swing.JPanel {
     private int rowCounter;
     private boolean[] rowsToShow;
     private String[][] tableContent;
+    private boolean isUpdate;
+    private int onScreenCompID;
+    private FormFrame addComponentForm;
+    private int selectedRow;
 
     /**
      * Creates new form ComponentSearchResultSCR
@@ -63,6 +74,20 @@ public class ComponentSearchResultSCR extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        pnlAddComponentForm = new javax.swing.JPanel();
+        lblAddComponentTitle = new javax.swing.JLabel();
+        lblAddWorkstationName = new javax.swing.JLabel();
+        lblAddWorkstationDescription = new javax.swing.JLabel();
+        lblAddWorkstationDescription1 = new javax.swing.JLabel();
+        lblAddWorkstationDescription2 = new javax.swing.JLabel();
+        lblAddWorkstationDescription3 = new javax.swing.JLabel();
+        btnAddComponentOK = new javax.swing.JButton();
+        btnAddComponentCancel = new javax.swing.JButton();
+        txtAddComponentDescription = new javax.swing.JTextField();
+        txtAddComponentName = new javax.swing.JTextField();
+        spnAddComponentPrice = new javax.swing.JSpinner();
+        spnAddComponentValAdd = new javax.swing.JSpinner();
+        cmbAddComponentStatus = new javax.swing.JComboBox();
         lblResultsTitle = new javax.swing.JLabel();
         lblResultFilterBy = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -78,8 +103,118 @@ public class ComponentSearchResultSCR extends javax.swing.JPanel {
         cmbValAddFilter = new javax.swing.JComboBox();
         spnValAddFilter = new javax.swing.JSpinner();
         btnClose = new javax.swing.JButton();
+        btnNewComponent = new javax.swing.JButton();
+        btnUpdateComponent = new javax.swing.JButton();
 
         FormListener formListener = new FormListener();
+
+        pnlAddComponentForm.setBackground(java.awt.Color.white);
+        pnlAddComponentForm.setMinimumSize(new java.awt.Dimension(450, 420));
+
+        lblAddComponentTitle.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        lblAddComponentTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblAddComponentTitle.setText("Add New Component");
+        lblAddComponentTitle.setName("lblAddComponentTitle"); // NOI18N
+
+        lblAddWorkstationName.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        lblAddWorkstationName.setText("Name:");
+
+        lblAddWorkstationDescription.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        lblAddWorkstationDescription.setText("Description:");
+
+        lblAddWorkstationDescription1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        lblAddWorkstationDescription1.setText("Price:");
+
+        lblAddWorkstationDescription2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        lblAddWorkstationDescription2.setText("Value Add:");
+
+        lblAddWorkstationDescription3.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        lblAddWorkstationDescription3.setText("Status:");
+
+        btnAddComponentOK.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        btnAddComponentOK.setText("OK");
+        btnAddComponentOK.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnAddComponentOK.addActionListener(formListener);
+
+        btnAddComponentCancel.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        btnAddComponentCancel.setText("Cancel");
+        btnAddComponentCancel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnAddComponentCancel.addActionListener(formListener);
+
+        txtAddComponentDescription.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        txtAddComponentDescription.setToolTipText("");
+
+        txtAddComponentName.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        txtAddComponentName.setToolTipText("");
+
+        spnAddComponentPrice.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        spnAddComponentPrice.setModel(new javax.swing.SpinnerNumberModel(0.0f, 0.0f, null, 1.0f));
+
+        spnAddComponentValAdd.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        spnAddComponentValAdd.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(1.0f), Float.valueOf(1.0f), Float.valueOf(1.99f), Float.valueOf(0.1f)));
+
+        cmbAddComponentStatus.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        cmbAddComponentStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Enabled", "Disabled", "Suspended" }));
+
+        javax.swing.GroupLayout pnlAddComponentFormLayout = new javax.swing.GroupLayout(pnlAddComponentForm);
+        pnlAddComponentForm.setLayout(pnlAddComponentFormLayout);
+        pnlAddComponentFormLayout.setHorizontalGroup(
+            pnlAddComponentFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlAddComponentFormLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlAddComponentFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblAddComponentTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
+                    .addGroup(pnlAddComponentFormLayout.createSequentialGroup()
+                        .addGroup(pnlAddComponentFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblAddWorkstationDescription)
+                            .addComponent(lblAddWorkstationDescription1)
+                            .addComponent(lblAddWorkstationDescription2)
+                            .addComponent(lblAddWorkstationDescription3)
+                            .addComponent(lblAddWorkstationName))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlAddComponentFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtAddComponentName)
+                            .addComponent(spnAddComponentPrice)
+                            .addComponent(spnAddComponentValAdd, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtAddComponentDescription, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(cmbAddComponentStatus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAddComponentFormLayout.createSequentialGroup()
+                        .addComponent(btnAddComponentOK, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAddComponentCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        pnlAddComponentFormLayout.setVerticalGroup(
+            pnlAddComponentFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlAddComponentFormLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblAddComponentTitle)
+                .addGap(18, 18, 18)
+                .addGroup(pnlAddComponentFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblAddWorkstationName)
+                    .addComponent(txtAddComponentName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(pnlAddComponentFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblAddWorkstationDescription)
+                    .addComponent(txtAddComponentDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(pnlAddComponentFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblAddWorkstationDescription1)
+                    .addComponent(spnAddComponentPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(pnlAddComponentFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblAddWorkstationDescription2)
+                    .addComponent(spnAddComponentValAdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(pnlAddComponentFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblAddWorkstationDescription3)
+                    .addComponent(cmbAddComponentStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(63, 63, 63)
+                .addGroup(pnlAddComponentFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAddComponentOK)
+                    .addComponent(btnAddComponentCancel))
+                .addContainerGap(61, Short.MAX_VALUE))
+        );
 
         setBackground(java.awt.Color.white);
         setMinimumSize(new java.awt.Dimension(1442, 818));
@@ -156,7 +291,7 @@ public class ComponentSearchResultSCR extends javax.swing.JPanel {
         cmbPriceFilter.addActionListener(formListener);
 
         spnPriceFilter.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-        spnPriceFilter.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.0f), Float.valueOf(0.0f), null, Float.valueOf(1.0f)));
+        spnPriceFilter.setModel(new javax.swing.SpinnerNumberModel(0.0f, 0.0f, null, 1.0f));
         spnPriceFilter.setEnabled(false);
         spnPriceFilter.addChangeListener(formListener);
 
@@ -181,6 +316,24 @@ public class ComponentSearchResultSCR extends javax.swing.JPanel {
         btnClose.setLabel("Close");
         btnClose.setName("btnClose"); // NOI18N
         btnClose.addActionListener(formListener);
+
+        btnNewComponent.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnNewComponent.setText("New Component");
+        btnNewComponent.setToolTipText("Add new system user");
+        btnNewComponent.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnNewComponent.setMaximumSize(new java.awt.Dimension(99, 33));
+        btnNewComponent.setMinimumSize(new java.awt.Dimension(99, 33));
+        btnNewComponent.setPreferredSize(new java.awt.Dimension(99, 33));
+        btnNewComponent.addActionListener(formListener);
+
+        btnUpdateComponent.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnUpdateComponent.setText("Update Selected");
+        btnUpdateComponent.setToolTipText("Add new system user");
+        btnUpdateComponent.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnUpdateComponent.setMaximumSize(new java.awt.Dimension(99, 33));
+        btnUpdateComponent.setMinimumSize(new java.awt.Dimension(99, 33));
+        btnUpdateComponent.setPreferredSize(new java.awt.Dimension(99, 33));
+        btnUpdateComponent.addActionListener(formListener);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -217,6 +370,10 @@ public class ComponentSearchResultSCR extends javax.swing.JPanel {
                         .addGap(94, 94, 94))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnNewComponent, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnUpdateComponent, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -244,11 +401,16 @@ public class ComponentSearchResultSCR extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnNewComponent, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnUpdateComponent, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
         spnPriceFilter.setValue(ComponentCTRL.getPriceFilter());
+        if (PCNMClientStart.user.getType() == EmpType.TECHNICIAN)
+        btnNewComponent.setEnabled(false);
     }
 
     // Code for dispatching events from components to event handlers.
@@ -273,6 +435,18 @@ public class ComponentSearchResultSCR extends javax.swing.JPanel {
             }
             else if (evt.getSource() == btnClose) {
                 ComponentSearchResultSCR.this.btnCloseActionPerformed(evt);
+            }
+            else if (evt.getSource() == btnNewComponent) {
+                ComponentSearchResultSCR.this.btnNewComponentActionPerformed(evt);
+            }
+            else if (evt.getSource() == btnAddComponentOK) {
+                ComponentSearchResultSCR.this.btnAddComponentOKActionPerformed(evt);
+            }
+            else if (evt.getSource() == btnAddComponentCancel) {
+                ComponentSearchResultSCR.this.btnAddComponentCancelActionPerformed(evt);
+            }
+            else if (evt.getSource() == btnUpdateComponent) {
+                ComponentSearchResultSCR.this.btnUpdateComponentActionPerformed(evt);
             }
         }
 
@@ -376,22 +550,121 @@ public class ComponentSearchResultSCR extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_spnValAddFilterStateChanged
 
+    private void btnNewComponentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewComponentActionPerformed
+        isUpdate = false;
+        onScreenCompID = 0;
+        addComponentClearFields();
+        addComponentForm = new FormFrame();
+        addComponentForm.setSize(pnlAddComponentForm.getMinimumSize());
+        addComponentForm.setLocationRelativeTo(null);
+        lblAddComponentTitle.setText("Add New Workstation");
+        addComponentForm.getContentPane().add(pnlAddComponentForm);
+        addComponentForm.addWindowListener(exitListener);
+        addComponentForm.getContentPane().setVisible(true);
+        PCNMClientStart.appWindow.setEnabled(false);
+        addComponentForm.setVisible(true);
+    }//GEN-LAST:event_btnNewComponentActionPerformed
+
+    private void btnAddComponentOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddComponentOKActionPerformed
+        String name = txtAddComponentName.getText();
+        String description = txtAddComponentDescription.getText();
+        float price = (Float)spnAddComponentPrice.getValue();
+        float valueAdd = (Float)spnAddComponentValAdd.getValue();
+        String status = (String)cmbAddComponentStatus.getSelectedItem();
+        if (name.isEmpty() || description.isEmpty() || status.isEmpty()) {
+            showDialog(pnlAddComponentForm, "All fields are mandatory.", DialogType.INFO);
+            return;
+        }
+        try {
+            if (!ComponentCTRL.isNameUnique(onScreenCompID, name)) {
+                showDialog(pnlAddComponentForm, "Component Name must be unique.", DialogType.INFO);
+                return;
+            }
+        } catch (IOException ex) {
+            showDialog(pnlAddComponentForm, ex.getMessage(), DialogType.ERROR);
+            System.exit(0);
+        }
+        try {
+            if (!isUpdate) {
+                ComponentCTRL.AddComponentBtnPressed(name, description, price, valueAdd, status);
+            }
+            else {
+                ComponentCTRL.UpdateComponentBtnPressed(onScreenCompID ,name, description, price, valueAdd, status);
+            }
+        } catch (IOException ex) {
+            showDialog(pnlAddComponentForm, "Lost Connection with the server", DialogType.ERROR);
+            System.exit(0);
+        }
+        addComponentClearFields();
+        addComponentForm.dispose();
+        PCNMClientStart.appWindow.setEnabled(true);
+        PCNMClientStart.appWindow.requestFocus();
+    }//GEN-LAST:event_btnAddComponentOKActionPerformed
+
+    private void btnAddComponentCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddComponentCancelActionPerformed
+        addComponentClearFields();
+        addComponentForm.dispose();
+        PCNMClientStart.appWindow.setEnabled(true);
+        PCNMClientStart.appWindow.requestFocus();
+    }//GEN-LAST:event_btnAddComponentCancelActionPerformed
+
+    private void btnUpdateComponentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateComponentActionPerformed
+        selectedRow = tblSearchResault.getSelectedRow();
+        if (selectedRow == -1) {
+            showDialog(this, "Please select Workstation", DialogType.INFO);
+            return;
+        }
+        isUpdate = true;
+        int index = tblSearchResault.convertRowIndexToModel(selectedRow);
+        onScreenCompID = Integer.parseInt(tableContent[index][0]);
+        txtAddComponentName.setText(tableContent[index][1]);
+        txtAddComponentDescription.setText(tableContent[index][2]);
+        spnAddComponentPrice.setValue(Float.parseFloat(tableContent[index][3]));
+        spnAddComponentValAdd.setValue(Float.parseFloat(tableContent[index][4]));
+        cmbAddComponentStatus.setSelectedIndex(getStatusIndex(tableContent[index][5]));
+        addComponentForm = new FormFrame();
+        lblAddComponentTitle.setText("Update Workstation");
+        addComponentForm.setSize(pnlAddComponentForm.getMinimumSize());
+        addComponentForm.setLocationRelativeTo(null);
+        addComponentForm.getContentPane().add(pnlAddComponentForm);
+        addComponentForm.addWindowListener(exitListener);
+        addComponentForm.getContentPane().setVisible(true);
+        PCNMClientStart.appWindow.setEnabled(false);
+        addComponentForm.setVisible(true);
+    }//GEN-LAST:event_btnUpdateComponentActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddComponentCancel;
+    private javax.swing.JButton btnAddComponentOK;
     private javax.swing.JButton btnClose;
+    private javax.swing.JButton btnNewComponent;
+    private javax.swing.JButton btnUpdateComponent;
     private javax.swing.JCheckBox chbEnabledOnly;
+    private javax.swing.JComboBox cmbAddComponentStatus;
     private javax.swing.JComboBox cmbFltrField;
     private javax.swing.JComboBox cmbPriceFilter;
     private javax.swing.JComboBox cmbValAddFilter;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblAddComponentTitle;
+    private javax.swing.JLabel lblAddWorkstationDescription;
+    private javax.swing.JLabel lblAddWorkstationDescription1;
+    private javax.swing.JLabel lblAddWorkstationDescription2;
+    private javax.swing.JLabel lblAddWorkstationDescription3;
+    private javax.swing.JLabel lblAddWorkstationName;
     private javax.swing.JLabel lblFilterStr;
     private javax.swing.JLabel lblPriceFilter;
     private javax.swing.JLabel lblResultFilterBy;
     private javax.swing.JLabel lblResultsTitle;
     private javax.swing.JLabel lblValAddFilter;
+    private javax.swing.JPanel pnlAddComponentForm;
+    private javax.swing.JSpinner spnAddComponentPrice;
+    private javax.swing.JSpinner spnAddComponentValAdd;
     private javax.swing.JSpinner spnPriceFilter;
     private javax.swing.JSpinner spnValAddFilter;
     private javax.swing.JTable tblSearchResault;
+    private javax.swing.JTextField txtAddComponentDescription;
+    private javax.swing.JTextField txtAddComponentName;
     private javax.swing.JTextField txtFilterStr;
     // End of variables declaration//GEN-END:variables
 
@@ -442,5 +715,35 @@ public class ComponentSearchResultSCR extends javax.swing.JPanel {
             if (!rowsToShow[i]) rowCounter --;
         }
         loadSearchResults();
+    }
+    
+    private void addComponentClearFields() {
+            txtAddComponentName.setText("");
+            txtAddComponentDescription.setText("");
+            spnAddComponentPrice.setValue(new Float(0.0));
+            spnAddComponentValAdd.setValue(new Float(1.0));
+            cmbAddComponentStatus.setSelectedIndex(0);
+        }
+
+        private WindowListener exitListener = new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                addComponentClearFields();
+                addComponentForm.dispose();
+                PCNMClientStart.appWindow.setEnabled(true);
+                PCNMClientStart.appWindow.requestFocus();
+            }
+        };
+        
+        private int getStatusIndex(String stsStr) {
+        switch (stsStr) {
+            case "Enabled":
+                return 0;
+            case "Disabled":
+                return 1;
+            case "Suspended":
+                return 2;
+        }
+        return -1;
     }
 }

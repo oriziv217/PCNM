@@ -41,4 +41,43 @@ public class Logic {
         }
         return 4;
     }
+    
+    protected static Status stringToStatus (String status) {
+        switch (status) {
+            case "Enable":
+            case "Enabled":
+            case "enable":
+            case "enabled":
+            case "ENABLE":
+            case "ENABLED":
+                return Status.ENABLE;
+            case "Disable":
+            case "Disabled":
+            case "disable":
+            case "disabled":
+            case "DISABLE":
+            case "DISABLED":
+                return Status.DISABLE;
+            case "Suspend":
+            case "Suspended":
+            case "suspend":
+            case "suspended":
+            case "SUSPEND":
+            case "SUSPENDED":
+                return Status.SUSPENDED;
+        }
+        return Status.Error;
+    }
+    
+    protected static String statusToString (Status status) {
+        switch (status) {
+            case ENABLE:
+                return "Enabled";
+            case DISABLE:
+                return "Disabled";
+            case SUSPENDED:
+                return "Suspended";
+        }
+        return "Error";
+    }
 }
