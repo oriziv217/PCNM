@@ -35,6 +35,7 @@ public class NetMapSCR extends javax.swing.JPanel {
         btnMngUserTyp = new javax.swing.JButton();
         btnMngWorkstation = new javax.swing.JButton();
         btnMngPCComp = new javax.swing.JButton();
+        btnMngPC = new javax.swing.JButton();
 
         setBackground(java.awt.Color.white);
         setAlignmentX(0.0F);
@@ -147,6 +148,21 @@ public class NetMapSCR extends javax.swing.JPanel {
             }
         });
 
+        btnMngPC.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnMngPC.setForeground(java.awt.Color.red);
+        btnMngPC.setText("Manage PCs");
+        btnMngPC.setToolTipText("Manage PCs");
+        btnMngPC.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnMngPC.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnMngPC.setInheritsPopupMenu(true);
+        btnMngPC.setMinimumSize(new java.awt.Dimension(880, 700));
+        btnMngPC.setName("btnMngUserTyp"); // NOI18N
+        btnMngPC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMngPCActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -160,7 +176,10 @@ public class NetMapSCR extends javax.swing.JPanel {
                         .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnMngWorkstation, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnMngWorkstation, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnMngPC, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btnMngUserTyp, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
@@ -178,7 +197,9 @@ public class NetMapSCR extends javax.swing.JPanel {
                     .addComponent(btnMngUserTyp, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnMngPCComp, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(btnMngWorkstation, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnMngWorkstation, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnMngPC, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 195, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -233,9 +254,17 @@ public class NetMapSCR extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnMngUserTypMouseDragged
 
+    private void btnMngPCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMngPCActionPerformed
+        Window window = SwingUtilities.getWindowAncestor(this);
+        JFrame frame = (JFrame) window;
+        frame.setTitle("PCNM - Manage PCs");
+        NetMapCTRL.btnMngPCPressed();
+    }//GEN-LAST:event_btnMngPCActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClose;
+    private javax.swing.JButton btnMngPC;
     private javax.swing.JButton btnMngPCComp;
     private javax.swing.JButton btnMngUserTyp;
     private javax.swing.JButton btnMngWorkstation;

@@ -6,6 +6,7 @@ import PCNMClient.PCNMClientModel;
 import PCNMClient.PCNMClientStart;
 import PCNMClient.PCNMClientView.HomeSCR;
 import PCNMClient.PCNMClientView.PCCompSCR;
+import PCNMClient.PCNMClientView.PCSCR;
 import PCNMClient.PCNMClientView.UserTypeSCR;
 import java.io.IOException;
 
@@ -46,5 +47,9 @@ public class NetMapCTRL extends CTRL {
      */
     public static void btnMngPCCompPressed() {
         PCNMClientStart.switchPanels(new PCCompSCR());
+    }
+
+    public static void btnMngPCPressed() {
+        PCNMClientStart.switchPanels(new PCSCR());
     }
 }
