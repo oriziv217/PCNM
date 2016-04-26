@@ -290,6 +290,7 @@ public class LoginSCR extends javax.swing.JFrame {
         try {
             // start login sequance
             LoginCTRL.loginBtnPressed(userName, password);
+            setTitle("PCNM - Home Screen");
         } catch (IOException ex) {
             WindowMustHave.showDialog(this.pnlLogin, "Error sending message to server", DialogType.ERROR);
         }

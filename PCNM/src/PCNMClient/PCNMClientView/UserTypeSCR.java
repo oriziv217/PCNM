@@ -5,9 +5,12 @@ import PCNMClient.PCNMClientController.UserTypesCTRL;
 import PCNMClient.PCNMClientStart;
 import static PCNMClient.PCNMClientView.WindowMustHave.showDialog;
 import java.awt.Font;
+import java.awt.Window;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -386,6 +389,9 @@ public class UserTypeSCR extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
+        Window window = SwingUtilities.getWindowAncestor(this);
+        JFrame frame = (JFrame) window;
+        frame.setTitle("PCNM - Network Mapping");
         UserTypesCTRL.closeBtnPressed();
     }//GEN-LAST:event_btnCloseActionPerformed
 

@@ -4,8 +4,11 @@ import Entities.EmpType;
 import PCNMClient.PCNMClientController.WorkstationCTRL;
 import PCNMClient.PCNMClientStart;
 import static PCNMClient.PCNMClientView.WindowMustHave.showDialog;
+import java.awt.Window;
 import java.io.IOException;
 import java.util.ArrayList;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 /**
  * This class implements Workstation search screen 
@@ -354,6 +357,9 @@ public class WorkstationSCR extends javax.swing.JPanel {
     }//GEN-LAST:event_btnQuitActionPerformed
 
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
+        Window window = SwingUtilities.getWindowAncestor(this);
+        JFrame frame = (JFrame) window;
+        frame.setTitle("PCNM - Network Mapping");
         WorkstationCTRL.closeBtnPressed();
     }//GEN-LAST:event_btnCloseActionPerformed
 

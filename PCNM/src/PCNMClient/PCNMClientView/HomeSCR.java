@@ -5,6 +5,9 @@ import PCNMClient.PCNMClientController.CTRL;
 import PCNMClient.PCNMClientController.HomeCTRL;
 import PCNMClient.PCNMClientStart;
 import java.io.IOException;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import java.awt.Window;
 
 /**
  * This class implements application's client home screen
@@ -147,6 +150,9 @@ public class HomeSCR extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
+        Window window = SwingUtilities.getWindowAncestor(this);
+        JFrame frame = (JFrame) window;
+        frame.setTitle("PCNM - Log in");
         CTRL.closeBtnPressed();
     }//GEN-LAST:event_btnCloseActionPerformed
 
@@ -157,6 +163,11 @@ public class HomeSCR extends javax.swing.JPanel {
     private void btnEmployeesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEmployeesActionPerformed
         try {
             HomeCTRL.btnEmployeesPressed();
+            
+            Window window = SwingUtilities.getWindowAncestor(this);
+            JFrame frame = (JFrame) window;
+            frame.setTitle("PCNM System Users Management");
+            
         } catch (IOException ex) {
             WindowMustHave.showDialog(this, "Lost Connection With Server", DialogType.ERROR);
             System.exit(0);
@@ -164,7 +175,11 @@ public class HomeSCR extends javax.swing.JPanel {
     }//GEN-LAST:event_btnEmployeesActionPerformed
 
     private void btnNetMapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNetMapActionPerformed
+        Window window = SwingUtilities.getWindowAncestor(this);
+        JFrame frame = (JFrame) window;
+        frame.setTitle("PCNM Network Mapping");
         HomeCTRL.btnNetMapPressed();
+        
     }//GEN-LAST:event_btnNetMapActionPerformed
 
 

@@ -2,6 +2,9 @@ package PCNMClient.PCNMClientView;
 
 import PCNMClient.PCNMClientController.NetMapCTRL;
 import java.io.IOException;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import java.awt.Window;
 
 /**
  * This class implements Network mapping screen
@@ -180,6 +183,9 @@ public class NetMapSCR extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
+        Window window = SwingUtilities.getWindowAncestor(this);
+        JFrame frame = (JFrame) window;
+        frame.setTitle("PCNM - Home Screen");
         NetMapCTRL.closeBtnPressed();
     }//GEN-LAST:event_btnCloseActionPerformed
 
@@ -189,6 +195,9 @@ public class NetMapSCR extends javax.swing.JPanel {
 
     private void btnMngUserTypActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMngUserTypActionPerformed
         try {
+            Window window = SwingUtilities.getWindowAncestor(this);
+            JFrame frame = (JFrame) window;
+            frame.setTitle("PCNM - Manage User Types");
             NetMapCTRL.btnMngUserTypPressed();
         } catch (IOException ex) {
             WindowMustHave.showDialog(this, "Lost Connection With Server", DialogType.ERROR);
@@ -198,6 +207,9 @@ public class NetMapSCR extends javax.swing.JPanel {
 
     private void btnMngWorkstationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMngWorkstationActionPerformed
         try {
+            Window window = SwingUtilities.getWindowAncestor(this);
+            JFrame frame = (JFrame) window;
+            frame.setTitle("PCNM - Manage Workstations");
             NetMapCTRL.btnMngWorkstationsPressed();
         } catch (IOException ex) {
             WindowMustHave.showDialog(this, "Lost Connection With Server", DialogType.ERROR);
@@ -206,6 +218,9 @@ public class NetMapSCR extends javax.swing.JPanel {
     }//GEN-LAST:event_btnMngWorkstationActionPerformed
 
     private void btnMngPCCompActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMngPCCompActionPerformed
+        Window window = SwingUtilities.getWindowAncestor(this);
+        JFrame frame = (JFrame) window;
+        frame.setTitle("PCNM - Manage PC components");
         NetMapCTRL.btnMngPCCompPressed();
     }//GEN-LAST:event_btnMngPCCompActionPerformed
 
