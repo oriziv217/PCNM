@@ -117,6 +117,11 @@ public enum MessageType {
     UPDATE_COMPONENT,
     
     /**
+     * Get only enabled components
+     */
+    GET_COMP_ENABLE,
+    
+    /**
      * SQL Exception was thrown
      */
     DB_PROBLEM

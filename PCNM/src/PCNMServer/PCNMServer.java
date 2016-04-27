@@ -101,7 +101,7 @@ public class PCNMServer extends AbstractServer {
                 client.sendToClient(WorkstationLogic.updateWSType((WSType)message.getEntity()));
                 break;
             case GET_COMP_WITH_FILTER:
-                client.sendToClient(ComponentLogic.getComponentsWithFilter((Component)message.getEntity()));
+                client.sendToClient(ComponentLogic.getComponentsWithFilter(message.getMsgType(), (Component)message.getEntity()));
                 break;
             case GET_COMP_QUICKDIC:
                 client.sendToClient(ComponentLogic.createQuickDic());
@@ -111,6 +111,9 @@ public class PCNMServer extends AbstractServer {
                 break;
             case UPDATE_COMPONENT:
                 client.sendToClient(ComponentLogic.updateComponent((Component)message.getEntity()));
+                break;
+            case GET_COMP_ENABLE:
+                client.sendToClient(ComponentLogic.getComponentsWithFilter(message.getMsgType(), (Component)message.getEntity()));
                 break;
             }
         } catch (IOException e) {

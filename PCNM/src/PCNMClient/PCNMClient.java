@@ -10,6 +10,7 @@ import Entities.WSType;
 import Entities.Workstation;
 import PCNMClient.PCNMClientController.ComponentCTRL;
 import PCNMClient.PCNMClientController.HomeCTRL;
+import PCNMClient.PCNMClientController.PCCTRL;
 import PCNMClient.PCNMClientController.UserTypesCTRL;
 import PCNMClient.PCNMClientController.WorkstationCTRL;
 import PCNMClient.PCNMClientView.*;
@@ -133,6 +134,9 @@ public class PCNMClient extends AbstractClient {
                     ComponentCTRL.refreshComponentWindow(response.getMsgType(), null);
                 } else
                     ComponentCTRL.refreshComponentWindow(response.getMsgType(), (Component)response.getEntity());
+                break;
+            case GET_COMP_ENABLE:
+                PCCTRL.setEnaComp((ArrayList<Component>)response.getEntity());
                 break;
             case DB_PROBLEM:
                 WindowMustHave.showDialog(null, response.getDataString(), DialogType.ERROR);

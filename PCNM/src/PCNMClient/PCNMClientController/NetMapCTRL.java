@@ -1,7 +1,9 @@
 package PCNMClient.PCNMClientController;
 
+import Entities.Component;
 import Entities.Message;
 import Entities.MessageType;
+import Entities.Status;
 import PCNMClient.PCNMClientModel;
 import PCNMClient.PCNMClientStart;
 import PCNMClient.PCNMClientView.HomeSCR;
@@ -49,7 +51,9 @@ public class NetMapCTRL extends CTRL {
         PCNMClientStart.switchPanels(new PCCompSCR());
     }
 
-    public static void btnMngPCPressed() {
+    public static void btnMngPCPressed() throws IOException {
+        Component cmp = new Component(null, null, 0, 0, Status.ENABLE);
+        PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_COMP_ENABLE, cmp));
         PCNMClientStart.switchPanels(new PCSCR());
     }
 }

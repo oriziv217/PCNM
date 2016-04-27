@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public class ComponentLogic extends Logic {
 
-    public static Message getComponentsWithFilter(Component search_model) throws SQLException {
+    public static Message getComponentsWithFilter(MessageType mType, Component search_model) throws SQLException {
         ArrayList<Component> search_results = new ArrayList<Component>();
         Connection conDB = DBConnect.mySQLConnection();
         ResultSet rs;
@@ -93,7 +93,7 @@ public class ComponentLogic extends Logic {
                                                 roundFloat(rs.getFloat("valueAdd"), 2),
                                                 intToStatus(rs.getInt("status"))));
         }
-        return new Message(MessageType.GET_COMP_WITH_FILTER, search_results);
+        return new Message(mType, search_results);
     }
     
     /**

@@ -258,7 +258,12 @@ public class NetMapSCR extends javax.swing.JPanel {
         Window window = SwingUtilities.getWindowAncestor(this);
         JFrame frame = (JFrame) window;
         frame.setTitle("PCNM - Manage PCs");
-        NetMapCTRL.btnMngPCPressed();
+        try {
+            NetMapCTRL.btnMngPCPressed();
+        } catch (IOException ex) {
+            WindowMustHave.showDialog(this, "Lost Connection With Server", DialogType.ERROR);
+            System.exit(0);
+        }
     }//GEN-LAST:event_btnMngPCActionPerformed
 
 
