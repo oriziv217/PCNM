@@ -4,6 +4,7 @@ import Entities.Component;
 import Entities.Employee;
 import Entities.Message;
 import Entities.MessageType;
+import Entities.PCSpec;
 import Entities.PCUserType;
 import Entities.QuickDic;
 import Entities.WSType;
@@ -137,6 +138,15 @@ public class PCNMClient extends AbstractClient {
                 break;
             case GET_COMP_ENABLE:
                 PCCTRL.setEnaComp((ArrayList<Component>)response.getEntity());
+                PCNMClientStart.gotAllData ++;
+                if (PCNMClientStart.gotAllData == 2)
+                    PCCTRL.openPCSCR();
+                break;
+            case GET_SPEC_ENABLE:
+                PCCTRL.setEnaSpec((ArrayList<PCSpec>)response.getEntity());
+                PCNMClientStart.gotAllData ++;
+                if (PCNMClientStart.gotAllData == 2)
+                    PCCTRL.openPCSCR();
                 break;
             case DB_PROBLEM:
                 WindowMustHave.showDialog(null, response.getDataString(), DialogType.ERROR);

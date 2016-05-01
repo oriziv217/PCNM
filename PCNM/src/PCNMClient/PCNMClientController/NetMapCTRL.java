@@ -3,6 +3,7 @@ package PCNMClient.PCNMClientController;
 import Entities.Component;
 import Entities.Message;
 import Entities.MessageType;
+import Entities.PCSpec;
 import Entities.Status;
 import PCNMClient.PCNMClientModel;
 import PCNMClient.PCNMClientStart;
@@ -11,6 +12,7 @@ import PCNMClient.PCNMClientView.PCCompSCR;
 import PCNMClient.PCNMClientView.PCSCR;
 import PCNMClient.PCNMClientView.UserTypeSCR;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * This class implements the network mapping screen controllers
@@ -53,7 +55,11 @@ public class NetMapCTRL extends CTRL {
 
     public static void btnMngPCPressed() throws IOException {
         Component cmp = new Component(null, null, 0, 0, Status.ENABLE);
+        PCSpec spc = new PCSpec(null, null, 0, 0, 0, Status.ENABLE);
+        PCNMClientStart.gotAllData = 0;
         PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_COMP_ENABLE, cmp));
-        PCNMClientStart.switchPanels(new PCSCR());
+        PCNMClientStart.gotAllData ++;
+        PCCTRL.setEnaSpec(new ArrayList<PCSpec>());
+//        PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_SPEC_ENABLE, spc));
     }
 }

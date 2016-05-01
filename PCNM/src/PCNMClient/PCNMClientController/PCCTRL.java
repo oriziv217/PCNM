@@ -1,12 +1,11 @@
 package PCNMClient.PCNMClientController;
 
 import Entities.Component;
-import Entities.Message;
-import Entities.MessageType;
-import Entities.Status;
-import PCNMClient.PCNMClientModel;
+import Entities.PCSpec;
 import PCNMClient.PCNMClientStart;
 import PCNMClient.PCNMClientView.NetMapSCR;
+import PCNMClient.PCNMClientView.PCCompSCR;
+import PCNMClient.PCNMClientView.PCSCR;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,7 +21,10 @@ public class PCCTRL extends CTRL {
     private static Date instalationDateFilter;
     private static int warrentyModeFilter;
     private static int statusFilter;
+    private static boolean[] selectedComponentsFilter;
+    private static boolean[] selectedSpecsFilter;
     private static ArrayList<Component> enaComp;
+    private static ArrayList<PCSpec> enaSpec;
 
     public static String getNameFilter() {
         return nameFilter;
@@ -72,27 +74,65 @@ public class PCCTRL extends CTRL {
         PCCTRL.statusFilter = statusFilter;
     }
 
-    public static void searchByCompBtnPressed() throws IOException {
-        
-    }
-
-    public static void searchByPCFilterBtnPressed() throws IOException {
-        
-    }
-
-    public static void searchByPCSpecBtnPressed() throws IOException {
-        
+    public static boolean[] getSelectedComponentsFilter() {
+        return PCCTRL.selectedComponentsFilter;
     }
     
-    public static void closeBtnPressed () {
-        PCNMClientStart.switchPanels(new NetMapSCR());
+    public static void setSelectedComponentsFilter (boolean[] selectedComponentsFilter) {
+        PCCTRL.selectedComponentsFilter = selectedComponentsFilter;
     }
-
+    
+    public static boolean[] getSelectedSpecsFilter() {
+        return PCCTRL.selectedSpecsFilter;
+    }
+    
+    public static void setSelectedSpecsFilter (boolean[] selectedSpecsFilter) {
+        PCCTRL.selectedSpecsFilter = selectedSpecsFilter;
+    }
+    
     public static void setEnaComp(ArrayList<Component> enaComp) {
         PCCTRL.enaComp = enaComp;
     }
     
     private static ArrayList<Component> getEnaComp() {
         return enaComp;
+    }
+
+    public static ArrayList<PCSpec> getEnaSpec() {
+        return enaSpec;
+    }
+
+    public static void setEnaSpec(ArrayList<PCSpec> enaSpec) {
+        PCCTRL.enaSpec = enaSpec;
+    }
+    
+    public static void closeBtnPressed () {
+        PCNMClientStart.switchPanels(new NetMapSCR());
+    }
+
+    public static void searchBtnPressed() throws IOException {
+        
+    }
+
+    public static void openPCCompSCRBtnPressed() {
+        PCNMClientStart.switchPanels(new PCCompSCR());
+    }
+
+    public static void openPCSCR() {
+        if (enaComp == null || enaSpec == null) {
+            PCNMClientStart.switchPanels(new PCSCR());
+            return;
+        }
+        ArrayList<String>compList = new ArrayList<String>();
+        ArrayList<String>specList = new ArrayList<String>();
+        for (Component cmp : enaComp)
+            compList.add(cmp.toString());
+        for (PCSpec spec : enaSpec)
+            specList.add(spec.toString());
+        PCNMClientStart.switchPanels(new PCSCR(compList, specList));
+    }
+
+    public static void openPCSpecSCRBtnPressed() {
+        
     }
 }

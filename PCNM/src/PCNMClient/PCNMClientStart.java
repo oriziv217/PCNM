@@ -35,6 +35,7 @@ public class PCNMClientStart {
      * saved workstation search filters
      */
     public static ArrayList<String>workstationSearchFilters = new ArrayList<String>();
+    public static int gotAllData;
     
     /**
      * This method switches panels on the GUI's frame

@@ -122,6 +122,11 @@ public enum MessageType {
     GET_COMP_ENABLE,
     
     /**
+     * Get only enabled PC Specifications
+     */
+    GET_SPEC_ENABLE,
+    
+    /**
      * SQL Exception was thrown
      */
     DB_PROBLEM

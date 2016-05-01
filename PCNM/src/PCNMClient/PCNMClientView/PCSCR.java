@@ -14,6 +14,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -27,20 +28,43 @@ public class PCSCR extends javax.swing.JPanel {
     private Date fltrInstalDate;
     private boolean[] selectedComponents;
     private boolean[] selectedPCSpecs;
+    private ArrayList<String> compEnaList;
+    private ArrayList<String> specEnaList;
+    private int compRowCounter;
+    private int specRowCounter;
+    private String[][] compTableContent;
+    private String[][] specTableContent;
+    boolean doneInit;
     
     /**
      * Creates new form PCSCR
      */
     public PCSCR() {
+        doneInit = false;
         initComponents();
+        fltrInstalDateMode = 0;
+        fltrWarrentymode = 0;
+        fltrStatus = 0;
+        fltrInstalDate = null;
+        doneInit = true;
     }
 
-    public PCSCR(ArrayList<String> enaComp, ArrayList<String> enaPCSpec) {
+    public PCSCR(ArrayList<String> compEnaList, ArrayList<String> specEnaList) {
         this();
-        selectedComponents = new boolean[enaComp.size()];
-        selectedPCSpecs = new boolean[enaPCSpec.size()];
+        doneInit = false;
+        selectedComponents = new boolean[compEnaList.size()];
+        selectedPCSpecs = new boolean[specEnaList.size()];
         Arrays.fill(selectedComponents, false);
         Arrays.fill(selectedPCSpecs, false);
+        this.compEnaList = compEnaList;
+        compRowCounter = compEnaList.size();
+        compTableContent = new String[compRowCounter][6];
+        this.specEnaList = specEnaList;
+        specRowCounter = specEnaList.size();
+        specTableContent = new String[specRowCounter][7];
+        loadCompTable();
+        loadSpecTable();
+        doneInit = true;
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -52,7 +76,6 @@ public class PCSCR extends javax.swing.JPanel {
     private void initComponents() {
 
         lblScreenTitle = new javax.swing.JLabel();
-        lblSearchTitle = new javax.swing.JLabel();
         lblNoFilter = new javax.swing.JLabel();
         lblSearchName = new javax.swing.JLabel();
         lblSearchDescription = new javax.swing.JLabel();
@@ -65,9 +88,9 @@ public class PCSCR extends javax.swing.JPanel {
         cmbWarrenty = new javax.swing.JComboBox();
         cmbStatus = new javax.swing.JComboBox();
         dtpInstalDate = new org.jdesktop.swingx.JXDatePicker();
-        btnSearchByComp = new javax.swing.JButton();
-        btnSearchByFilter = new javax.swing.JButton();
-        btnSearchByPCSpec = new javax.swing.JButton();
+        btnSearch = new javax.swing.JButton();
+        btnOpenPCCompSCR = new javax.swing.JButton();
+        btnClear = new javax.swing.JButton();
         btnClose = new javax.swing.JButton();
         btnQuit = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -76,23 +99,18 @@ public class PCSCR extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         tblSpecs = new javax.swing.JTable();
         lblSearchSpecs = new javax.swing.JLabel();
-        btnSearchByFilter1 = new javax.swing.JButton();
+        btnOpenPCSpecSCR = new javax.swing.JButton();
 
         setBackground(java.awt.Color.white);
-        setMinimumSize(new java.awt.Dimension(920, 650));
+        setMinimumSize(new java.awt.Dimension(1425, 820));
+        setPreferredSize(new java.awt.Dimension(1350, 780));
 
         lblScreenTitle.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
         lblScreenTitle.setForeground(java.awt.Color.red);
         lblScreenTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblScreenTitle.setText("PC Management");
+        lblScreenTitle.setText("Search For PCs");
         lblScreenTitle.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         lblScreenTitle.setName("lblScreenTitle"); // NOI18N
-
-        lblSearchTitle.setBackground(java.awt.Color.white);
-        lblSearchTitle.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
-        lblSearchTitle.setForeground(java.awt.Color.red);
-        lblSearchTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblSearchTitle.setText("Search For PCs");
 
         lblNoFilter.setBackground(java.awt.Color.white);
         lblNoFilter.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
@@ -156,48 +174,48 @@ public class PCSCR extends javax.swing.JPanel {
             }
         });
 
-        btnSearchByComp.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        btnSearchByComp.setText("Search");
-        btnSearchByComp.setToolTipText("Search Workstations");
-        btnSearchByComp.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btnSearchByComp.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        btnSearchByComp.setInheritsPopupMenu(true);
-        btnSearchByComp.setMaximumSize(new java.awt.Dimension(280, 33));
-        btnSearchByComp.setMinimumSize(new java.awt.Dimension(280, 33));
-        btnSearchByComp.setName("btnSearchByComp"); // NOI18N
-        btnSearchByComp.setPreferredSize(new java.awt.Dimension(280, 33));
-        btnSearchByComp.addActionListener(new java.awt.event.ActionListener() {
+        btnSearch.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnSearch.setText("Search");
+        btnSearch.setToolTipText("Search Workstations");
+        btnSearch.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnSearch.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnSearch.setInheritsPopupMenu(true);
+        btnSearch.setMaximumSize(new java.awt.Dimension(280, 33));
+        btnSearch.setMinimumSize(new java.awt.Dimension(280, 33));
+        btnSearch.setName("btnSearch"); // NOI18N
+        btnSearch.setPreferredSize(new java.awt.Dimension(280, 33));
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSearchByCompActionPerformed(evt);
+                btnSearchActionPerformed(evt);
             }
         });
 
-        btnSearchByFilter.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        btnSearchByFilter.setText("Manage Components");
-        btnSearchByFilter.setToolTipText("Search Workstations");
-        btnSearchByFilter.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btnSearchByFilter.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        btnSearchByFilter.setInheritsPopupMenu(true);
-        btnSearchByFilter.setName("btnSearchByFilter"); // NOI18N
-        btnSearchByFilter.addActionListener(new java.awt.event.ActionListener() {
+        btnOpenPCCompSCR.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnOpenPCCompSCR.setText("Manage Components");
+        btnOpenPCCompSCR.setToolTipText("Search Workstations");
+        btnOpenPCCompSCR.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnOpenPCCompSCR.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnOpenPCCompSCR.setInheritsPopupMenu(true);
+        btnOpenPCCompSCR.setName("btnOpenPCCompSCR"); // NOI18N
+        btnOpenPCCompSCR.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSearchByFilterActionPerformed(evt);
+                btnOpenPCCompSCRActionPerformed(evt);
             }
         });
 
-        btnSearchByPCSpec.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        btnSearchByPCSpec.setText("Clear");
-        btnSearchByPCSpec.setToolTipText("Search Workstations");
-        btnSearchByPCSpec.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btnSearchByPCSpec.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        btnSearchByPCSpec.setInheritsPopupMenu(true);
-        btnSearchByPCSpec.setMaximumSize(new java.awt.Dimension(280, 33));
-        btnSearchByPCSpec.setMinimumSize(new java.awt.Dimension(280, 33));
-        btnSearchByPCSpec.setName("btnSearchByComp"); // NOI18N
-        btnSearchByPCSpec.setPreferredSize(new java.awt.Dimension(280, 33));
-        btnSearchByPCSpec.addActionListener(new java.awt.event.ActionListener() {
+        btnClear.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnClear.setText("Clear");
+        btnClear.setToolTipText("Search Workstations");
+        btnClear.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnClear.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnClear.setInheritsPopupMenu(true);
+        btnClear.setMaximumSize(new java.awt.Dimension(280, 33));
+        btnClear.setMinimumSize(new java.awt.Dimension(280, 33));
+        btnClear.setName("btnSearchByComp"); // NOI18N
+        btnClear.setPreferredSize(new java.awt.Dimension(280, 33));
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSearchByPCSpecActionPerformed(evt);
+                btnClearActionPerformed(evt);
             }
         });
 
@@ -317,16 +335,16 @@ public class PCSCR extends javax.swing.JPanel {
         lblSearchSpecs.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
         lblSearchSpecs.setText("PC Specifications:");
 
-        btnSearchByFilter1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        btnSearchByFilter1.setText("Manage Specifications");
-        btnSearchByFilter1.setToolTipText("Search Workstations");
-        btnSearchByFilter1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btnSearchByFilter1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        btnSearchByFilter1.setInheritsPopupMenu(true);
-        btnSearchByFilter1.setName("btnSearchByFilter"); // NOI18N
-        btnSearchByFilter1.addActionListener(new java.awt.event.ActionListener() {
+        btnOpenPCSpecSCR.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnOpenPCSpecSCR.setText("Manage Specifications");
+        btnOpenPCSpecSCR.setToolTipText("Search Workstations");
+        btnOpenPCSpecSCR.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnOpenPCSpecSCR.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnOpenPCSpecSCR.setInheritsPopupMenu(true);
+        btnOpenPCSpecSCR.setName("btnSearchByFilter"); // NOI18N
+        btnOpenPCSpecSCR.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSearchByFilter1ActionPerformed(evt);
+                btnOpenPCSpecSCRActionPerformed(evt);
             }
         });
 
@@ -337,105 +355,106 @@ public class PCSCR extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblScreenTitle, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblNoFilter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblSearchTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(201, 201, 201)
-                        .addComponent(btnSearchByComp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSearchByPCSpec, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSearchByFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSearchByFilter1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 209, Short.MAX_VALUE)
-                        .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblScreenTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblSearchInstalDate)
-                                    .addComponent(lblSearchName))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(cmbInstalDate, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lblSearchInstalDate)
+                                            .addComponent(lblSearchName))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(dtpInstalDate, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(txtName))
-                                .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(cmbInstalDate, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(dtpInstalDate, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(txtName)))
+                                    .addComponent(lblSearchComp)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 579, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(39, 39, 39)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblSearchWarrentyDate)
-                                    .addComponent(lblSearchDescription)))
-                            .addComponent(lblSearchComp)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 579, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(lblSearchDescription)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(txtDescription))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(lblSearchWarrentyDate)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(cmbWarrenty, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(lblSearchStatus)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 772, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(lblSearchSpecs)))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblSearchSpecs)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(cmbWarrenty, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(lblSearchStatus)
+                                .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtDescription))))
-                .addContainerGap())
+                                .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnOpenPCCompSCR, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnOpenPCSpecSCR, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 8, Short.MAX_VALUE)))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblScreenTitle)
-                .addGap(18, 18, 18)
-                .addComponent(lblSearchTitle)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblNoFilter)
                 .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblSearchName)
+                        .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblSearchDescription))
+                    .addComponent(txtDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(lblSearchName)
-                                .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(lblSearchDescription))
-                        .addGap(17, 17, 17)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblSearchInstalDate)
                             .addComponent(cmbInstalDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dtpInstalDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblSearchWarrentyDate)))
+                            .addComponent(dtpInstalDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(lblSearchComp)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(17, 17, 17)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cmbWarrenty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblSearchStatus)
-                            .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lblSearchWarrentyDate)
+                                    .addComponent(cmbWarrenty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(lblSearchSpecs)
+                                .addGap(11, 11, 11))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lblSearchStatus)
+                                    .addComponent(cmbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(61, 61, 61)))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblSearchComp)
-                    .addComponent(lblSearchSpecs))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnSearchByComp, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnSearchByPCSpec, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnSearchByFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnSearchByFilter1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                    .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnOpenPCCompSCR, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnOpenPCSpecSCR, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
 
         if (PCCTRL.getNameFilter() != null)
@@ -455,6 +474,7 @@ public class PCSCR extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmbInstalDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbInstalDateActionPerformed
+        if (!doneInit) return;
         fltrInstalDateMode = cmbInstalDate.getSelectedIndex();
         if (fltrInstalDateMode == -1) return;
         if (fltrInstalDateMode == 0) dtpInstalDate.setEnabled(false);
@@ -462,38 +482,32 @@ public class PCSCR extends javax.swing.JPanel {
     }//GEN-LAST:event_cmbInstalDateActionPerformed
 
     private void cmbWarrentyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbWarrentyActionPerformed
+        if (!doneInit) return;
         fltrWarrentymode = cmbWarrenty.getSelectedIndex();
     }//GEN-LAST:event_cmbWarrentyActionPerformed
 
-    private void btnSearchByCompActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchByCompActionPerformed
-        getFilters();
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        putFilters();
         try {
-            PCCTRL.searchByCompBtnPressed();
+            PCCTRL.searchBtnPressed();
         } catch (IOException ex) {
             showDialog(this, "Lost Connection with the server", DialogType.ERROR);
             System.exit(0);
         }
-    }//GEN-LAST:event_btnSearchByCompActionPerformed
+    }//GEN-LAST:event_btnSearchActionPerformed
 
-    private void btnSearchByFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchByFilterActionPerformed
-        getFilters();
-        try {
-            PCCTRL.searchByPCFilterBtnPressed();
-        } catch (IOException ex) {
-            showDialog(this, "Lost Connection with the server", DialogType.ERROR);
-            System.exit(0);
-        }
-    }//GEN-LAST:event_btnSearchByFilterActionPerformed
+    private void btnOpenPCCompSCRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenPCCompSCRActionPerformed
+        putFilters();
+        Window window = SwingUtilities.getWindowAncestor(this);
+        JFrame frame = (JFrame) window;
+        frame.setTitle("PCNM - Manage PC components");
+        PCCTRL.openPCCompSCRBtnPressed();
+    }//GEN-LAST:event_btnOpenPCCompSCRActionPerformed
 
-    private void btnSearchByPCSpecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchByPCSpecActionPerformed
-        getFilters();
-        try {
-            PCCTRL.searchByPCSpecBtnPressed();
-        } catch (IOException ex) {
-            showDialog(this, "Lost Connection with the server", DialogType.ERROR);
-            System.exit(0);
-        }
-    }//GEN-LAST:event_btnSearchByPCSpecActionPerformed
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        clearFilters();
+        PCCTRL.openPCSCR();
+    }//GEN-LAST:event_btnClearActionPerformed
 
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
         Window window = SwingUtilities.getWindowAncestor(this);
@@ -507,25 +521,30 @@ public class PCSCR extends javax.swing.JPanel {
     }//GEN-LAST:event_btnQuitActionPerformed
 
     private void dtpInstalDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dtpInstalDateActionPerformed
+        if (!doneInit) return;
         fltrInstalDate = dtpInstalDate.getDate();
     }//GEN-LAST:event_dtpInstalDateActionPerformed
 
     private void cmbStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbStatusActionPerformed
+        if (!doneInit) return;
         fltrStatus = cmbStatus.getSelectedIndex();
     }//GEN-LAST:event_cmbStatusActionPerformed
 
-    private void btnSearchByFilter1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchByFilter1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnSearchByFilter1ActionPerformed
+    private void btnOpenPCSpecSCRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenPCSpecSCRActionPerformed
+        Window window = SwingUtilities.getWindowAncestor(this);
+        JFrame frame = (JFrame) window;
+        frame.setTitle("PCNM - Manage PC Specifications");
+        PCCTRL.openPCSpecSCRBtnPressed();
+    }//GEN-LAST:event_btnOpenPCSpecSCRActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnClear;
     private javax.swing.JButton btnClose;
+    private javax.swing.JButton btnOpenPCCompSCR;
+    private javax.swing.JButton btnOpenPCSpecSCR;
     private javax.swing.JButton btnQuit;
-    private javax.swing.JButton btnSearchByComp;
-    private javax.swing.JButton btnSearchByFilter;
-    private javax.swing.JButton btnSearchByFilter1;
-    private javax.swing.JButton btnSearchByPCSpec;
+    private javax.swing.JButton btnSearch;
     private javax.swing.JComboBox cmbInstalDate;
     private javax.swing.JComboBox cmbStatus;
     private javax.swing.JComboBox cmbWarrenty;
@@ -540,7 +559,6 @@ public class PCSCR extends javax.swing.JPanel {
     private javax.swing.JLabel lblSearchName;
     private javax.swing.JLabel lblSearchSpecs;
     private javax.swing.JLabel lblSearchStatus;
-    private javax.swing.JLabel lblSearchTitle;
     private javax.swing.JLabel lblSearchWarrentyDate;
     private javax.swing.JTable tblComponents;
     private javax.swing.JTable tblSpecs;
@@ -548,40 +566,87 @@ public class PCSCR extends javax.swing.JPanel {
     private javax.swing.JTextField txtName;
     // End of variables declaration//GEN-END:variables
 
-    private void getFilters() {
+    private void putFilters() {
         PCCTRL.setNameFilter(txtName.getText());
         PCCTRL.setDescriptionFilter(txtDescription.getText());
         PCCTRL.setInstallationDateModeFilter(cmbInstalDate.getSelectedIndex());
         PCCTRL.setInstalationDateFilter(dtpInstalDate.getDate());
         PCCTRL.setWarrentyModeFilter(cmbWarrenty.getSelectedIndex());
         PCCTRL.setStatusFilter(cmbStatus.getSelectedIndex());
+        PCCTRL.setSelectedComponentsFilter(selectedComponents);
+        PCCTRL.setSelectedSpecsFilter(selectedPCSpecs);
+    }
+    
+    private void clearFilters() {
+        PCCTRL.setNameFilter("");
+        PCCTRL.setDescriptionFilter("");
+        PCCTRL.setInstallationDateModeFilter(0);
+        PCCTRL.setInstalationDateFilter(null);
+        PCCTRL.setWarrentyModeFilter(0);
+        PCCTRL.setStatusFilter(0);
+        PCCTRL.setSelectedComponentsFilter(null);
+        PCCTRL.setSelectedSpecsFilter(null);
     }
     
     private ListSelectionListener tblComponentsListListener = new ListSelectionListener() {
         @Override
         public void valueChanged(ListSelectionEvent lse) {
+            if (!doneInit) return;
             ListSelectionModel lsm = (ListSelectionModel)lse.getSource();
             if (lsm.isSelectionEmpty())
                 return;
             int minIndex = lsm.getMinSelectionIndex();
             int maxIndex = lsm.getMaxSelectionIndex();
             for (int i = minIndex ; i <= maxIndex ; i ++)
-                if (lsm.isSelectedIndex(i))
-                    selectedComponents[i] = true;
+                if (lsm.isSelectedIndex(i)) {
+                    if (selectedComponents[i])
+                        selectedComponents[i] = false;
+                    else
+                        selectedComponents[i] = true;
+                }
         }
     };
     
     private ListSelectionListener tblSpecsListListener = new ListSelectionListener() {
         @Override
         public void valueChanged(ListSelectionEvent lse) {
+            if (!doneInit) return;
             ListSelectionModel lsm = (ListSelectionModel)lse.getSource();
             if (lsm.isSelectionEmpty())
                 return;
             int minIndex = lsm.getMinSelectionIndex();
             int maxIndex = lsm.getMaxSelectionIndex();
             for (int i = minIndex ; i <= maxIndex ; i ++)
-                if (lsm.isSelectedIndex(i))
-                    selectedPCSpecs[i] = true;
+                if (lsm.isSelectedIndex(i)) {
+                    if (selectedPCSpecs[i])
+                        selectedPCSpecs[i] = false;
+                    else
+                        selectedPCSpecs[i] = true;
+                }
         }
     };
+
+    private void loadCompTable() {
+        String row;
+        DefaultTableModel dtm = (DefaultTableModel)tblComponents.getModel();
+        dtm.setRowCount(compRowCounter);
+        for (int i = 0 ; i < compEnaList.size() ; i ++) {
+            row = compEnaList.get(i);
+            compTableContent[i] = row.split(",");
+            dtm.setValueAt(compTableContent[i][1], i, 0);
+            dtm.setValueAt(compTableContent[i][2], i, 1);
+        }
+    }
+
+    private void loadSpecTable() {
+        String row;
+        DefaultTableModel dtm = (DefaultTableModel)tblSpecs.getModel();
+        dtm.setRowCount(specRowCounter);
+        for (int i = 0 ; i < specEnaList.size() ; i ++) {
+            row = specEnaList.get(i);
+            specTableContent[i] = row.split(",");
+            dtm.setValueAt(specTableContent[i][1], i, 0);
+            dtm.setValueAt(specTableContent[i][2], i, 1);
+        }
+    }
 }

@@ -6,25 +6,19 @@ import java.io.Serializable;
  * @author Sivan Yehuda
  */
 public class PCSpec {
-    private String ID;
+    private int ID;
     private String name;
     private String description;
+    private int warranty;
+    private float price;
     private int score;
-    private boolean status;
+    private Status status;
 
-    public PCSpec(String ID, String name, String description, int score, boolean status) {
-        this.ID = ID;
-        this.name = name;
-        this.description = description;
-        this.score = score;
-        this.status = status;
-    }
-
-    public String getID() {
+    public int getID() {
         return ID;
     }
 
-    public void setID(String ID) {
+    public void setID(int ID) {
         this.ID = ID;
     }
 
@@ -44,6 +38,22 @@ public class PCSpec {
         this.description = description;
     }
 
+    public int getWarranty() {
+        return warranty;
+    }
+
+    public void setWarranty(int warranty) {
+        this.warranty = warranty;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
     public int getScore() {
         return score;
     }
@@ -52,11 +62,60 @@ public class PCSpec {
         this.score = score;
     }
 
-    public boolean isStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public PCSpec() {
+        ID = 0;
+        name = "";
+        description = "";
+        warranty = 0;
+        price = 0;
+        score = 0;
+        status = Status.Error;
+    }
+
+    public PCSpec(String name, String description, int warranty, float price, int score, Status status) {
+        this();
+        this.name = name;
+        this.description = description;
+        this.warranty = warranty;
+        this.price = price;
+        this.score = score;
+        this.status = status;
+    }
+
+    public PCSpec(int ID, String name, String description, int warranty, float price, int score, Status status) {
+        this.ID = ID;
+        this.name = name;
+        this.description = description;
+        this.warranty = warranty;
+        this.price = price;
+        this.score = score;
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        String sts = "Error";
+        
+        switch (this.status) {
+            case ENABLE:
+                sts = "Enabled";
+                break;
+            case DISABLE:
+                sts = "Disabled";
+                break;
+            case SUSPENDED:
+                sts = "Suspended";
+                break;
+        }
+        
+        return ID + "," + name + "," + description + "," + warranty + "," + price + "," + score + "," + sts;
     }
 }
