@@ -597,13 +597,21 @@ public class PCSCR extends javax.swing.JPanel {
                 return;
             int minIndex = lsm.getMinSelectionIndex();
             int maxIndex = lsm.getMaxSelectionIndex();
-            for (int i = minIndex ; i <= maxIndex ; i ++)
+            DefaultTableModel dtm = (DefaultTableModel)tblComponents.getModel();
+            for (int i = minIndex ; i <= maxIndex ; i ++) {
                 if (lsm.isSelectedIndex(i)) {
-                    if (selectedComponents[i])
-                        selectedComponents[i] = false;
-                    else
-                        selectedComponents[i] = true;
+                    String name = (String)dtm.getValueAt(tblComponents.convertRowIndexToModel(i), 0);
+                    for (int j = 0 ; j < compTableContent.length ; j ++) {
+                        if (compTableContent[j][1].equals(name)) {
+                            if (selectedComponents[j])
+                                selectedComponents[j] = false;
+                            else
+                                selectedComponents[j] = true;
+                            j = compTableContent.length;
+                        }
+                    }
                 }
+            }
         }
     };
     
@@ -616,13 +624,21 @@ public class PCSCR extends javax.swing.JPanel {
                 return;
             int minIndex = lsm.getMinSelectionIndex();
             int maxIndex = lsm.getMaxSelectionIndex();
-            for (int i = minIndex ; i <= maxIndex ; i ++)
+            DefaultTableModel dtm = (DefaultTableModel)tblSpecs.getModel();
+            for (int i = minIndex ; i <= maxIndex ; i ++) {
                 if (lsm.isSelectedIndex(i)) {
-                    if (selectedPCSpecs[i])
-                        selectedPCSpecs[i] = false;
-                    else
-                        selectedPCSpecs[i] = true;
+                    String name = (String)dtm.getValueAt(tblSpecs.convertRowIndexToModel(i), 0);
+                    for (int j = 0 ; j < specTableContent.length ; j ++) {
+                        if (specTableContent[j][1].equals(name)) {
+                            if (selectedPCSpecs[j])
+                                selectedPCSpecs[j] = false;
+                            else
+                                selectedPCSpecs[j] = true;
+                            j = specTableContent.length;
+                        }
+                    }
                 }
+            }
         }
     };
 

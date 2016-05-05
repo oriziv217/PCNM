@@ -1,7 +1,12 @@
 package PCNMClient.PCNMClientController;
 
 import Entities.Component;
+import Entities.Message;
+import Entities.MessageType;
+import Entities.PC;
 import Entities.PCSpec;
+import Entities.Status;
+import PCNMClient.PCNMClientModel;
 import PCNMClient.PCNMClientStart;
 import PCNMClient.PCNMClientView.NetMapSCR;
 import PCNMClient.PCNMClientView.PCCompSCR;
@@ -111,7 +116,37 @@ public class PCCTRL extends CTRL {
     }
 
     public static void searchBtnPressed() throws IOException {
+        // define a search model to search PCs
+        PC search_model = new PC();
+        if (nameFilter != null && !nameFilter.isEmpty())
+            search_model.setName(nameFilter);
+        if (descriptionFilter != null && !descriptionFilter.isEmpty())
+            search_model.setDescription(descriptionFilter);
+        if (instalationDateFilter != null)
+            search_model.setInstallDate(instalationDateFilter);
+        switch (statusFilter) {
+            case 1:
+                search_model.setStatus(Status.ENABLE);
+                break;
+            case 2:
+                search_model.setStatus(Status.DISABLE);
+                break;
+            case 3:
+                search_model.setStatus(Status.SUSPENDED);
+                break;
+        }
+        if (selectedComponentsFilter != null)
+            for (int i = 0 ; i < selectedComponentsFilter.length ; i ++)
+                if (selectedComponentsFilter[i])
+                    search_model.setComponent(enaComp.get(i));
         
+        // define search model options
+        String search_options = installationDateModeFilter + "," + warrentyModeFilter;
+        if (selectedSpecsFilter != null)
+            for (int i = 0 ; i < selectedSpecsFilter.length ; i ++)
+                if (selectedSpecsFilter[i])
+                    search_options = search_options + "," + enaSpec.get(i).toString();
+        PCNMClientModel.sendMessageToServer(new Message(MessageType.PC_SEARCH, search_model, search_options));
     }
 
     public static void openPCCompSCRBtnPressed() {

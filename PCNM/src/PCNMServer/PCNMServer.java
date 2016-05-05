@@ -5,6 +5,7 @@ import ocsf.server.ConnectionToClient;
 import Entities.*;
 import PCNMServer.ServerLogic.ComponentLogic;
 import PCNMServer.ServerLogic.EmployeesLogic;
+import PCNMServer.ServerLogic.PCLogic;
 import PCNMServer.ServerLogic.UserTypesLogic;
 import PCNMServer.ServerLogic.WorkstationLogic;
 import java.io.IOException;
@@ -115,6 +116,8 @@ public class PCNMServer extends AbstractServer {
             case GET_COMP_ENABLE:
                 client.sendToClient(ComponentLogic.getComponentsWithFilter(message.getMsgType(), (Component)message.getEntity()));
                 break;
+            case PC_SEARCH:
+                client.sendToClient(PCLogic.searchPCByFilter((PC)message.getEntity(), message.getDataString()));
             }
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, String.format("Lost connection with client %s", client.toString()));

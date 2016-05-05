@@ -127,6 +127,11 @@ public enum MessageType {
     GET_SPEC_ENABLE,
     
     /**
+     * Search the DB for PCs according to search filters
+     */
+    PC_SEARCH,
+    
+    /**
      * SQL Exception was thrown
      */
     DB_PROBLEM
