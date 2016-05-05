@@ -1,7 +1,3 @@
-/*
- * Here comes the text of your license
- * Each line should be prefixed with  * 
- */
 package PCNMClient.PCNMClientView;
 
 import PCNMClient.PCNMClientController.EmployeeCTRL;
@@ -15,7 +11,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ * This class implements the System's users management screen
  * @author ori ziv
  */
 public class EmployeeSCR extends javax.swing.JPanel implements TableModelListener {

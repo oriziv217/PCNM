@@ -4,6 +4,7 @@ import Entities.Component;
 import Entities.Employee;
 import Entities.Message;
 import Entities.MessageType;
+import Entities.PC;
 import Entities.PCSpec;
 import Entities.PCUserType;
 import Entities.QuickDic;
@@ -147,6 +148,9 @@ public class PCNMClient extends AbstractClient {
                 PCNMClientStart.gotAllData ++;
                 if (PCNMClientStart.gotAllData == 2)
                     PCCTRL.openPCSCR();
+                break;
+            case PC_SEARCH:
+                PCCTRL.processPCSearchReasult((ArrayList<PC>)response.getEntity());
                 break;
             case DB_PROBLEM:
                 WindowMustHave.showDialog(null, response.getDataString(), DialogType.ERROR);

@@ -1,16 +1,10 @@
-/*
- * Here comes the text of your license
- * Each line should be prefixed with  * 
- */
 package PCNMServer;
 
 import PCNMServer.ServerLogic.PCNMServerLogic;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- *
+ * This class implements the server's main screen
  * @author Ori Ziv
  */
 public class PCNMServerMainSCR extends javax.swing.JFrame {

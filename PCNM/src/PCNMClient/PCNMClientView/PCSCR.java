@@ -17,7 +17,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ * This class implements the PC search screen
  * @author ori ziv
  */
 public class PCSCR extends javax.swing.JPanel {
@@ -49,6 +49,11 @@ public class PCSCR extends javax.swing.JPanel {
         doneInit = true;
     }
 
+    /**
+     * This constructor utilise the default constructor and then load content into the screen's forms
+     * @param compEnaList
+     * @param specEnaList
+     */
     public PCSCR(ArrayList<String> compEnaList, ArrayList<String> specEnaList) {
         this();
         doneInit = false;

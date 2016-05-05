@@ -30,7 +30,7 @@ public class ComponentCTRL extends CTRL {
     private static ArrayList<QuickDic> compQD;
 
     /**
-     *
+     * screen filter getter
      * @return
      */
     public static String getNameFilter() {
@@ -46,7 +46,7 @@ public class ComponentCTRL extends CTRL {
     }
 
     /**
-     *
+     * screen filter getter
      * @return
      */
     public static String getDescriptionFilter() {
@@ -62,7 +62,7 @@ public class ComponentCTRL extends CTRL {
     }
 
     /**
-     *
+     * screen filter getter
      * @return
      */
     public static int getPriceCmb() {
@@ -70,7 +70,7 @@ public class ComponentCTRL extends CTRL {
     }
 
     /**
-     *
+     * 
      * @param priceCmb
      */
     public static void setPriceCmb(int priceCmb) {
@@ -78,7 +78,7 @@ public class ComponentCTRL extends CTRL {
     }
 
     /**
-     *
+     * screen filter getter
      * @return
      */
     public static float getPriceFilter() {
@@ -86,7 +86,7 @@ public class ComponentCTRL extends CTRL {
     }
 
     /**
-     *
+     * screen filter setter
      * @param priceFilter
      */
     public static void setPriceFilter(float priceFilter) {
@@ -94,7 +94,7 @@ public class ComponentCTRL extends CTRL {
     }
 
     /**
-     *
+     * screen filter getter
      * @return
      */
     public static int getValAddCmb() {
@@ -102,7 +102,7 @@ public class ComponentCTRL extends CTRL {
     }
 
     /**
-     *
+     * screen filter setter
      * @param valAddCmb
      */
     public static void setValAddCmb(int valAddCmb) {
@@ -110,7 +110,7 @@ public class ComponentCTRL extends CTRL {
     }
 
     /**
-     *
+     * screen filter getter
      * @return
      */
     public static float getValAddFilter() {
@@ -118,7 +118,7 @@ public class ComponentCTRL extends CTRL {
     }
 
     /**
-     *
+     * screen filter setter
      * @param valAddFilter
      */
     public static void setValAddFilter(float valAddFilter) {
@@ -126,7 +126,7 @@ public class ComponentCTRL extends CTRL {
     }
 
     /**
-     *
+     * screen filter getter
      * @return
      */
     public static int getStatusCmb() {
@@ -134,7 +134,7 @@ public class ComponentCTRL extends CTRL {
     }
 
     /**
-     *
+     * screen filter setter
      * @param statusCmb
      */
     public static void setStatusCmb(int statusCmb) {
@@ -204,6 +204,10 @@ public class ComponentCTRL extends CTRL {
         PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_COMP_WITH_FILTER, cmp));
     }
 
+    /**
+     * This method process PC-Components search result list for the GUI screen
+     * @param search_result
+     */
     public static void processSearchResults(ArrayList<Component> search_result) {
         PCNMClientStart.cur_ent.setCompnents(search_result);
         comp_pull = search_result;
@@ -214,6 +218,9 @@ public class ComponentCTRL extends CTRL {
         PCNMClientStart.switchPanels(new ComponentSearchResultSCR(cmp_tbl));
     }
 
+    /**
+     * This method implements close button pressed event in the search results screen
+     */
     public static void searchResaultCloseBtnPressed() {
         PCNMClientStart.switchPanels(new PCCompSCR());
     }
@@ -233,11 +240,30 @@ public class ComponentCTRL extends CTRL {
         return true;
     }
 
+    /**
+     * This method implements Add Component button pressed event in the Add Component form within the Components search result screen
+     * @param name
+     * @param description
+     * @param price
+     * @param valueAdd
+     * @param status
+     * @throws IOException
+     */
     public static void AddComponentBtnPressed(String name, String description, float price, float valueAdd, String status) throws IOException {
         Status sts = stringToStatus(status);
         PCNMClientModel.sendMessageToServer(new Message(MessageType.ADD_COMPONENT, new Component(name, description, price, valueAdd, sts)));
     }
 
+    /**
+     * This method implements Update Component button pressed event in the Update Component form within the Components search result screen
+     * @param ID
+     * @param name
+     * @param description
+     * @param price
+     * @param valueAdd
+     * @param status
+     * @throws IOException
+     */
     public static void UpdateComponentBtnPressed(int ID, String name, String description, float price, float valueAdd, String status) throws IOException {
         Status sts = stringToStatus(status);
         PCNMClientModel.sendMessageToServer(new Message(MessageType.UPDATE_COMPONENT, new Component(ID, name, description, price, valueAdd, sts)));

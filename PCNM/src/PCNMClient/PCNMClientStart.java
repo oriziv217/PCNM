@@ -35,6 +35,10 @@ public class PCNMClientStart {
      * saved workstation search filters
      */
     public static ArrayList<String>workstationSearchFilters = new ArrayList<String>();
+
+    /**
+     * extended flag indicates data loading process state
+     */
     public static int gotAllData;
     
     /**

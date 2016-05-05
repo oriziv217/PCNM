@@ -16,7 +16,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ * This class implements the PC Components search results screen
  * @author Ori Ziv
  */
 public class ComponentSearchResultSCR extends javax.swing.JPanel {
@@ -53,6 +53,10 @@ public class ComponentSearchResultSCR extends javax.swing.JPanel {
         doneInit = true;
     }
 
+    /**
+     * This constructor utilise the default constructor and then loads content into the screen form
+     * @param ws_tbl
+     */
     public ComponentSearchResultSCR(ArrayList<String> ws_tbl) {
         this();
         doneInit = false;

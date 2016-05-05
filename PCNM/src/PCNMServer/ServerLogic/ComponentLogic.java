@@ -12,11 +12,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- *
+ * This class implements application procedures related to PC Components
  * @author Ori Ziv
  */
 public class ComponentLogic extends Logic {
 
+    /**
+     * This method implements the logic behind search PC Components operation
+     * @param mType
+     * @param search_model
+     * @return
+     * @throws SQLException
+     */
     public static Message getComponentsWithFilter(MessageType mType, Component search_model) throws SQLException {
         ArrayList<Component> search_results = new ArrayList<Component>();
         Connection conDB = DBConnect.mySQLConnection();

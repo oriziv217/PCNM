@@ -12,13 +12,21 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
- *
+ * This class implements application procedures related to PCs
  * @author Ori Ziv
  */
 public class PCLogic extends Logic {
 
+    /**
+     * This method implements the logic behind PC search operation
+     * @param search_model
+     * @param search_options
+     * @return
+     * @throws SQLException
+     */
     public static Message searchPCByFilter(PC search_model, String search_options) throws SQLException {
         String[] parrsedOptions = search_options.split(",");
         int installDateFilterMode = Integer.parseInt(parrsedOptions[0]);
@@ -128,6 +136,7 @@ public class PCLogic extends Logic {
         rs = DBConnect.innerJoin(conDB, leftTable, rightTable, leftKeys, rightKeys, fields, labels, filter, null);
         // filter by components
         ArrayList<Component> components = search_model.getComponents();
+        ArrayList<Integer> matchedPCs = new ArrayList<Integer>();
         String componentsFilter = "";
         String PCIDFilter = "";
         if (components != null) {
@@ -145,9 +154,57 @@ public class PCLogic extends Logic {
                     PCIDFilter = PCIDFilter + ",'" + rs.getString("PCID") + "'";
             }
             PCIDFilter = PCIDFilter + ")";
-            rs1 = DBConnect.selectWithFilter(conDB, "pccomp", "PCID, componentID", "EndDate <> NULL AND " + componentsFilter + " AND " + PCIDFilter);
+            rs1 = DBConnect.selectWithFilter(conDB, "pccomp", "PCID", "EndDate = NULL AND " + componentsFilter + " AND " + PCIDFilter);
+            while (rs1.next()) {
+                matchedPCs.add(new Integer(rs1.getInt("PCID")));
+            }
+            rs.beforeFirst();
+            while (rs.next()) {
+                if (matchedPCs.contains(new Integer(rs.getInt("PCID")))) {
+                    search_results.add(new PC(  rs.getInt("PCID"),
+                                                rs.getString("PCNAME"),
+                                                rs.getString("PCDESCRIPTION"),
+                                                new PCSpec( rs.getInt("PCSPECID"),
+                                                            rs.getString("PCSPECNAME"),
+                                                            rs.getString("PCSPECDESCRIPTION"),
+                                                            rs.getInt("PCSPECWARRENTY"),
+                                                            rs.getFloat("PCSPECPRICE"),
+                                                            rs.getInt("PCSPECSCORE"),
+                                                            intToStatus(rs.getInt("PCSPECSTATUS"))),
+                                                rs.getTimestamp("PCSpecInstallation"),
+                                                intToStatus(rs.getInt("PCSTATUS")),
+                                                null));
+                }
+            }
+        } else {
+            while (rs.next()) {
+                search_results.add(new PC(  rs.getInt("PCID"),
+                                            rs.getString("PCNAME"),
+                                            rs.getString("PCDESCRIPTION"),
+                                            new PCSpec( rs.getInt("PCSPECID"),
+                                                        rs.getString("PCSPECNAME"),
+                                                        rs.getString("PCSPECDESCRIPTION"),
+                                                        rs.getInt("PCSPECWARRENTY"),
+                                                        rs.getFloat("PCSPECPRICE"),
+                                                        rs.getInt("PCSPECSCORE"),
+                                                        intToStatus(rs.getInt("PCSPECSTATUS"))),
+                                            rs.getTimestamp("PCSpecInstallation"),
+                                            intToStatus(rs.getInt("PCSTATUS")),
+                                            null));
+            }
+        }
+        // filter by warrenty expiration
+        if (warrentyFilterMode > 0) {
+            Calendar today = Calendar.getInstance();
+            Calendar expirationTime = Calendar.getInstance();
+            for (int i = search_results.size() - 1 ; i >= 0 ; i --) {
+                expirationTime.setTime(search_results.get(i).getInstallDate());
+                expirationTime.add(Calendar.MONTH, search_results.get(i).getSpec().getWarranty());
+                int isExpired = today.compareTo(expirationTime);
+                if (isExpired > 0 && warrentyFilterMode == 1) search_results.remove(i);
+                if (isExpired < 0 && warrentyFilterMode == 2) search_results.remove(i);
+            }
         }
         return new Message(MessageType.PC_SEARCH, search_results);
     }
-    
 }

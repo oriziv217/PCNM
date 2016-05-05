@@ -43,6 +43,11 @@ public class Logic {
         return 4;
     }
     
+    /**
+     * This method converts string to Status
+     * @param status
+     * @return
+     */
     protected static Status stringToStatus (String status) {
         switch (status) {
             case "Enable":
@@ -70,6 +75,11 @@ public class Logic {
         return Status.Error;
     }
     
+    /**
+     * This method converts Status to String
+     * @param status
+     * @return
+     */
     protected static String statusToString (Status status) {
         switch (status) {
             case ENABLE:
@@ -82,12 +92,26 @@ public class Logic {
         return "Error";
     }
     
+    /**
+     * This method round a float to given precision
+     * rule: 0.5 rounds up to 1
+     * @param d
+     * @param decimalPlace
+     * @return
+     */
     public static float roundFloat(float d, int decimalPlace) {
         BigDecimal bd = new BigDecimal(Float.toString(d));
         bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
         return bd.floatValue();
     }
     
+    /**
+     * This method round a float to given precision
+     * rule: 0.5 rounds up to 1
+     * @param d
+     * @param decimalPlace
+     * @return
+     */
     public static double roundDouble(double d, int decimalPlace) {
         BigDecimal bd = new BigDecimal(Double.toString(d));
         bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);

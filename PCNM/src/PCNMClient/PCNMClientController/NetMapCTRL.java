@@ -9,7 +9,6 @@ import PCNMClient.PCNMClientModel;
 import PCNMClient.PCNMClientStart;
 import PCNMClient.PCNMClientView.HomeSCR;
 import PCNMClient.PCNMClientView.PCCompSCR;
-import PCNMClient.PCNMClientView.PCSCR;
 import PCNMClient.PCNMClientView.UserTypeSCR;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -53,6 +52,10 @@ public class NetMapCTRL extends CTRL {
         PCNMClientStart.switchPanels(new PCCompSCR());
     }
 
+    /**
+     * This method implements Manage PCs button pressed event
+     * @throws IOException
+     */
     public static void btnMngPCPressed() throws IOException {
         Component cmp = new Component(null, null, 0, 0, Status.ENABLE);
         PCSpec spc = new PCSpec(null, null, 0, 0, 0, Status.ENABLE);

@@ -3,6 +3,7 @@ package PCNMClient;
 import Entities.Component;
 import Entities.WSType;
 import Entities.Workstation;
+import Entities.PC;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -14,6 +15,7 @@ public class CurrentEntities {
     private ArrayList<WSType> wstypes;
     private ArrayList<Workstation> workstations;
     private ArrayList<Component> components;
+    private ArrayList<PC> pcs;
 
     /**
      * Default constructor
@@ -21,6 +23,8 @@ public class CurrentEntities {
     public CurrentEntities() {
         wstypes = new ArrayList<WSType>();
         workstations = new ArrayList<Workstation>();
+        components = new ArrayList<Component>();
+        pcs = new ArrayList<PC>();
     }
 
     /**
@@ -39,6 +43,13 @@ public class CurrentEntities {
         return workstations;
     }
     
+    /**
+     * current PCs getter
+     * @return
+     */
+    public ArrayList<PC> getPcs() {
+        return pcs;
+    }
     /**
      * current workstation types setter
      * @param wstypes
@@ -72,6 +83,14 @@ public class CurrentEntities {
         Collections.sort(this.workstations);
     }
     
+    /**
+     * current PCs setter and sorter
+     * @param Pcs
+     */
+    public void setPcs(ArrayList<PC> Pcs) {
+        this.pcs = pcs;
+        Collections.sort(this.pcs);
+    }
     /**
      * add workstation type to current array
      * @param wst
@@ -197,6 +216,34 @@ public class CurrentEntities {
     }
     
     /**
+     * add PC to sorted current PCs array
+     * @param pc
+     */
+    public void addToPcs(PC pc) {
+        // case list is empty
+        if (pcs.isEmpty()) {
+            pcs.add(pc);
+            return;
+        }
+        // case add to head of the list
+        int comperator = pcs.get(0).compareTo(pc);
+        if (comperator > 0) {
+            pcs.add(0, pc);
+            return;
+        }
+        // case add to the middle of the list
+        for (int i = 0 ; i < pcs.size() ; i ++) {
+            comperator = pcs.get(i).compareTo(pc);
+            if (comperator > 0) {
+                pcs.add(i, pc);
+                return;
+            }
+        }
+        // case add to list's tail
+        pcs.add(pcs.size(), pc);
+    }
+    
+    /**
      * update workstation with a specific ID
      * @param ws
      */
@@ -204,6 +251,16 @@ public class CurrentEntities {
         int index = Collections.binarySearch(workstations, ws);
         workstations.remove(index);
         addToWorkstations(ws);
+    }
+    
+    /**
+     * update PC with a specific ID
+     * @param pc
+     */
+    public void updatePcs(PC pc) {
+        int index = Collections.binarySearch(pcs, pc);
+        pcs.remove(index);
+        addToPcs(pc);
     }
     
     /**

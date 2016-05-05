@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 public class LoginSCR extends javax.swing.JFrame {
 
     /**
-     *
+     * JPanel getter
      * @return
      */
     public JPanel getPnlLogin() {

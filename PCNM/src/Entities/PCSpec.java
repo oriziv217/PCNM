@@ -2,10 +2,11 @@ package Entities;
 import java.io.Serializable;
 
 /**
- *
+ * This class represents a record in PC-Specification table
+ * @author Ori Ziv
  * @author Sivan Yehuda
  */
-public class PCSpec {
+public class PCSpec implements Serializable {
     private int ID;
     private String name;
     private String description;

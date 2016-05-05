@@ -11,12 +11,13 @@ import PCNMClient.PCNMClientStart;
 import PCNMClient.PCNMClientView.NetMapSCR;
 import PCNMClient.PCNMClientView.PCCompSCR;
 import PCNMClient.PCNMClientView.PCSCR;
+import PCNMClient.PCNMClientView.PCSearchResultSCR;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
 /**
- *
+ * This class implements the PC management screens controllers
  * @author Ori Ziv
  */
 public class PCCTRL extends CTRL {
@@ -30,71 +31,140 @@ public class PCCTRL extends CTRL {
     private static boolean[] selectedSpecsFilter;
     private static ArrayList<Component> enaComp;
     private static ArrayList<PCSpec> enaSpec;
+    private static ArrayList<PC> pc_pull;
 
+    /**
+     * search screen filter getter
+     * @return
+     */
     public static String getNameFilter() {
         return nameFilter;
     }
 
+    /**
+     * search screen filter setter
+     * @param nameFilter
+     */
     public static void setNameFilter(String nameFilter) {
         PCCTRL.nameFilter = nameFilter;
     }
 
+    /**
+     * search screen filter getter
+     * @return
+     */
     public static String getDescriptionFilter() {
         return descriptionFilter;
     }
 
+    /**
+     * search screen filter setter
+     * @param descriptionFilter
+     */
     public static void setDescriptionFilter(String descriptionFilter) {
         PCCTRL.descriptionFilter = descriptionFilter;
     }
 
+    /**
+     * search screen filter getter
+     * @return
+     */
     public static int getInstallationDateModeFilter() {
         return installationDateModeFilter;
     }
 
+    /**
+     * search screen filter setter
+     * @param installationDateModeFilter
+     */
     public static void setInstallationDateModeFilter(int installationDateModeFilter) {
         PCCTRL.installationDateModeFilter = installationDateModeFilter;
     }
 
+    /**
+     * search screen filter getter
+     * @return
+     */
     public static Date getInstalationDateFilter() {
         return instalationDateFilter;
     }
 
+    /**
+     * search screen filter setter
+     * @param instalationDateFilter
+     */
     public static void setInstalationDateFilter(Date instalationDateFilter) {
         PCCTRL.instalationDateFilter = instalationDateFilter;
     }
 
+    /**
+     * search screen filter getter
+     * @return
+     */
     public static int getWarrentyModeFilter() {
         return warrentyModeFilter;
     }
 
+    /**
+     * search screen filter setter
+     * @param warrentyModeFilter
+     */
     public static void setWarrentyModeFilter(int warrentyModeFilter) {
         PCCTRL.warrentyModeFilter = warrentyModeFilter;
     }
 
+    /**
+     * search screen filter getter
+     * @return
+     */
     public static int getStatusFilter() {
         return statusFilter;
     }
 
+    /**
+     * search screen filter setter
+     * @param statusFilter
+     */
     public static void setStatusFilter(int statusFilter) {
         PCCTRL.statusFilter = statusFilter;
     }
 
+    /**
+     * search screen filter getter
+     * @return
+     */
     public static boolean[] getSelectedComponentsFilter() {
         return PCCTRL.selectedComponentsFilter;
     }
     
+    /**
+     * search screen filter setter
+     * @param selectedComponentsFilter
+     */
     public static void setSelectedComponentsFilter (boolean[] selectedComponentsFilter) {
         PCCTRL.selectedComponentsFilter = selectedComponentsFilter;
     }
     
+    /**
+     * search screen filter getter
+     * @return
+     */
     public static boolean[] getSelectedSpecsFilter() {
         return PCCTRL.selectedSpecsFilter;
     }
     
+    /**
+     * search screen filter setter
+     * @param selectedSpecsFilter
+     */
     public static void setSelectedSpecsFilter (boolean[] selectedSpecsFilter) {
         PCCTRL.selectedSpecsFilter = selectedSpecsFilter;
     }
     
+    /**
+     * set enabled component for search screen content
+     * @param enaComp
+     */
     public static void setEnaComp(ArrayList<Component> enaComp) {
         PCCTRL.enaComp = enaComp;
     }
@@ -103,18 +173,33 @@ public class PCCTRL extends CTRL {
         return enaComp;
     }
 
+    /**
+     * get enabled component for search screen content
+     * @return
+     */
     public static ArrayList<PCSpec> getEnaSpec() {
         return enaSpec;
     }
 
+    /**
+     * set enabled PC-specifications for search screen content
+     * @param enaSpec
+     */
     public static void setEnaSpec(ArrayList<PCSpec> enaSpec) {
         PCCTRL.enaSpec = enaSpec;
     }
     
+    /**
+     * This method implements close button pressed event in the PC search screen
+     */
     public static void closeBtnPressed () {
         PCNMClientStart.switchPanels(new NetMapSCR());
     }
 
+    /**
+     * This method implements Search button pressed event in the PC search screen
+     * @throws IOException
+     */
     public static void searchBtnPressed() throws IOException {
         // define a search model to search PCs
         PC search_model = new PC();
@@ -149,10 +234,16 @@ public class PCCTRL extends CTRL {
         PCNMClientModel.sendMessageToServer(new Message(MessageType.PC_SEARCH, search_model, search_options));
     }
 
+    /**
+     * This method implements Open Component management screen button pressed event in the PC search screen
+     */
     public static void openPCCompSCRBtnPressed() {
         PCNMClientStart.switchPanels(new PCCompSCR());
     }
 
+    /**
+     * This method sets content for the PC search screen and then open it
+     */
     public static void openPCSCR() {
         if (enaComp == null || enaSpec == null) {
             PCNMClientStart.switchPanels(new PCSCR());
@@ -167,7 +258,23 @@ public class PCCTRL extends CTRL {
         PCNMClientStart.switchPanels(new PCSCR(compList, specList));
     }
 
+    /**
+     * This method implements Open PS Specification management screen button press event in the PC search screen
+     */
     public static void openPCSpecSCRBtnPressed() {
         
+    }
+
+    /**
+     * This method process PC search results and open the PC search results screen
+     * @param search_result
+     */
+    public static void processPCSearchReasult(ArrayList<PC> search_result) {
+        PCNMClientStart.cur_ent.setPcs(search_result);
+        pc_pull = PCNMClientStart.cur_ent.getPcs();
+        ArrayList<String>pc_tbl = new ArrayList<String>();
+        for (PC pc : pc_pull)
+            pc_tbl.add(pc.toString());
+        PCNMClientStart.switchPanels(new PCSearchResultSCR(pc_tbl));
     }
 }
