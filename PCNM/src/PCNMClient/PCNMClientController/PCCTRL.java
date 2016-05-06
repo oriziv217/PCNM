@@ -275,6 +275,17 @@ public class PCCTRL extends CTRL {
         ArrayList<String>pc_tbl = new ArrayList<String>();
         for (PC pc : pc_pull)
             pc_tbl.add(pc.toString());
+        PCNMClientStart.appWindow.setTitle("PCNM - PC Search Results");
         PCNMClientStart.switchPanels(new PCSearchResultSCR(pc_tbl));
+    }
+
+    public static void searchResaultCloseBtnPressed() throws IOException {
+        PCNMClientStart.appWindow.setTitle("PCNM - Manage PCs");
+        Component cmp = new Component(null, null, 0, 0, Status.ENABLE);
+        PCSpec spc = new PCSpec(null, null, 0, 0, 0, Status.ENABLE);
+        PCNMClientStart.gotAllData = 0;
+        PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_COMP_ENABLE, cmp));
+        PCNMClientStart.gotAllData ++;
+        PCCTRL.setEnaSpec(new ArrayList<PCSpec>());
     }
 }

@@ -1,26 +1,73 @@
 package PCNMClient.PCNMClientView;
 
+import Entities.EmpType;
+import PCNMClient.PCNMClientController.PCCTRL;
+import PCNMClient.PCNMClientStart;
+import static PCNMClient.PCNMClientView.WindowMustHave.showDialog;
+import java.awt.Font;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * This class implements the PC search results screen
  * @author ori ziv
  */
 public class PCSearchResultSCR extends javax.swing.JPanel {
+    private boolean doneInit;
+    private int fltrField;
+    private String fltrStirng;
+    private int fltrInstDateMode;
+    private Date fltrInstDate;
+    private int fltrSpecIndex;
+    private String fltrSpec;
+    private boolean fltrExpired;
+    private boolean fltrEnabled;
+    private ArrayList<String> specTableNames;
+    private ArrayList<String> pc_tbl;
+    private int rowCounter;
+    private boolean[] rowsToShow;
+    private String[][] tableContent;
 
     /**
      * Creates new form PCSearchResultSCR
      */
     public PCSearchResultSCR() {
+        doneInit = false;
+        fltrField = 0;
+        fltrStirng = "";
+        fltrInstDateMode = 0;
+        fltrInstDate = new Date();
+        fltrSpecIndex = 0;
+        fltrSpec = "";
+        fltrExpired = false;
+        fltrEnabled = false;
+        specTableNames = new ArrayList<String>();
         initComponents();
+        doneInit = true;
     }
 
     /**
-     * This constructor utilise the default constructor and then loads content into the screen's forms
+     * This constructor utilize the default constructor and then loads content into the screen's forms
      * @param pc_tbl 
      */
     public PCSearchResultSCR(ArrayList<String> pc_tbl) {
         this();
+        doneInit = false;
+        this.pc_tbl = pc_tbl;
+        rowCounter = pc_tbl.size();
+        rowsToShow = new boolean[rowCounter];
+        Arrays.fill(rowsToShow, true);
+        tableContent = new String[rowCounter][12];
+        loadSearchResults();
+        loadCmbSpecificationNameFilter();
+        cmbSpecificationNameFilter.setSelectedIndex(fltrSpecIndex);
+        doneInit = true;
     }
 
     /**
@@ -32,19 +79,514 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lblResultsTitle = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblSearchResault = new javax.swing.JTable();
+        lblResultFilterBy = new javax.swing.JLabel();
+        cmbFltrField = new javax.swing.JComboBox();
+        lblFilterStr = new javax.swing.JLabel();
+        txtFilterStr = new javax.swing.JTextField();
+        lblInstDateFilter = new javax.swing.JLabel();
+        cmbInstDateFilterMode = new javax.swing.JComboBox();
+        dtpInstalDateFilter = new org.jdesktop.swingx.JXDatePicker();
+        lblSpecificationNameFilter = new javax.swing.JLabel();
+        cmbSpecificationNameFilter = new javax.swing.JComboBox();
+        chbExpiredOnly = new javax.swing.JCheckBox();
+        chbEnabledOnly = new javax.swing.JCheckBox();
+        btnClose = new javax.swing.JButton();
+        btnQuit = new javax.swing.JButton();
+        btnNewPC = new javax.swing.JButton();
+        btnViewPC = new javax.swing.JButton();
+        btnUpdatePC = new javax.swing.JButton();
+        btnMapPC = new javax.swing.JButton();
+
+        setBackground(java.awt.Color.white);
+        setMinimumSize(new java.awt.Dimension(1442, 818));
+
+        lblResultsTitle.setBackground(java.awt.Color.white);
+        lblResultsTitle.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
+        lblResultsTitle.setForeground(java.awt.Color.red);
+        lblResultsTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblResultsTitle.setText("PC Search Results");
+
+        tblSearchResault.setAutoCreateRowSorter(true);
+        tblSearchResault.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        tblSearchResault.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Name", "Description", "Install date", "Specification", "Warrenty End", "Status"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblSearchResault.setRowHeight(32);
+        jScrollPane1.setViewportView(tblSearchResault);
+        tblSearchResault.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 24));
+
+        lblResultFilterBy.setBackground(java.awt.Color.white);
+        lblResultFilterBy.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        lblResultFilterBy.setText("Filter By:");
+
+        cmbFltrField.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        cmbFltrField.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Show All", "PC Name", "PC Description" }));
+        cmbFltrField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbFltrFieldActionPerformed(evt);
+            }
+        });
+
+        lblFilterStr.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        lblFilterStr.setText("Filter String:");
+
+        txtFilterStr.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        txtFilterStr.setEnabled(false);
+        txtFilterStr.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtFilterStrFocusLost(evt);
+            }
+        });
+        txtFilterStr.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFilterStrActionPerformed(evt);
+            }
+        });
+
+        lblInstDateFilter.setBackground(java.awt.Color.white);
+        lblInstDateFilter.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        lblInstDateFilter.setText("Intalation Date:");
+
+        cmbInstDateFilterMode.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        cmbInstDateFilterMode.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "All", "After", "Before" }));
+        cmbInstDateFilterMode.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbInstDateFilterModeActionPerformed(evt);
+            }
+        });
+
+        dtpInstalDateFilter.setEnabled(false);
+        dtpInstalDateFilter.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        dtpInstalDateFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dtpInstalDateFilterActionPerformed(evt);
+            }
+        });
+
+        lblSpecificationNameFilter.setBackground(java.awt.Color.white);
+        lblSpecificationNameFilter.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        lblSpecificationNameFilter.setText("Specification:");
+
+        cmbSpecificationNameFilter.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        cmbSpecificationNameFilter.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Show All" }));
+        cmbSpecificationNameFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbSpecificationNameFilterActionPerformed(evt);
+            }
+        });
+
+        chbExpiredOnly.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        chbExpiredOnly.setText("Expired Warrenty Only");
+        chbExpiredOnly.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chbExpiredOnlyActionPerformed(evt);
+            }
+        });
+
+        chbEnabledOnly.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        chbEnabledOnly.setText("Show Enabled Only");
+        chbEnabledOnly.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chbEnabledOnlyActionPerformed(evt);
+            }
+        });
+
+        btnClose.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnClose.setForeground(java.awt.Color.red);
+        btnClose.setToolTipText("Close screen and return to Manage Workstations screen");
+        btnClose.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnClose.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnClose.setInheritsPopupMenu(true);
+        btnClose.setLabel("Close");
+        btnClose.setName("btnClose"); // NOI18N
+        btnClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCloseActionPerformed(evt);
+            }
+        });
+
+        btnQuit.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnQuit.setForeground(java.awt.Color.red);
+        btnQuit.setText("Quit");
+        btnQuit.setToolTipText("Quit PCNM");
+        btnQuit.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnQuit.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnQuit.setInheritsPopupMenu(true);
+        btnQuit.setName("btnQuit"); // NOI18N
+        btnQuit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnQuitActionPerformed(evt);
+            }
+        });
+
+        btnNewPC.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnNewPC.setText("New PC");
+        btnNewPC.setToolTipText("Add new workstation");
+        btnNewPC.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnNewPC.setMaximumSize(new java.awt.Dimension(99, 33));
+        btnNewPC.setMinimumSize(new java.awt.Dimension(99, 33));
+        btnNewPC.setPreferredSize(new java.awt.Dimension(99, 33));
+        btnNewPC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewPCActionPerformed(evt);
+            }
+        });
+
+        btnViewPC.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnViewPC.setText("View Selected PC");
+        btnViewPC.setToolTipText("Add new workstation");
+        btnViewPC.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnViewPC.setMaximumSize(new java.awt.Dimension(99, 33));
+        btnViewPC.setMinimumSize(new java.awt.Dimension(99, 33));
+        btnViewPC.setPreferredSize(new java.awt.Dimension(99, 33));
+        btnViewPC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewPCActionPerformed(evt);
+            }
+        });
+
+        btnUpdatePC.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnUpdatePC.setText("Update Selected PC");
+        btnUpdatePC.setToolTipText("Add new workstation");
+        btnUpdatePC.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnUpdatePC.setMaximumSize(new java.awt.Dimension(99, 33));
+        btnUpdatePC.setMinimumSize(new java.awt.Dimension(99, 33));
+        btnUpdatePC.setPreferredSize(new java.awt.Dimension(99, 33));
+        btnUpdatePC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdatePCActionPerformed(evt);
+            }
+        });
+
+        btnMapPC.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnMapPC.setText("Selected PC Mapping");
+        btnMapPC.setToolTipText("Add new workstation");
+        btnMapPC.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnMapPC.setMaximumSize(new java.awt.Dimension(99, 33));
+        btnMapPC.setMinimumSize(new java.awt.Dimension(99, 33));
+        btnMapPC.setPreferredSize(new java.awt.Dimension(99, 33));
+        btnMapPC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMapPCActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblResultsTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 1422, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblInstDateFilter)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmbInstDateFilterMode, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(dtpInstalDateFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblSpecificationNameFilter)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmbSpecificationNameFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(chbExpiredOnly)
+                        .addGap(18, 18, 18)
+                        .addComponent(chbEnabledOnly)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblResultFilterBy)
+                        .addGap(60, 60, 60)
+                        .addComponent(cmbFltrField, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblFilterStr)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtFilterStr, javax.swing.GroupLayout.PREFERRED_SIZE, 843, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnNewPC, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnViewPC, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnUpdatePC, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnMapPC, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(94, 94, 94)
+                        .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblResultsTitle)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblResultFilterBy)
+                    .addComponent(cmbFltrField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblFilterStr)
+                    .addComponent(txtFilterStr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblInstDateFilter)
+                    .addComponent(cmbInstDateFilterMode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dtpInstalDateFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblSpecificationNameFilter)
+                    .addComponent(cmbSpecificationNameFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(chbEnabledOnly)
+                    .addComponent(chbExpiredOnly))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnNewPC, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnViewPC, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnUpdatePC, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnMapPC, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
+
+        cmbFltrField.setSelectedIndex(fltrField);
+        if (fltrField == 0) txtFilterStr.setEnabled(false);
+        else txtFilterStr.setEnabled(true);
+        txtFilterStr.setText(fltrStirng);
+        cmbInstDateFilterMode.setSelectedIndex(fltrInstDateMode);
+        dtpInstalDateFilter.setFormats(new SimpleDateFormat( "dd/MM/yyyy" ));
+        if (fltrInstDate != null) dtpInstalDateFilter.setDate(fltrInstDate);
+        else dtpInstalDateFilter.setDate(new Date());
+
+        chbExpiredOnly.setSelected(fltrExpired);
+        chbEnabledOnly.setSelected(fltrEnabled);
+        if (PCNMClientStart.user.getType() == EmpType.TECHNICIAN)
+        btnMapPC.setEnabled(false);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cmbFltrFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbFltrFieldActionPerformed
+        if (doneInit) {
+            fltrField = cmbFltrField.getSelectedIndex();
+            if (fltrField == 0)
+                txtFilterStr.setEnabled(false);
+            else {
+                txtFilterStr.setEnabled(true);
+                fltrStirng = txtFilterStr.getText();
+                if (fltrStirng == null) fltrStirng = "";
+            }
+            applyFilter();
+        }
+    }//GEN-LAST:event_cmbFltrFieldActionPerformed
+
+    private void txtFilterStrFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtFilterStrFocusLost
+        if (doneInit) {
+            fltrStirng = txtFilterStr.getText();
+            if (fltrStirng == null) fltrStirng = "";
+            applyFilter();
+        }
+    }//GEN-LAST:event_txtFilterStrFocusLost
+
+    private void txtFilterStrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFilterStrActionPerformed
+        if (doneInit) {
+            fltrStirng = txtFilterStr.getText();
+            if (fltrStirng == null) fltrStirng = "";
+            applyFilter();
+        }
+    }//GEN-LAST:event_txtFilterStrActionPerformed
+
+    private void cmbInstDateFilterModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbInstDateFilterModeActionPerformed
+        if (doneInit) {
+            fltrInstDateMode = cmbInstDateFilterMode.getSelectedIndex();
+            if (fltrInstDateMode == 0)
+                dtpInstalDateFilter.setEnabled(false);
+            else {
+                dtpInstalDateFilter.setEnabled(true);
+                fltrInstDate = dtpInstalDateFilter.getDate();
+            }
+            applyFilter();
+        }
+    }//GEN-LAST:event_cmbInstDateFilterModeActionPerformed
+
+    private void dtpInstalDateFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dtpInstalDateFilterActionPerformed
+        if (!doneInit) return;
+        fltrInstDate = dtpInstalDateFilter.getDate();
+        applyFilter();
+    }//GEN-LAST:event_dtpInstalDateFilterActionPerformed
+
+    private void cmbSpecificationNameFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSpecificationNameFilterActionPerformed
+        if (doneInit) {
+            fltrSpecIndex = cmbSpecificationNameFilter.getSelectedIndex();
+            fltrSpec = String.valueOf(cmbSpecificationNameFilter.getSelectedItem());
+            applyFilter();
+        }
+    }//GEN-LAST:event_cmbSpecificationNameFilterActionPerformed
+
+    private void chbExpiredOnlyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbExpiredOnlyActionPerformed
+        if (doneInit) {
+            fltrExpired = chbExpiredOnly.isSelected();
+            applyFilter();
+        }
+    }//GEN-LAST:event_chbExpiredOnlyActionPerformed
+
+    private void chbEnabledOnlyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbEnabledOnlyActionPerformed
+        if (!doneInit) return;
+        fltrEnabled = chbEnabledOnly.isSelected();
+        applyFilter();
+    }//GEN-LAST:event_chbEnabledOnlyActionPerformed
+
+    private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
+        doneInit = false;
+        try {
+            PCCTRL.searchResaultCloseBtnPressed();
+        } catch (IOException ex) {
+            showDialog(this, "Lost Connection with the server", DialogType.ERROR);
+            System.exit(0);
+        }
+    }//GEN-LAST:event_btnCloseActionPerformed
+
+    private void btnQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitActionPerformed
+        PCCTRL.QuitBtnPressed();
+    }//GEN-LAST:event_btnQuitActionPerformed
+
+    private void btnNewPCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewPCActionPerformed
+//        isUpdate = false;
+//        onScreenWSID = 0;
+//        addWorkstationClearFields();
+//        addWorkstationForm = new FormFrame();
+//        addWorkstationForm.setSize(pnlAddWorkStationForm.getMinimumSize());
+//        addWorkstationForm.setLocationRelativeTo(null);
+//        lblAddWorkstationTitle.setText("Add New Workstation");
+//        addWorkstationForm.getContentPane().add(pnlAddWorkStationForm);
+//        addWorkstationForm.addWindowListener(exitListener);
+//        addWorkstationForm.getContentPane().setVisible(true);
+//        PCNMClientStart.appWindow.setEnabled(false);
+//        addWorkstationForm.setVisible(true);
+    }//GEN-LAST:event_btnNewPCActionPerformed
+
+    private void btnViewPCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewPCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnViewPCActionPerformed
+
+    private void btnUpdatePCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdatePCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnUpdatePCActionPerformed
+
+    private void btnMapPCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMapPCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnMapPCActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnClose;
+    private javax.swing.JButton btnMapPC;
+    private javax.swing.JButton btnNewPC;
+    private javax.swing.JButton btnQuit;
+    private javax.swing.JButton btnUpdatePC;
+    private javax.swing.JButton btnViewPC;
+    private javax.swing.JCheckBox chbEnabledOnly;
+    private javax.swing.JCheckBox chbExpiredOnly;
+    private javax.swing.JComboBox cmbFltrField;
+    private javax.swing.JComboBox cmbInstDateFilterMode;
+    private javax.swing.JComboBox cmbSpecificationNameFilter;
+    private org.jdesktop.swingx.JXDatePicker dtpInstalDateFilter;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblFilterStr;
+    private javax.swing.JLabel lblInstDateFilter;
+    private javax.swing.JLabel lblResultFilterBy;
+    private javax.swing.JLabel lblResultsTitle;
+    private javax.swing.JLabel lblSpecificationNameFilter;
+    private javax.swing.JTable tblSearchResault;
+    private javax.swing.JTextField txtFilterStr;
     // End of variables declaration//GEN-END:variables
+
+    private void applyFilter() {
+        Arrays.fill(rowsToShow, true);
+        rowCounter = tableContent.length;
+        Calendar cal = Calendar.getInstance();
+        Date today = new Date();
+        
+        for (int i = 0 ; i < tableContent.length ; i ++) {
+            String[] instDateString = tableContent[i][3].split("/");
+            cal.set(Integer.parseInt(instDateString[2]), Integer.parseInt(instDateString[1]), Integer.parseInt(instDateString[0]));
+            if (rowsToShow[i] && fltrField == 1 && !fltrStirng.isEmpty() && tableContent[i][1].toLowerCase().indexOf(fltrStirng.toLowerCase()) == -1) rowsToShow[i] = false;
+            if (rowsToShow[i] && fltrField == 2 && !fltrStirng.isEmpty() && tableContent[i][2].toLowerCase().indexOf(fltrStirng.toLowerCase()) == -1) rowsToShow[i] = false;
+            if (rowsToShow[i] && fltrInstDateMode == 1 && fltrInstDate.before(cal.getTime())) rowsToShow[i] = false;
+            if (rowsToShow[i] && fltrInstDateMode == 2 && fltrInstDate.after(cal.getTime())) rowsToShow[i] = false;
+            if (rowsToShow[i] && fltrSpecIndex != 0 && !tableContent[i][6].equals(fltrSpec)) rowsToShow[i] = false;
+            cal.add(Calendar.MONTH, Integer.parseInt(tableContent[i][8]));
+            if (rowsToShow[i] && fltrExpired && today.before(cal.getTime())) rowsToShow[i] = false;
+            if (rowsToShow[i] && fltrEnabled && !tableContent[i][4].equals("Enabled")) rowsToShow[i] = false;
+            if (!rowsToShow[i]) rowCounter --;
+        }
+        loadSearchResults();
+    }
+
+    private void loadSearchResults() {
+        String[] row;
+        Calendar cal = Calendar.getInstance();
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        DefaultTableModel dtm = (DefaultTableModel)tblSearchResault.getModel();
+        dtm.setRowCount(rowCounter);
+        int cur_row = 0;
+        for (int i = 0 ; i < pc_tbl.size() ; i ++) {
+            if (rowsToShow[i]) {
+                row = pc_tbl.get(i).split(",");
+                for (int j = 0 ; j < tableContent[i].length ; j ++)
+                    tableContent[i][j] = new String(row[j]);
+                dtm.setValueAt(tableContent[i][1], cur_row, 0);
+                dtm.setValueAt(tableContent[i][2], cur_row, 1);
+                dtm.setValueAt(tableContent[i][3], cur_row, 2);
+                dtm.setValueAt(tableContent[i][6], cur_row, 3);
+                String[] instDateString = tableContent[i][3].split("/");
+                cal.set(Integer.parseInt(instDateString[2]), Integer.parseInt(instDateString[1]), Integer.parseInt(instDateString[0]));
+                cal.add(Calendar.MONTH, Integer.parseInt(tableContent[i][8]));
+                dtm.setValueAt(df.format(cal.getTime()), cur_row, 4);
+                dtm.setValueAt(tableContent[i][4], cur_row, 5);
+                cur_row ++;
+                if (cur_row > rowCounter)
+                    i = pc_tbl.size();
+            }
+        }
+//        DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
+//        leftRenderer.setHorizontalAlignment(JLabel.LEFT);
+//        tblSearchResault.getColumnModel().getColumn(2).setCellRenderer(leftRenderer);
+//        tblSearchResault.getColumnModel().getColumn(5).setCellRenderer(leftRenderer);
+    }
+
+    private void loadCmbSpecificationNameFilter() {
+        specTableNames.clear();
+        for (String[] tbl_row : tableContent) {
+            if (!specTableNames.contains(tbl_row[6]))
+                specTableNames.add(tbl_row[6]);
+        }
+        for (String specName : specTableNames)
+            cmbSpecificationNameFilter.addItem(specName);
+    }
 }

@@ -246,7 +246,10 @@ public class PC implements Serializable, Comparable<PC> {
      */
     @Override
     public String toString() {
-        String pc = name + "," + description;
+        String pc = ID + "," + name + "," + description;
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        if (installDate == null) pc = pc + ",";
+        else pc = pc + "," + df.format(installDate);
         switch (this.status) {
             case ENABLE:
                 pc = pc + ",Enabled";
@@ -261,9 +264,6 @@ public class PC implements Serializable, Comparable<PC> {
                 pc = pc + ",Error";
                 break;
         }
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        if (installDate == null) pc = pc + ",";
-        else pc = pc + "," + df.format(installDate);
         pc = pc + "," + spec.toString();
         if (components == null) pc = pc + ",";
         else
