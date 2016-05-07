@@ -6,6 +6,7 @@ import Entities.*;
 import PCNMServer.ServerLogic.ComponentLogic;
 import PCNMServer.ServerLogic.EmployeesLogic;
 import PCNMServer.ServerLogic.PCLogic;
+import PCNMServer.ServerLogic.PCSpecLogic;
 import PCNMServer.ServerLogic.UserTypesLogic;
 import PCNMServer.ServerLogic.WorkstationLogic;
 import java.io.IOException;
@@ -115,6 +116,9 @@ public class PCNMServer extends AbstractServer {
                 break;
             case GET_COMP_ENABLE:
                 client.sendToClient(ComponentLogic.getComponentsWithFilter(message.getMsgType(), (Component)message.getEntity()));
+                break;
+            case GET_SPEC_ENABLE:
+                client.sendToClient(PCSpecLogic.getSpecsWithFilter(message.getMsgType(), (PCSpec)message.getEntity()));
                 break;
             case PC_SEARCH:
                 client.sendToClient(PCLogic.searchPCByFilter((PC)message.getEntity(), message.getDataString()));

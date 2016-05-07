@@ -534,11 +534,11 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
         
         for (int i = 0 ; i < tableContent.length ; i ++) {
             String[] instDateString = tableContent[i][3].split("/");
-            cal.set(Integer.parseInt(instDateString[2]), Integer.parseInt(instDateString[1]), Integer.parseInt(instDateString[0]));
+            cal.set(Integer.parseInt(instDateString[2]), Integer.parseInt(instDateString[1]) - 1, Integer.parseInt(instDateString[0]));
             if (rowsToShow[i] && fltrField == 1 && !fltrStirng.isEmpty() && tableContent[i][1].toLowerCase().indexOf(fltrStirng.toLowerCase()) == -1) rowsToShow[i] = false;
             if (rowsToShow[i] && fltrField == 2 && !fltrStirng.isEmpty() && tableContent[i][2].toLowerCase().indexOf(fltrStirng.toLowerCase()) == -1) rowsToShow[i] = false;
-            if (rowsToShow[i] && fltrInstDateMode == 1 && fltrInstDate.before(cal.getTime())) rowsToShow[i] = false;
-            if (rowsToShow[i] && fltrInstDateMode == 2 && fltrInstDate.after(cal.getTime())) rowsToShow[i] = false;
+            if (rowsToShow[i] && fltrInstDateMode == 1 && fltrInstDate.after(cal.getTime())) rowsToShow[i] = false;
+            if (rowsToShow[i] && fltrInstDateMode == 2 && fltrInstDate.before(cal.getTime())) rowsToShow[i] = false;
             if (rowsToShow[i] && fltrSpecIndex != 0 && !tableContent[i][6].equals(fltrSpec)) rowsToShow[i] = false;
             cal.add(Calendar.MONTH, Integer.parseInt(tableContent[i][8]));
             if (rowsToShow[i] && fltrExpired && today.before(cal.getTime())) rowsToShow[i] = false;

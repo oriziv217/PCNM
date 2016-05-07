@@ -61,8 +61,7 @@ public class NetMapCTRL extends CTRL {
         PCSpec spc = new PCSpec(null, null, 0, 0, 0, Status.ENABLE);
         PCNMClientStart.gotAllData = 0;
         PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_COMP_ENABLE, cmp));
-        PCNMClientStart.gotAllData ++;
         PCCTRL.setEnaSpec(new ArrayList<PCSpec>());
-//        PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_SPEC_ENABLE, spc));
+        PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_SPEC_ENABLE, spc));
     }
 }

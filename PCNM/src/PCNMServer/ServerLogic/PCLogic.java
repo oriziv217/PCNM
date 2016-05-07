@@ -139,7 +139,7 @@ public class PCLogic extends Logic {
         ArrayList<Integer> matchedPCs = new ArrayList<Integer>();
         String componentsFilter = "";
         String PCIDFilter = "";
-        if (components != null) {
+        if (components != null && !components.isEmpty()) {
             componentsFilter = "PCComp.componentID IN (";
             for (int i = 0 ; i < components.size() ; i ++) {
                 if (i > 0)

@@ -87,7 +87,7 @@ public class CurrentEntities {
      * current PCs setter and sorter
      * @param Pcs
      */
-    public void setPcs(ArrayList<PC> Pcs) {
+    public void setPcs(ArrayList<PC> pcs) {
         this.pcs = pcs;
         Collections.sort(this.pcs);
     }
