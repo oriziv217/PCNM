@@ -40,6 +40,7 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
     private int formMode;
     private int onScreenPCID;
     private ArrayList<String[]> enaSpec;
+    private int selectedRow;
 
     /**
      * Creates new form PCSearchResultSCR
@@ -180,6 +181,7 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
 
         txtPCPropertiesSpecScore.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         txtPCPropertiesSpecScore.setToolTipText("");
+        txtPCPropertiesSpecScore.setEnabled(false);
 
         lblPCPropertiesSpecScore.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lblPCPropertiesSpecScore.setText("Score:");
@@ -189,12 +191,14 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
 
         txtPCPropertiesSpecPrtice.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         txtPCPropertiesSpecPrtice.setToolTipText("");
+        txtPCPropertiesSpecPrtice.setEnabled(false);
 
         lblPCPropertiesSpecWarrenty.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lblPCPropertiesSpecWarrenty.setText("Warrenty:");
 
         txtPCPropertiesSpecWarrenty.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         txtPCPropertiesSpecWarrenty.setToolTipText("");
+        txtPCPropertiesSpecWarrenty.setEnabled(false);
 
         lblPCPropertiesStatusExplain.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lblPCPropertiesStatusExplain.setText("Explanation...");
@@ -317,10 +321,21 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
+        if (formMode == 3) txtPCPropertiesName.setEnabled(false);
+        else txtPCPropertiesName.setEnabled(true);
+        if (formMode == 3) txtPCPropertiesDescription.setEnabled(false);
+        else txtPCPropertiesDescription.setEnabled(true);
         dtpPCPropertiesInstalDate.setFormats(new SimpleDateFormat( "dd/MM/yyyy" ));
         dtpPCPropertiesInstalDate.getMonthView().setUpperBound(new Date());
-        dtpPCPropertiesInstalDate.setDate(new Date());
+        if (formMode == 1) dtpPCPropertiesInstalDate.setDate(new Date());
+        if (formMode == 3) dtpPCPropertiesInstalDate.setEnabled(false);
+        else dtpPCPropertiesInstalDate.setEnabled(true);
         for (String[]spec : enaSpec) cmbPCPropertiesSpec.addItem(spec[1]);
+        if (formMode == 3) cmbPCPropertiesSpec.setEnabled(false);
+        else cmbPCPropertiesSpec.setEnabled(true);
+        setStatusExplanation(cmbPCPropertiesStatus.getSelectedIndex());
+        if (formMode == 3) cmbPCPropertiesStatus.setEnabled(false);
+        else cmbPCPropertiesStatus.setEnabled(true);
 
         setBackground(java.awt.Color.white);
         setMinimumSize(new java.awt.Dimension(1442, 818));
@@ -713,7 +728,38 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
     }//GEN-LAST:event_btnNewPCActionPerformed
 
     private void btnViewPCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewPCActionPerformed
-        // TODO add your handling code here:
+        selectedRow = tblSearchResault.getSelectedRow();
+        if (selectedRow == -1) {
+            showDialog(this, "Please select PC", DialogType.INFO);
+            return;
+        }
+        formMode = 3;
+        int index = getIDByName(tblSearchResault.convertRowIndexToModel(selectedRow));
+        onScreenPCID = Integer.parseInt(tableContent[index][0]);
+        txtPCPropertiesName.setText(tableContent[index][1]);
+        txtPCPropertiesDescription.setText(tableContent[index][2]);
+        Calendar cal = Calendar.getInstance();
+        String[] parsedInstDate = tableContent[index][3].split("/");
+        cal.set(Integer.parseInt(parsedInstDate[2]), Integer.parseInt(parsedInstDate[1]), Integer.parseInt(parsedInstDate[0]));
+        dtpPCPropertiesInstalDate.setDate(cal.getTime());
+        int specSelectedIndex = getSpecIndex(tableContent[index][5]);
+        cmbPCPropertiesSpec.setSelectedIndex(specSelectedIndex);
+        txtPCPropertiesSpecScore.setText(tableContent[index][10]);
+        txtPCPropertiesSpecPrtice.setText(tableContent[index][9]);
+        txtPCPropertiesSpecWarrenty.setText(tableContent[index][8]);
+        int statusSelecetdIndex = 0;
+        switch (tableContent[index][4]) {
+            case "Enabled":
+                statusSelecetdIndex = 1;
+                break;
+            case "Disabled":
+                statusSelecetdIndex = 2;
+                break;
+            case "Suspended":
+                statusSelecetdIndex = 3;
+                break;
+        }
+        cmbPCPropertiesStatus.setSelectedIndex(statusSelecetdIndex);
     }//GEN-LAST:event_btnViewPCActionPerformed
 
     private void btnUpdatePCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdatePCActionPerformed
@@ -738,7 +784,7 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
         
         try {
             if (!PCCTRL.isNameUnique(onScreenPCID, name)) {
-                showDialog(pnlPCProperties, "Workstation Name must be unique.", DialogType.INFO);
+                showDialog(pnlPCProperties, "PC Name must be unique.", DialogType.INFO);
                 return;
             }
         } catch (IOException ex) {
@@ -781,20 +827,7 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
 
     private void cmbPCPropertiesStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbPCPropertiesStatusActionPerformed
         int selected = cmbPCPropertiesStatus.getSelectedIndex();
-        switch (selected) {
-            case 0:
-                lblPCPropertiesStatusExplain.setText("");
-                break;
-            case 1:
-                lblPCPropertiesStatusExplain.setText("This PC is ready for work");
-                break;
-            case 2:
-                lblPCPropertiesStatusExplain.setText("This PC is in stock");
-                break;
-            case 3:
-                lblPCPropertiesStatusExplain.setText("This PC is not Active");
-                break;
-        }
+        setStatusExplanation(selected);
     }//GEN-LAST:event_cmbPCPropertiesStatusActionPerformed
 
     private void cmbPCPropertiesSpecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbPCPropertiesSpecActionPerformed
@@ -899,10 +932,6 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
                     i = pc_tbl.size();
             }
         }
-//        DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
-//        leftRenderer.setHorizontalAlignment(JLabel.LEFT);
-//        tblSearchResault.getColumnModel().getColumn(2).setCellRenderer(leftRenderer);
-//        tblSearchResault.getColumnModel().getColumn(5).setCellRenderer(leftRenderer);
     }
 
     private void loadCmbSpecificationNameFilter() {
@@ -941,5 +970,38 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
         ArrayList<String>rows = PCCTRL.getEnaSpecStringArr();
         for (String row : rows)
             enaSpec.add(row.split(","));
+    }
+
+    private int getIDByName(int row) {
+        DefaultTableModel dtm = (DefaultTableModel)tblSearchResault.getModel();
+        String name = (String)dtm.getValueAt(row, 0);
+        for (int i = 0 ; i < tableContent.length ; i ++)
+            if (name.equals(tableContent[i][1]))
+                return i;
+        return -1;
+    }
+
+    private int getSpecIndex(String specID) {
+        for (int i = 0 ; i < enaSpec.size() ; i ++)
+            if (enaSpec.get(i)[0].equals(specID))
+                return i + 1;
+        return -1;
+    }
+
+    private void setStatusExplanation(int selected) {
+        switch (selected) {
+            case 0:
+                lblPCPropertiesStatusExplain.setText("");
+                break;
+            case 1:
+                lblPCPropertiesStatusExplain.setText("This PC is ready for work");
+                break;
+            case 2:
+                lblPCPropertiesStatusExplain.setText("This PC is in stock");
+                break;
+            case 3:
+                lblPCPropertiesStatusExplain.setText("This PC is not Active");
+                break;
+        }
     }
 }
