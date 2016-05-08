@@ -151,6 +151,19 @@ public class PCNMClient extends AbstractClient {
                 break;
             case PC_SEARCH:
                 PCCTRL.processPCSearchReasult((ArrayList<PC>)response.getEntity());
+                try {
+                    PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_PC_QUICKDIC));
+                } catch (IOException ex) {}
+                break;
+            case GET_PC_QUICKDIC:
+                PCCTRL.setPCDic((ArrayList<QuickDic>) response.getEntity());
+                break;
+            case ADD_PC:
+                if (response.getDataString().equals("Not OK"))
+                    WindowMustHave.showDialog(null, "Error acurred while tring to add PC to the DB.\n"
+                            + "Please contact your System Administrator", DialogType.ERROR);
+                else
+                    PCCTRL.refreshPCWindow(response.getMsgType(), (PC)response.getEntity());
                 break;
             case DB_PROBLEM:
                 WindowMustHave.showDialog(null, response.getDataString(), DialogType.ERROR);

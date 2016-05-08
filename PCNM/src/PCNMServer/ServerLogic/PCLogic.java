@@ -5,6 +5,7 @@ import Entities.Message;
 import Entities.MessageType;
 import Entities.PC;
 import Entities.PCSpec;
+import Entities.QuickDic;
 import PCNMServer.ServerResources.DBConnect;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -206,5 +207,56 @@ public class PCLogic extends Logic {
             }
         }
         return new Message(MessageType.PC_SEARCH, search_results);
+    }
+
+    /**
+     * This method get all components names and IDs from the DB in order to create quick dictionary on client side
+     * @return
+     * @throws SQLException
+     */
+    public static Message createQuickDic() throws SQLException {
+        ArrayList<QuickDic> dic = new ArrayList<QuickDic>();
+        Connection conDB = DBConnect.mySQLConnection();
+        ResultSet rs;
+        String fields = "ID, name";
+        rs = DBConnect.selectWithFilter(conDB, "pc", fields, null);
+        while (rs.next()) {
+            dic.add(new QuickDic(rs.getInt("ID"), rs.getString("name")));
+        }
+        return new Message(MessageType.GET_COMP_QUICKDIC, dic);
+    }
+
+    /**
+     * This method adds a new PC record to the DB
+     * @param pc
+     * @return
+     * @throws SQLException
+     */
+    public static Message addPC(PC pc) throws SQLException {
+        Connection conDB = DBConnect.mySQLConnection();
+        ResultSet rs;
+        boolean isAdded;
+        String resultString;
+        String[] fields = { "name",
+                            "description",
+                            "PCSpecID",
+                            "SpecInstallation",
+                            "status" };
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String[] values = { pc.getName(),
+                            pc.getDescription(),
+                            String.valueOf(pc.getSpec().getID()),
+                            String.valueOf(df.format(pc.getInstallDate())),
+                            String.valueOf(statusToInt(pc.getStatus())) };
+        isAdded = DBConnect.insertSingleRecord (conDB, "pc", fields, values);
+        if (isAdded) {
+            resultString = "OK";
+            rs = DBConnect.selectWithFilter(conDB, "pc", null, "name = '" + pc.getName() + "'");
+            rs.first();
+            pc.setID(rs.getInt("ID"));
+            return new Message (MessageType.ADD_PC, pc, resultString);
+        }
+        resultString = "Not OK";
+        return new Message(MessageType.ADD_PC, null, resultString);
     }
 }

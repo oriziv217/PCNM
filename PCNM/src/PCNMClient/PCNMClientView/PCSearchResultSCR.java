@@ -5,6 +5,9 @@ import PCNMClient.PCNMClientController.PCCTRL;
 import PCNMClient.PCNMClientStart;
 import static PCNMClient.PCNMClientView.WindowMustHave.showDialog;
 import java.awt.Font;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -33,6 +36,10 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
     private int rowCounter;
     private boolean[] rowsToShow;
     private String[][] tableContent;
+    private FormFrame pcPropertiesForm;
+    private int formMode;
+    private int onScreenPCID;
+    private ArrayList<String[]> enaSpec;
 
     /**
      * Creates new form PCSearchResultSCR
@@ -66,6 +73,7 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
         tableContent = new String[rowCounter][12];
         loadSearchResults();
         loadCmbSpecificationNameFilter();
+        loadEnaSpec();
         cmbSpecificationNameFilter.setSelectedIndex(fltrSpecIndex);
         doneInit = true;
     }
@@ -79,6 +87,28 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        pnlPCProperties = new javax.swing.JPanel();
+        lblPCPropertiesTitle = new javax.swing.JLabel();
+        lblPCPropertiesName = new javax.swing.JLabel();
+        lblPCPropertiesDescription = new javax.swing.JLabel();
+        lblPCPropertiesInstDate = new javax.swing.JLabel();
+        lblPCPropertiesSpec = new javax.swing.JLabel();
+        lblPCPropertiesStatus = new javax.swing.JLabel();
+        txtPCPropertiesName = new javax.swing.JTextField();
+        txtPCPropertiesDescription = new javax.swing.JTextField();
+        dtpPCPropertiesInstalDate = new org.jdesktop.swingx.JXDatePicker();
+        cmbPCPropertiesSpec = new javax.swing.JComboBox();
+        cmbPCPropertiesStatus = new javax.swing.JComboBox();
+        txtPCPropertiesSpecScore = new javax.swing.JTextField();
+        lblPCPropertiesSpecScore = new javax.swing.JLabel();
+        lblPCPropertiesSpecPrice = new javax.swing.JLabel();
+        txtPCPropertiesSpecPrtice = new javax.swing.JTextField();
+        lblPCPropertiesSpecWarrenty = new javax.swing.JLabel();
+        txtPCPropertiesSpecWarrenty = new javax.swing.JTextField();
+        lblPCPropertiesStatusExplain = new javax.swing.JLabel();
+        btnPCPropertiesOK = new javax.swing.JButton();
+        btnPCPropertiesComponents = new javax.swing.JButton();
+        btnPCPropertiesCancel = new javax.swing.JButton();
         lblResultsTitle = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblSearchResault = new javax.swing.JTable();
@@ -99,6 +129,198 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
         btnViewPC = new javax.swing.JButton();
         btnUpdatePC = new javax.swing.JButton();
         btnMapPC = new javax.swing.JButton();
+
+        pnlPCProperties.setBackground(java.awt.Color.white);
+        pnlPCProperties.setMinimumSize(new java.awt.Dimension(600, 365));
+        pnlPCProperties.setPreferredSize(new java.awt.Dimension(600, 365));
+
+        lblPCPropertiesTitle.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        lblPCPropertiesTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblPCPropertiesTitle.setText("Add New PC");
+        lblPCPropertiesTitle.setName("lblPCPropertiesTitle"); // NOI18N
+
+        lblPCPropertiesName.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        lblPCPropertiesName.setText("Name:");
+
+        lblPCPropertiesDescription.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        lblPCPropertiesDescription.setText("Description:");
+
+        lblPCPropertiesInstDate.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        lblPCPropertiesInstDate.setText("Instalation Date:");
+
+        lblPCPropertiesSpec.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        lblPCPropertiesSpec.setText("Specification:");
+
+        lblPCPropertiesStatus.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        lblPCPropertiesStatus.setText("Status:");
+
+        txtPCPropertiesName.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        txtPCPropertiesName.setToolTipText("");
+
+        txtPCPropertiesDescription.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        txtPCPropertiesDescription.setToolTipText("");
+
+        dtpPCPropertiesInstalDate.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+
+        cmbPCPropertiesSpec.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        cmbPCPropertiesSpec.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Specification" }));
+        cmbPCPropertiesSpec.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbPCPropertiesSpecActionPerformed(evt);
+            }
+        });
+
+        cmbPCPropertiesStatus.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        cmbPCPropertiesStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Status", "Enabled", "Disabled", "Suspended" }));
+        cmbPCPropertiesStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbPCPropertiesStatusActionPerformed(evt);
+            }
+        });
+
+        txtPCPropertiesSpecScore.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        txtPCPropertiesSpecScore.setToolTipText("");
+
+        lblPCPropertiesSpecScore.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        lblPCPropertiesSpecScore.setText("Score:");
+
+        lblPCPropertiesSpecPrice.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        lblPCPropertiesSpecPrice.setText("Price:");
+
+        txtPCPropertiesSpecPrtice.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        txtPCPropertiesSpecPrtice.setToolTipText("");
+
+        lblPCPropertiesSpecWarrenty.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        lblPCPropertiesSpecWarrenty.setText("Warrenty:");
+
+        txtPCPropertiesSpecWarrenty.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        txtPCPropertiesSpecWarrenty.setToolTipText("");
+
+        lblPCPropertiesStatusExplain.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        lblPCPropertiesStatusExplain.setText("Explanation...");
+
+        btnPCPropertiesOK.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        btnPCPropertiesOK.setText("OK");
+        btnPCPropertiesOK.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnPCPropertiesOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPCPropertiesOKActionPerformed(evt);
+            }
+        });
+
+        btnPCPropertiesComponents.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        btnPCPropertiesComponents.setText("Add Components");
+        btnPCPropertiesComponents.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnPCPropertiesComponents.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPCPropertiesComponentsActionPerformed(evt);
+            }
+        });
+
+        btnPCPropertiesCancel.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        btnPCPropertiesCancel.setText("Cancel");
+        btnPCPropertiesCancel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnPCPropertiesCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPCPropertiesCancelActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnlPCPropertiesLayout = new javax.swing.GroupLayout(pnlPCProperties);
+        pnlPCProperties.setLayout(pnlPCPropertiesLayout);
+        pnlPCPropertiesLayout.setHorizontalGroup(
+            pnlPCPropertiesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlPCPropertiesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnlPCPropertiesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblPCPropertiesTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(pnlPCPropertiesLayout.createSequentialGroup()
+                        .addGroup(pnlPCPropertiesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblPCPropertiesInstDate)
+                            .addComponent(lblPCPropertiesName)
+                            .addComponent(lblPCPropertiesDescription)
+                            .addComponent(lblPCPropertiesSpec)
+                            .addComponent(lblPCPropertiesStatus)
+                            .addComponent(btnPCPropertiesOK, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnlPCPropertiesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtPCPropertiesName)
+                            .addComponent(txtPCPropertiesDescription)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlPCPropertiesLayout.createSequentialGroup()
+                                .addGroup(pnlPCPropertiesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(pnlPCPropertiesLayout.createSequentialGroup()
+                                        .addComponent(lblPCPropertiesSpecPrice)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtPCPropertiesSpecPrtice, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
+                                        .addComponent(lblPCPropertiesSpecWarrenty)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtPCPropertiesSpecWarrenty, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlPCPropertiesLayout.createSequentialGroup()
+                                        .addComponent(dtpPCPropertiesInstalDate, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(cmbPCPropertiesSpec, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblPCPropertiesSpecScore)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtPCPropertiesSpecScore, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlPCPropertiesLayout.createSequentialGroup()
+                                .addComponent(cmbPCPropertiesStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblPCPropertiesStatusExplain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(pnlPCPropertiesLayout.createSequentialGroup()
+                                .addGap(62, 62, 62)
+                                .addComponent(btnPCPropertiesComponents, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnPCPropertiesCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap())
+        );
+        pnlPCPropertiesLayout.setVerticalGroup(
+            pnlPCPropertiesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlPCPropertiesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblPCPropertiesTitle)
+                .addGap(18, 18, 18)
+                .addGroup(pnlPCPropertiesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPCPropertiesName)
+                    .addComponent(txtPCPropertiesName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(pnlPCPropertiesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblPCPropertiesDescription)
+                    .addComponent(txtPCPropertiesDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(pnlPCPropertiesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPCPropertiesInstDate)
+                    .addComponent(dtpPCPropertiesInstalDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(pnlPCPropertiesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPCPropertiesSpec)
+                    .addComponent(cmbPCPropertiesSpec, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblPCPropertiesSpecScore)
+                    .addComponent(txtPCPropertiesSpecScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlPCPropertiesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPCPropertiesSpecPrice)
+                    .addComponent(txtPCPropertiesSpecPrtice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblPCPropertiesSpecWarrenty)
+                    .addComponent(txtPCPropertiesSpecWarrenty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(pnlPCPropertiesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbPCPropertiesStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblPCPropertiesStatus)
+                    .addComponent(lblPCPropertiesStatusExplain))
+                .addGap(18, 18, 18)
+                .addGroup(pnlPCPropertiesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnPCPropertiesOK)
+                    .addComponent(btnPCPropertiesComponents)
+                    .addComponent(btnPCPropertiesCancel))
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
+
+        dtpPCPropertiesInstalDate.setFormats(new SimpleDateFormat( "dd/MM/yyyy" ));
+        dtpPCPropertiesInstalDate.getMonthView().setUpperBound(new Date());
+        dtpPCPropertiesInstalDate.setDate(new Date());
+        for (String[]spec : enaSpec) cmbPCPropertiesSpec.addItem(spec[1]);
 
         setBackground(java.awt.Color.white);
         setMinimumSize(new java.awt.Dimension(1442, 818));
@@ -476,18 +698,18 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
     }//GEN-LAST:event_btnQuitActionPerformed
 
     private void btnNewPCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewPCActionPerformed
-//        isUpdate = false;
-//        onScreenWSID = 0;
-//        addWorkstationClearFields();
-//        addWorkstationForm = new FormFrame();
-//        addWorkstationForm.setSize(pnlAddWorkStationForm.getMinimumSize());
-//        addWorkstationForm.setLocationRelativeTo(null);
-//        lblAddWorkstationTitle.setText("Add New Workstation");
-//        addWorkstationForm.getContentPane().add(pnlAddWorkStationForm);
-//        addWorkstationForm.addWindowListener(exitListener);
-//        addWorkstationForm.getContentPane().setVisible(true);
-//        PCNMClientStart.appWindow.setEnabled(false);
-//        addWorkstationForm.setVisible(true);
+        formMode = 1;
+        onScreenPCID = 0;
+        pcPropertiesClearFields();
+        pcPropertiesForm = new FormFrame();
+        pcPropertiesForm.setSize(pnlPCProperties.getMinimumSize());
+        pcPropertiesForm.setLocationRelativeTo(null);
+        lblPCPropertiesTitle.setText("Add New PC");
+        pcPropertiesForm.getContentPane().add(pnlPCProperties);
+        pcPropertiesForm.addWindowListener(exitListener);
+        pcPropertiesForm.getContentPane().setVisible(true);
+        PCNMClientStart.appWindow.setEnabled(false);
+        pcPropertiesForm.setVisible(true);
     }//GEN-LAST:event_btnNewPCActionPerformed
 
     private void btnViewPCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewPCActionPerformed
@@ -502,11 +724,95 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnMapPCActionPerformed
 
+    private void btnPCPropertiesOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPCPropertiesOKActionPerformed
+        String name = txtPCPropertiesName.getText();
+        String description = txtPCPropertiesDescription.getText();
+        Date instDate = dtpPCPropertiesInstalDate.getDate();
+        int selectedSpec = cmbPCPropertiesSpec.getSelectedIndex() - 1;
+        String status = (String)cmbPCPropertiesStatus.getSelectedItem();
+        if (name.isEmpty() || description.isEmpty() || selectedSpec == -1 || status.equals("Select Status")) {
+            showDialog(pnlPCProperties, "All fields are mandatory.", DialogType.INFO);
+            return;
+        }
+        String[] spec = enaSpec.get(selectedSpec);
+        
+        try {
+            if (!PCCTRL.isNameUnique(onScreenPCID, name)) {
+                showDialog(pnlPCProperties, "Workstation Name must be unique.", DialogType.INFO);
+                return;
+            }
+        } catch (IOException ex) {
+            showDialog(pnlPCProperties, ex.getMessage(), DialogType.ERROR);
+            System.exit(0);
+        }
+        try {
+            if (formMode == 1) {
+                PCCTRL.AddPCBtnPressed(name, description, instDate, spec, status);
+            }
+            else if (formMode == 2) {
+//                WorkstationCTRL.UpdateWorkstationBtnPressed(onScreenWSID ,name, description, importance, status,
+//                    types.get(type)[0], types.get(type)[1], types.get(type)[2], types.get(type)[3], types.get(type)[4]);
+            } else if (formMode == 3) {
+                pcPropertiesClearFields();
+                pcPropertiesForm.dispose();
+                PCNMClientStart.appWindow.setEnabled(true);
+                PCNMClientStart.appWindow.requestFocus();
+            }
+        } catch (IOException ex) {
+            showDialog(pnlPCProperties, "Lost Connection with the server", DialogType.ERROR);
+            System.exit(0);
+        }
+        pcPropertiesClearFields();
+        pcPropertiesForm.dispose();
+        PCNMClientStart.appWindow.setEnabled(true);
+        PCNMClientStart.appWindow.requestFocus();
+    }//GEN-LAST:event_btnPCPropertiesOKActionPerformed
+
+    private void btnPCPropertiesComponentsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPCPropertiesComponentsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnPCPropertiesComponentsActionPerformed
+
+    private void btnPCPropertiesCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPCPropertiesCancelActionPerformed
+        pcPropertiesClearFields();
+        pcPropertiesForm.dispose();
+        PCNMClientStart.appWindow.setEnabled(true);
+        PCNMClientStart.appWindow.requestFocus();
+    }//GEN-LAST:event_btnPCPropertiesCancelActionPerformed
+
+    private void cmbPCPropertiesStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbPCPropertiesStatusActionPerformed
+        int selected = cmbPCPropertiesStatus.getSelectedIndex();
+        switch (selected) {
+            case 0:
+                lblPCPropertiesStatusExplain.setText("");
+                break;
+            case 1:
+                lblPCPropertiesStatusExplain.setText("This PC is ready for work");
+                break;
+            case 2:
+                lblPCPropertiesStatusExplain.setText("This PC is in stock");
+                break;
+            case 3:
+                lblPCPropertiesStatusExplain.setText("This PC is not Active");
+                break;
+        }
+    }//GEN-LAST:event_cmbPCPropertiesStatusActionPerformed
+
+    private void cmbPCPropertiesSpecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbPCPropertiesSpecActionPerformed
+        int selected = cmbPCPropertiesSpec.getSelectedIndex();
+        if (selected == -1) return;
+        txtPCPropertiesSpecScore.setText(enaSpec.get(selected)[5]);
+        txtPCPropertiesSpecPrtice.setText(enaSpec.get(selected)[4]);
+        txtPCPropertiesSpecWarrenty.setText(enaSpec.get(selected)[3]);
+    }//GEN-LAST:event_cmbPCPropertiesSpecActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnMapPC;
     private javax.swing.JButton btnNewPC;
+    private javax.swing.JButton btnPCPropertiesCancel;
+    private javax.swing.JButton btnPCPropertiesComponents;
+    private javax.swing.JButton btnPCPropertiesOK;
     private javax.swing.JButton btnQuit;
     private javax.swing.JButton btnUpdatePC;
     private javax.swing.JButton btnViewPC;
@@ -514,16 +820,35 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
     private javax.swing.JCheckBox chbExpiredOnly;
     private javax.swing.JComboBox cmbFltrField;
     private javax.swing.JComboBox cmbInstDateFilterMode;
+    private javax.swing.JComboBox cmbPCPropertiesSpec;
+    private javax.swing.JComboBox cmbPCPropertiesStatus;
     private javax.swing.JComboBox cmbSpecificationNameFilter;
     private org.jdesktop.swingx.JXDatePicker dtpInstalDateFilter;
+    private org.jdesktop.swingx.JXDatePicker dtpPCPropertiesInstalDate;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblFilterStr;
     private javax.swing.JLabel lblInstDateFilter;
+    private javax.swing.JLabel lblPCPropertiesDescription;
+    private javax.swing.JLabel lblPCPropertiesInstDate;
+    private javax.swing.JLabel lblPCPropertiesName;
+    private javax.swing.JLabel lblPCPropertiesSpec;
+    private javax.swing.JLabel lblPCPropertiesSpecPrice;
+    private javax.swing.JLabel lblPCPropertiesSpecScore;
+    private javax.swing.JLabel lblPCPropertiesSpecWarrenty;
+    private javax.swing.JLabel lblPCPropertiesStatus;
+    private javax.swing.JLabel lblPCPropertiesStatusExplain;
+    private javax.swing.JLabel lblPCPropertiesTitle;
     private javax.swing.JLabel lblResultFilterBy;
     private javax.swing.JLabel lblResultsTitle;
     private javax.swing.JLabel lblSpecificationNameFilter;
+    private javax.swing.JPanel pnlPCProperties;
     private javax.swing.JTable tblSearchResault;
     private javax.swing.JTextField txtFilterStr;
+    private javax.swing.JTextField txtPCPropertiesDescription;
+    private javax.swing.JTextField txtPCPropertiesName;
+    private javax.swing.JTextField txtPCPropertiesSpecPrtice;
+    private javax.swing.JTextField txtPCPropertiesSpecScore;
+    private javax.swing.JTextField txtPCPropertiesSpecWarrenty;
     // End of variables declaration//GEN-END:variables
 
     private void applyFilter() {
@@ -588,5 +913,33 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
         }
         for (String specName : specTableNames)
             cmbSpecificationNameFilter.addItem(specName);
+    }
+
+    private void pcPropertiesClearFields() {
+        txtPCPropertiesName.setText("");
+        txtPCPropertiesDescription.setText("");
+        dtpPCPropertiesInstalDate.setDate(new Date());
+        cmbPCPropertiesSpec.setSelectedIndex(0);
+        txtPCPropertiesSpecScore.setText("");
+        txtPCPropertiesSpecPrtice.setText("");
+        txtPCPropertiesSpecWarrenty.setText("");
+        cmbPCPropertiesStatus.setSelectedIndex(0);
+        lblPCPropertiesStatusExplain.setText("");
+    }
+    
+    private WindowListener exitListener = new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                pcPropertiesClearFields();
+                pcPropertiesForm.dispose();
+                PCNMClientStart.appWindow.setEnabled(true);
+                PCNMClientStart.appWindow.requestFocus();
+            }
+        };
+
+    private void loadEnaSpec() {
+        ArrayList<String>rows = PCCTRL.getEnaSpecStringArr();
+        for (String row : rows)
+            enaSpec.add(row.split(","));
     }
 }

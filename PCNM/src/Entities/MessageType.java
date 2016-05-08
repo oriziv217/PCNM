@@ -132,6 +132,16 @@ public enum MessageType {
     PC_SEARCH,
     
     /**
+     * Get all PC ID and name for quick-dic list
+     */
+    GET_PC_QUICKDIC,
+    
+    /**
+     * Add new PC
+     */
+    ADD_PC,
+    
+    /**
      * SQL Exception was thrown
      */
     DB_PROBLEM

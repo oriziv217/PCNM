@@ -5,6 +5,7 @@ import Entities.Message;
 import Entities.MessageType;
 import Entities.PC;
 import Entities.PCSpec;
+import Entities.QuickDic;
 import Entities.Status;
 import PCNMClient.PCNMClientModel;
 import PCNMClient.PCNMClientStart;
@@ -32,6 +33,7 @@ public class PCCTRL extends CTRL {
     private static ArrayList<Component> enaComp;
     private static ArrayList<PCSpec> enaSpec;
     private static ArrayList<PC> pc_pull;
+    private static ArrayList<QuickDic> pcQD;
 
     /**
      * search screen filter getter
@@ -180,6 +182,14 @@ public class PCCTRL extends CTRL {
     public static ArrayList<PCSpec> getEnaSpec() {
         return enaSpec;
     }
+    
+    public static ArrayList<String> getEnaSpecStringArr() {
+        ArrayList<String> enaSpecStringArr = new ArrayList<String>();
+        if (enaSpec != null)
+            for (PCSpec spc : enaSpec)
+                enaSpecStringArr.add(spc.toString());
+        return enaSpecStringArr;
+    }
 
     /**
      * set enabled PC-specifications for search screen content
@@ -287,5 +297,71 @@ public class PCCTRL extends CTRL {
         PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_COMP_ENABLE, cmp));
         PCCTRL.setEnaSpec(new ArrayList<PCSpec>());
         PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_SPEC_ENABLE, spc));
+    }
+
+    /**
+     * This method return true if Component's id+name combination is unique
+     * @param ID
+     * @param name
+     * @return
+     * @throws IOException
+     */
+    public static boolean isNameUnique(int ID, String name) throws IOException {
+        if (pcQD == null) throw new IOException("Can't verify new component");
+        for (QuickDic qd : pcQD)
+            if (qd.getID() != ID && qd.getFirstVal().equalsIgnoreCase(name))
+                return false;
+        return true;
+    }
+
+    public static void AddPCBtnPressed(String name, String description, Date instDate, String[] spec, String status) throws IOException {
+        Status sts = stringToStatus(status);
+        Status specSts = stringToStatus(spec[6]);
+        
+        PCNMClientModel.sendMessageToServer(new Message(MessageType.ADD_PC,
+                                            new PC( name,
+                                                    description,
+                                                    new PCSpec( Integer.parseInt(spec[0]),
+                                                                spec[1],
+                                                                spec[2],
+                                                                Integer.parseInt(spec[3]),
+                                                                Float.parseFloat(spec[4]),
+                                                                Integer.parseInt(spec[5]),
+                                                                specSts),
+                                                    instDate,
+                                                    sts,
+                                                    null)));
+    }
+
+    /**
+     * This method sets Quick-Dictionary of PCs in order to lower DB transaction costs
+     * @param dic
+     */
+    public static void setPCDic(ArrayList<QuickDic> dic) {
+        pcQD = dic;
+    }
+
+    /**
+     * This Method implements processing add or update PC command's results
+     * @param msgType
+     * @param pc
+     */
+    public static void refreshPCWindow(MessageType msgType, PC pc) {
+        ArrayList<String>pc_tbl = new ArrayList<String>();
+        if (pc != null && msgType == MessageType.ADD_PC) {
+            PCNMClientStart.cur_ent.addToPcs(pc);
+            pcQD.add(new QuickDic(pc.getID(), pc.getName()));
+        } else if (pc != null && msgType == MessageType.UPDATE_COMPONENT) {
+            PCNMClientStart.cur_ent.updatePcs(pc);
+            for (QuickDic qd : pcQD)
+                if (qd.getID() == pc.getID()) {
+                    String[] vals = {pc.getName()};
+                    qd.setVals(vals);
+                }
+        }
+        pc_pull = PCNMClientStart.cur_ent.getPcs();
+        for (PC row : pc_pull)
+            pc_tbl.add(row.toString());
+        PCNMClientStart.switchPanels(new PCSearchResultSCR(pc_tbl));
     }
 }
