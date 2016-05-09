@@ -56,6 +56,7 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
         fltrExpired = false;
         fltrEnabled = false;
         specTableNames = new ArrayList<String>();
+        enaSpec = new ArrayList<String[]>();
         initComponents();
         doneInit = true;
     }
