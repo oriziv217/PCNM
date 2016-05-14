@@ -5,6 +5,7 @@ import Entities.Employee;
 import Entities.Message;
 import Entities.MessageType;
 import Entities.PC;
+import Entities.PCComp;
 import Entities.PCSpec;
 import Entities.PCUserType;
 import Entities.QuickDic;
@@ -171,6 +172,9 @@ public class PCNMClient extends AbstractClient {
                             + "Please contact your System Administrator", DialogType.ERROR);
                 else
                     PCCTRL.refreshPCWindow(response.getMsgType(), (PC)response.getEntity());
+                break;
+            case GET_PC_INST_COMP:
+                PCCTRL.setPCInstalledComp((ArrayList<PCComp>)response.getEntity());
                 break;
             case DB_PROBLEM:
                 WindowMustHave.showDialog(null, response.getDataString(), DialogType.ERROR);

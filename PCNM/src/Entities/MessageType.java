@@ -147,6 +147,11 @@ public enum MessageType {
     UPDATE_PC,
     
     /**
+     * Get all Installed Components For a Specific PC
+     */
+    GET_PC_INST_COMP,
+    
+    /**
      * SQL Exception was thrown
      */
     DB_PROBLEM

@@ -132,6 +132,9 @@ public class PCNMServer extends AbstractServer {
             case UPDATE_PC:
                 client.sendToClient(PCLogic.updatePC((PC)message.getEntity()));
                 break;
+            case GET_PC_INST_COMP:
+                client.sendToClient(PCLogic.getInstPCComp((PC)message.getEntity()));
+                break;
             }
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, String.format("Lost connection with client %s", client.toString()));

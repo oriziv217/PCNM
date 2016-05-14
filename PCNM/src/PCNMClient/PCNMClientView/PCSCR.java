@@ -600,7 +600,7 @@ public class PCSCR extends javax.swing.JPanel {
             ListSelectionModel lsm = (ListSelectionModel)lse.getSource();
             if (lsm.isSelectionEmpty())
                 return;
-            Arrays.fill(selectedPCSpecs, false);
+            Arrays.fill(selectedComponents, false);
             int minIndex = lsm.getMinSelectionIndex();
             int maxIndex = lsm.getMaxSelectionIndex();
             DefaultTableModel dtm = (DefaultTableModel)tblComponents.getModel();

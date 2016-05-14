@@ -60,8 +60,9 @@ public class NetMapCTRL extends CTRL {
         Component cmp = new Component(null, null, 0, 0, Status.ENABLE);
         PCSpec spc = new PCSpec(null, null, 0, 0, 0, Status.ENABLE);
         PCNMClientStart.gotAllData = 0;
-        PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_COMP_ENABLE, cmp));
         PCCTRL.setEnaSpec(new ArrayList<PCSpec>());
+        PCCTRL.setEnaComp(new ArrayList<Component>());
+        PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_COMP_ENABLE, cmp));
         PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_SPEC_ENABLE, spc));
     }
 }

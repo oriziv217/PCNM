@@ -17,7 +17,7 @@ public class PC implements Serializable, Comparable<PC> {
     private PCSpec spec;
     private Date installDate;
     private Status status;
-    private ArrayList<Component> components;
+    private ArrayList<PCComp> installedComps;
 
     /**
      * Default Constructor
@@ -29,9 +29,18 @@ public class PC implements Serializable, Comparable<PC> {
         this.spec = null;
         this.installDate = null;
         this.status = Status.Error;
-        this.components = new ArrayList<Component>();
+        this.installedComps = new ArrayList<PCComp>();
     }
 
+    /**
+     *
+     * @param ID
+     */
+    public PC(int ID) {
+        this();
+        this.ID = ID;
+    }
+    
     /**
      * All but ID constructor - mostly used for search and new PC records
      * @param name
@@ -39,16 +48,16 @@ public class PC implements Serializable, Comparable<PC> {
      * @param spec
      * @param installDate
      * @param status
-     * @param components
+     * @param pccomps
      */
-    public PC(String name, String description, PCSpec spec, Date installDate, Status status, ArrayList<Component> components) {
+    public PC(String name, String description, PCSpec spec, Date installDate, Status status, ArrayList<PCComp> pccomps) {
         this.ID = 0;
         this.name = name;
         this.description = description;
         this.spec = spec;
         this.installDate = installDate;
         this.status = status;
-        this.components = components;
+        this.installedComps = pccomps;
     }
 
     /**
@@ -59,16 +68,16 @@ public class PC implements Serializable, Comparable<PC> {
      * @param spec
      * @param installDate
      * @param status
-     * @param components
+     * @param pccomps
      */
-    public PC(int ID, String name, String description, PCSpec spec, Date installDate, Status status, ArrayList<Component> components) {
+    public PC(int ID, String name, String description, PCSpec spec, Date installDate, Status status, ArrayList<PCComp> pccomps) {
         this.ID = ID;
         this.name = name;
         this.description = description;
         this.spec = spec;
         this.installDate = installDate;
         this.status = status;
-        this.components = components;
+        this.installedComps = pccomps;
     }
     
     /**
@@ -76,7 +85,7 @@ public class PC implements Serializable, Comparable<PC> {
      * @param pc
      */
     public PC (PC pc) {
-        this(pc.getID(), pc.getName(), pc.getDescription(), pc.getSpec(), pc.getInstallDate(), pc.getStatus(), pc.getComponents());
+        this(pc.getID(), pc.getName(), pc.getDescription(), pc.getSpec(), pc.getInstallDate(), pc.getStatus(), pc.getInstalledComps());
     }
 
     /**
@@ -179,16 +188,16 @@ public class PC implements Serializable, Comparable<PC> {
      * Components list getter
      * @return
      */
-    public ArrayList<Component> getComponents() {
-        return components;
+    public ArrayList<PCComp> getInstalledComps() {
+        return installedComps;
     }
 
     /**
      * Components list setter
-     * @param components
+     * @param pccomps
      */
-    public void setComponents(ArrayList<Component> components) {
-        this.components = components;
+    public void setInstalledComponents(ArrayList<PCComp> pccomps) {
+        this.installedComps = pccomps;
     }
 
     /**
@@ -196,9 +205,9 @@ public class PC implements Serializable, Comparable<PC> {
      * @param cmpID
      * @return
      */
-    public Component getComponentByID(int cmpID) {
-        if (components == null || components.isEmpty()) return null;
-        for (Component cmp : components)
+    public PCComp getComponentByID(int cmpID) {
+        if (installedComps == null || installedComps.isEmpty()) return null;
+        for (PCComp cmp : installedComps)
             if (cmp.getID() == cmpID)
                 return cmp;
         return null;
@@ -209,9 +218,9 @@ public class PC implements Serializable, Comparable<PC> {
      * @param cmpName
      * @return
      */
-    public Component getComponentByName (String cmpName) {
-        if (components == null || components.isEmpty()) return null;
-        for (Component cmp : components)
+    public PCComp getComponentByName (String cmpName) {
+        if (installedComps == null || installedComps.isEmpty()) return null;
+        for (PCComp cmp : installedComps)
             if (cmp.getName().equals(cmpName))
                 return cmp;
         return null;
@@ -221,11 +230,11 @@ public class PC implements Serializable, Comparable<PC> {
      * Add a component to this PCs components list
      * @param cmp
      */
-    public void setComponent (Component cmp) {
-       int index = getComponentIndex(cmp.getID());
+    public void setInstalledComps (PCComp cmp) {
+       int index = getInstalledComponentIndex(cmp.getID());
        if (index != -1)
-           components.remove(index);
-       components.add(cmp);
+           installedComps.remove(index);
+       installedComps.add(cmp);
     }
     
     /**
@@ -234,9 +243,9 @@ public class PC implements Serializable, Comparable<PC> {
      * @return
      */
     public boolean removeComponentByID (int cmpID) {
-        int index = getComponentIndex(ID);
+        int index = getInstalledComponentIndex(ID);
         if (index == -1) return false;
-        components.remove(index);
+        installedComps.remove(index);
         return true;
     }
     
@@ -265,9 +274,9 @@ public class PC implements Serializable, Comparable<PC> {
                 break;
         }
         pc = pc + "," + spec.toString();
-        if (components == null) pc = pc + ",";
+        if (installedComps == null) pc = pc + ",";
         else
-            for (Component cmp : components)
+            for (PCComp cmp : installedComps)
                 pc = pc + "," + cmp.toString();
         return pc;
     }
@@ -277,10 +286,10 @@ public class PC implements Serializable, Comparable<PC> {
         return this.ID - comparedTo.getID();
     }
 
-    private int getComponentIndex(int id) {
-        if (components == null || components.isEmpty()) return -1;
-        for (int i = 0 ; i < components.size() ; i ++)
-            if (id == components.get(i).getID())
+    private int getInstalledComponentIndex(int id) {
+        if (installedComps == null || installedComps.isEmpty()) return -1;
+        for (int i = 0 ; i < installedComps.size() ; i ++)
+            if (id == installedComps.get(i).getID())
                 return i;
         return -1;
     }

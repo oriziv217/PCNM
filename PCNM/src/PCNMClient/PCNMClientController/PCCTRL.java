@@ -4,6 +4,7 @@ import Entities.Component;
 import Entities.Message;
 import Entities.MessageType;
 import Entities.PC;
+import Entities.PCComp;
 import Entities.PCSpec;
 import Entities.QuickDic;
 import Entities.Status;
@@ -15,6 +16,7 @@ import PCNMClient.PCNMClientView.PCSCR;
 import PCNMClient.PCNMClientView.PCSearchResultSCR;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -191,6 +193,14 @@ public class PCCTRL extends CTRL {
         return enaSpecStringArr;
     }
 
+    public static ArrayList<String> getEnaCompStringArr() {
+        ArrayList<String> enaCompStringArr = new ArrayList<String>();
+        if (enaComp != null)
+            for (Component cmp : enaComp)
+                enaCompStringArr.add(cmp.toString());
+        return enaCompStringArr;
+    }
+    
     /**
      * set enabled PC-specifications for search screen content
      * @param enaSpec
@@ -232,8 +242,11 @@ public class PCCTRL extends CTRL {
         }
         if (selectedComponentsFilter != null)
             for (int i = 0 ; i < selectedComponentsFilter.length ; i ++)
-                if (selectedComponentsFilter[i])
-                    search_model.setComponent(enaComp.get(i));
+                if (selectedComponentsFilter[i]) {
+                    Calendar cal = Calendar.getInstance();
+                    cal.add(Calendar.DAY_OF_MONTH, 1);
+                    search_model.setInstalledComps(new PCComp(PCNMClientStart.cur_ent.getComponents().get(i).getID(), cal.getTime()));
+                }
         
         // define search model options
         String search_options = installationDateModeFilter + "," + warrentyModeFilter;
@@ -383,5 +396,13 @@ public class PCCTRL extends CTRL {
                                                     instDate,
                                                     sts,
                                                     null)));
+    }
+
+    public static void getPCComp(int ID) throws IOException {
+        PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_PC_INST_COMP, new PC(ID)));
+    }
+
+    public static void setPCInstalledComp(ArrayList<PCComp> insalledComps) {
+        
     }
 }

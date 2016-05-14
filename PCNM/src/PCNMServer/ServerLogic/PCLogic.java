@@ -4,6 +4,7 @@ import Entities.Component;
 import Entities.Message;
 import Entities.MessageType;
 import Entities.PC;
+import Entities.PCComp;
 import Entities.PCSpec;
 import Entities.QuickDic;
 import PCNMServer.ServerResources.DBConnect;
@@ -136,7 +137,7 @@ public class PCLogic extends Logic {
         // run query on PC JOIN PCSpec tables
         rs = DBConnect.innerJoin(conDB, leftTable, rightTable, leftKeys, rightKeys, fields, labels, filter, null);
         // filter by components
-        ArrayList<Component> components = search_model.getComponents();
+        ArrayList<PCComp> components = search_model.getInstalledComps();
         ArrayList<Integer> matchedPCs = new ArrayList<Integer>();
         String componentsFilter = "";
         String PCIDFilter = "";
@@ -286,5 +287,66 @@ public class PCLogic extends Logic {
         }
         resultString = "Not OK";
         return new Message(MessageType.UPDATE_PC, null, resultString);
+    }
+
+    public static Message getInstPCComp(PC pc_model) throws SQLException {
+        ArrayList<PCComp> search_results = new ArrayList<PCComp>();
+        Connection conDB = DBConnect.mySQLConnection();
+        ResultSet rs;
+        // define search results schema
+        String[] fields = { "component.id",
+                            "component.name",
+                            "component.description",
+                            "component.price",
+                            "component.valueadd",
+                            "pccomp.startdate",
+                            "pccomp.enddate",
+                            "pccomp.numinstalled",
+                            "pccomp.warrenty" };
+        String[] labels = { "COMPONENT_ID",
+                            "COMPONENT_NAME",
+                            "COMPONENT_DESCRIPTION",
+                            "COMPONENT_PRICE",
+                            "COMPONENT_VALUEADD",
+                            "PCCOMP_STARTDATE",
+                            "PCCOMP_ENDDATE",
+                            "PCCOMP_NUMINSTALLED",
+                            "PCCOMP_WARRENTY" };
+        
+        //define join tables
+        String leftTable = "component";
+        String rightTable = "pccomp";
+        
+        // define join keys
+        String[] leftKeys = {"component.id"};
+        String[] rightKeys = {"pccomp.componentid"};
+        
+        // start building the search filter
+        String filter = "pccomp.pcid = " + pc_model.getID();
+        ArrayList<PCComp>cmp_model = pc_model.getInstalledComps();
+        if (cmp_model != null && !cmp_model.isEmpty()) {
+            Calendar cal = Calendar.getInstance();
+            Calendar today = Calendar.getInstance();
+            cal.setTime(cmp_model.get(0).getEndDate());
+            if (cal.after(today))
+                filter = filter + " AND pccomp.enddate <> null";
+        }
+
+        // run query on COMPONENT JOIN PCCOMP tables
+        rs = DBConnect.innerJoin(conDB, leftTable, rightTable, leftKeys, rightKeys, fields, labels, filter, null);
+        while (rs.next()) {
+            PCComp cmp = new PCComp(rs.getInt("COMPONENT_ID"),
+                                    rs.getString("COMPONENT_NAME"),
+                                    rs.getString("COMPONENT_DESCRIPTION"),
+                                    roundFloat(rs.getFloat("COMPONENT_PRICE"),2),
+                                    roundFloat(rs.getFloat("COMPONENT_VALUEADD"), 2),
+                                    rs.getTimestamp("PCCOMP_STARTDATE"),
+                                    rs.getTimestamp("PCCOMP_ENDDATE"),
+                                    rs.getInt("PCCOMP_NUMINSTALLED"),
+                                    rs.getInt("PCCOMP_WARRENTY"));
+            cmp.setPCID(pc_model.getID());
+            search_results.add(cmp);
+        }
+        return new Message(MessageType.GET_PC_INST_COMP, search_results);
     }
 }
