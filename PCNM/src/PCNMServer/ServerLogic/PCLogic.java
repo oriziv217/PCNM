@@ -259,4 +259,32 @@ public class PCLogic extends Logic {
         resultString = "Not OK";
         return new Message(MessageType.ADD_PC, null, resultString);
     }
+
+    public static Message updatePC(PC pc) throws SQLException {
+        Connection conDB = DBConnect.mySQLConnection();
+        boolean isUpdated;
+        String resultString;
+        String[] fields = { "id",
+                            "name",
+                            "description",
+                            "PCSpecID",
+                            "SpecInstallation",
+                            "status" };
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String[] values = { Integer.toString(pc.getID()),
+                            pc.getName(),
+                            pc.getDescription(),
+                            Integer.toString(pc.getSpec().getID()),
+                            String.valueOf(df.format(pc.getInstallDate())),
+                            String.valueOf(statusToInt(pc.getStatus())) };
+        String[] keyName = { "id" };
+        String[] keyVal = { Integer.toString(pc.getID()) };
+        isUpdated = DBConnect.updateSingleRecord (conDB, "pc", fields, values, keyName, keyVal);
+        if (isUpdated) {
+            resultString = "OK";
+            return new Message (MessageType.UPDATE_PC, pc, resultString);
+        }
+        resultString = "Not OK";
+        return new Message(MessageType.UPDATE_PC, null, resultString);
+    }
 }

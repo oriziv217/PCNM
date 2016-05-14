@@ -165,6 +165,13 @@ public class PCNMClient extends AbstractClient {
                 else
                     PCCTRL.refreshPCWindow(response.getMsgType(), (PC)response.getEntity());
                 break;
+            case UPDATE_PC:
+                if (response.getDataString().equals("Not OK"))
+                    WindowMustHave.showDialog(null, "Error acurred while tring to update PC to the DB.\n"
+                            + "Please contact your System Administrator", DialogType.ERROR);
+                else
+                    PCCTRL.refreshPCWindow(response.getMsgType(), (PC)response.getEntity());
+                break;
             case DB_PROBLEM:
                 WindowMustHave.showDialog(null, response.getDataString(), DialogType.ERROR);
                 break;

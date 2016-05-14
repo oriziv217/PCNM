@@ -351,11 +351,11 @@ public class PCCTRL extends CTRL {
         if (pc != null && msgType == MessageType.ADD_PC) {
             PCNMClientStart.cur_ent.addToPcs(pc);
             pcQD.add(new QuickDic(pc.getID(), pc.getName()));
-        } else if (pc != null && msgType == MessageType.UPDATE_COMPONENT) {
+        } else if (pc != null && msgType == MessageType.UPDATE_PC) {
             PCNMClientStart.cur_ent.updatePcs(pc);
             for (QuickDic qd : pcQD)
                 if (qd.getID() == pc.getID()) {
-                    String[] vals = {pc.getName()};
+                    String[] vals = { pc.getName() };
                     qd.setVals(vals);
                 }
         }
@@ -363,5 +363,25 @@ public class PCCTRL extends CTRL {
         for (PC row : pc_pull)
             pc_tbl.add(row.toString());
         PCNMClientStart.switchPanels(new PCSearchResultSCR(pc_tbl));
+    }
+
+    public static void UpdatePCBtnPressed(int ID, String name, String description, Date instDate, String[] spec, String status) throws IOException {
+        Status sts = stringToStatus(status);
+        Status specSts = stringToStatus(spec[6]);
+        
+        PCNMClientModel.sendMessageToServer(new Message(MessageType.UPDATE_PC,
+                                            new PC( ID,
+                                                    name,
+                                                    description,
+                                                    new PCSpec( Integer.parseInt(spec[0]),
+                                                                spec[1],
+                                                                spec[2],
+                                                                Integer.parseInt(spec[3]),
+                                                                Float.parseFloat(spec[4]),
+                                                                Integer.parseInt(spec[5]),
+                                                                specSts),
+                                                    instDate,
+                                                    sts,
+                                                    null)));
     }
 }

@@ -738,11 +738,62 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
         int index = getIDByName(tblSearchResault.convertRowIndexToModel(selectedRow));
         onScreenPCID = Integer.parseInt(tableContent[index][0]);
         txtPCPropertiesName.setText(tableContent[index][1]);
+        txtPCPropertiesName.setEditable(false);
+        txtPCPropertiesDescription.setText(tableContent[index][2]);
+        txtPCPropertiesDescription.setEditable(false);
+        Calendar cal = Calendar.getInstance();
+        String[] parsedInstDate = tableContent[index][3].split("/");
+        cal.set(Integer.parseInt(parsedInstDate[2]), Integer.parseInt(parsedInstDate[1]) - 1, Integer.parseInt(parsedInstDate[0]));
+        dtpPCPropertiesInstalDate.setDate(cal.getTime());
+        dtpPCPropertiesInstalDate.setEditable(false);
+        int specSelectedIndex = getSpecIndex(tableContent[index][5]);
+        cmbPCPropertiesSpec.setSelectedIndex(specSelectedIndex);
+        cmbPCPropertiesSpec.setEnabled(false);
+        txtPCPropertiesSpecScore.setText(tableContent[index][10]);
+        txtPCPropertiesSpecPrtice.setText(tableContent[index][9]);
+        txtPCPropertiesSpecWarrenty.setText(tableContent[index][8]);
+        int statusSelecetdIndex = 0;
+        switch (tableContent[index][4]) {
+            case "Enabled":
+                statusSelecetdIndex = 1;
+                break;
+            case "Disabled":
+                statusSelecetdIndex = 2;
+                break;
+            case "Suspended":
+                statusSelecetdIndex = 3;
+                break;
+        }
+        cmbPCPropertiesStatus.setSelectedIndex(statusSelecetdIndex);
+        cmbPCPropertiesStatus.setEnabled(false);
+        
+        pcPropertiesForm = new FormFrame();
+        pcPropertiesForm.setSize(pnlPCProperties.getMinimumSize());
+        pcPropertiesForm.setLocationRelativeTo(null);
+        lblPCPropertiesTitle.setText("View PC Properties");
+        pcPropertiesForm.getContentPane().add(pnlPCProperties);
+        pcPropertiesForm.addWindowListener(exitListener);
+        pcPropertiesForm.getContentPane().setVisible(true);
+        PCNMClientStart.appWindow.setEnabled(false);
+        pcPropertiesForm.setVisible(true);
+    }//GEN-LAST:event_btnViewPCActionPerformed
+
+    private void btnUpdatePCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdatePCActionPerformed
+        selectedRow = tblSearchResault.getSelectedRow();
+        if (selectedRow == -1) {
+            showDialog(this, "Please select PC", DialogType.INFO);
+            return;
+        }
+        formMode = 2;
+        int index = getIDByName(tblSearchResault.convertRowIndexToModel(selectedRow));
+        onScreenPCID = Integer.parseInt(tableContent[index][0]);
+        txtPCPropertiesName.setText(tableContent[index][1]);
         txtPCPropertiesDescription.setText(tableContent[index][2]);
         Calendar cal = Calendar.getInstance();
         String[] parsedInstDate = tableContent[index][3].split("/");
-        cal.set(Integer.parseInt(parsedInstDate[2]), Integer.parseInt(parsedInstDate[1]), Integer.parseInt(parsedInstDate[0]));
+        cal.set(Integer.parseInt(parsedInstDate[2]), Integer.parseInt(parsedInstDate[1]) - 1, Integer.parseInt(parsedInstDate[0]));
         dtpPCPropertiesInstalDate.setDate(cal.getTime());
+        dtpPCPropertiesInstalDate.getMonthView().setUpperBound(new Date());
         int specSelectedIndex = getSpecIndex(tableContent[index][5]);
         cmbPCPropertiesSpec.setSelectedIndex(specSelectedIndex);
         txtPCPropertiesSpecScore.setText(tableContent[index][10]);
@@ -761,10 +812,16 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
                 break;
         }
         cmbPCPropertiesStatus.setSelectedIndex(statusSelecetdIndex);
-    }//GEN-LAST:event_btnViewPCActionPerformed
-
-    private void btnUpdatePCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdatePCActionPerformed
-        // TODO add your handling code here:
+        
+        pcPropertiesForm = new FormFrame();
+        pcPropertiesForm.setSize(pnlPCProperties.getMinimumSize());
+        pcPropertiesForm.setLocationRelativeTo(null);
+        lblPCPropertiesTitle.setText("Update PC Properties");
+        pcPropertiesForm.getContentPane().add(pnlPCProperties);
+        pcPropertiesForm.addWindowListener(exitListener);
+        pcPropertiesForm.getContentPane().setVisible(true);
+        PCNMClientStart.appWindow.setEnabled(false);
+        pcPropertiesForm.setVisible(true);
     }//GEN-LAST:event_btnUpdatePCActionPerformed
 
     private void btnMapPCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMapPCActionPerformed
@@ -784,7 +841,7 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
         String[] spec = enaSpec.get(selectedSpec);
         
         try {
-            if (!PCCTRL.isNameUnique(onScreenPCID, name)) {
+            if (formMode != 3 && !PCCTRL.isNameUnique(onScreenPCID, name)) {
                 showDialog(pnlPCProperties, "PC Name must be unique.", DialogType.INFO);
                 return;
             }
@@ -797,8 +854,7 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
                 PCCTRL.AddPCBtnPressed(name, description, instDate, spec, status);
             }
             else if (formMode == 2) {
-//                WorkstationCTRL.UpdateWorkstationBtnPressed(onScreenWSID ,name, description, importance, status,
-//                    types.get(type)[0], types.get(type)[1], types.get(type)[2], types.get(type)[3], types.get(type)[4]);
+                PCCTRL.UpdatePCBtnPressed(onScreenPCID ,name, description, instDate, spec, status);
             } else if (formMode == 3) {
                 pcPropertiesClearFields();
                 pcPropertiesForm.dispose();
@@ -931,7 +987,7 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
                 dtm.setValueAt(tableContent[i][3], cur_row, 2);
                 dtm.setValueAt(tableContent[i][6], cur_row, 3);
                 String[] instDateString = tableContent[i][3].split("/");
-                cal.set(Integer.parseInt(instDateString[2]), Integer.parseInt(instDateString[1]), Integer.parseInt(instDateString[0]));
+                cal.set(Integer.parseInt(instDateString[2]), Integer.parseInt(instDateString[1]) - 1, Integer.parseInt(instDateString[0]));
                 cal.add(Calendar.MONTH, Integer.parseInt(tableContent[i][8]));
                 dtm.setValueAt(df.format(cal.getTime()), cur_row, 4);
                 dtm.setValueAt(tableContent[i][4], cur_row, 5);
@@ -954,13 +1010,18 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
 
     private void pcPropertiesClearFields() {
         txtPCPropertiesName.setText("");
+        txtPCPropertiesName.setEditable(true);
         txtPCPropertiesDescription.setText("");
+        txtPCPropertiesDescription.setEditable(true);
         dtpPCPropertiesInstalDate.setDate(new Date());
+        dtpPCPropertiesInstalDate.setEditable(true);
         cmbPCPropertiesSpec.setSelectedIndex(0);
+        cmbPCPropertiesSpec.setEnabled(true);
         txtPCPropertiesSpecScore.setText("");
         txtPCPropertiesSpecPrtice.setText("");
         txtPCPropertiesSpecWarrenty.setText("");
         cmbPCPropertiesStatus.setSelectedIndex(0);
+        cmbPCPropertiesStatus.setEnabled(true);
         lblPCPropertiesStatusExplain.setText("");
     }
     

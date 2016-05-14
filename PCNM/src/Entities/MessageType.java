@@ -132,7 +132,7 @@ public enum MessageType {
     PC_SEARCH,
     
     /**
-     * Get all PC ID and name for quick-dic list
+     * Get all PC ID and name for quick-dictionary list
      */
     GET_PC_QUICKDIC,
     
@@ -140,6 +140,11 @@ public enum MessageType {
      * Add new PC
      */
     ADD_PC,
+    
+    /**
+     * Update PC record in the DB
+     */
+    UPDATE_PC,
     
     /**
      * SQL Exception was thrown
