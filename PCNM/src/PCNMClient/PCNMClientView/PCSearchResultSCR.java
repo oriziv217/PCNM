@@ -57,6 +57,7 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
         fltrEnabled = false;
         specTableNames = new ArrayList<String>();
         enaSpec = new ArrayList<String[]>();
+        loadEnaSpec();
         initComponents();
         doneInit = true;
     }
@@ -75,7 +76,6 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
         tableContent = new String[rowCounter][12];
         loadSearchResults();
         loadCmbSpecificationNameFilter();
-        loadEnaSpec();
         cmbSpecificationNameFilter.setSelectedIndex(fltrSpecIndex);
         doneInit = true;
     }
@@ -133,8 +133,8 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
         btnMapPC = new javax.swing.JButton();
 
         pnlPCProperties.setBackground(java.awt.Color.white);
-        pnlPCProperties.setMinimumSize(new java.awt.Dimension(600, 365));
-        pnlPCProperties.setPreferredSize(new java.awt.Dimension(600, 365));
+        pnlPCProperties.setMinimumSize(new java.awt.Dimension(600, 400));
+        pnlPCProperties.setPreferredSize(new java.awt.Dimension(600, 400));
 
         lblPCPropertiesTitle.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         lblPCPropertiesTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -319,7 +319,7 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
                     .addComponent(btnPCPropertiesOK)
                     .addComponent(btnPCPropertiesComponents)
                     .addComponent(btnPCPropertiesCancel))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
         if (formMode == 3) txtPCPropertiesName.setEnabled(false);
@@ -834,6 +834,13 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
     private void cmbPCPropertiesSpecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbPCPropertiesSpecActionPerformed
         int selected = cmbPCPropertiesSpec.getSelectedIndex();
         if (selected == -1) return;
+        if (selected == 0) {
+            txtPCPropertiesSpecScore.setText("");
+            txtPCPropertiesSpecPrtice.setText("");
+            txtPCPropertiesSpecWarrenty.setText("");
+            return;
+        }
+        selected --;
         txtPCPropertiesSpecScore.setText(enaSpec.get(selected)[5]);
         txtPCPropertiesSpecPrtice.setText(enaSpec.get(selected)[4]);
         txtPCPropertiesSpecWarrenty.setText(enaSpec.get(selected)[3]);
@@ -998,10 +1005,10 @@ public class PCSearchResultSCR extends javax.swing.JPanel {
                 lblPCPropertiesStatusExplain.setText("This PC is ready for work");
                 break;
             case 2:
-                lblPCPropertiesStatusExplain.setText("This PC is in stock");
+                lblPCPropertiesStatusExplain.setText("This PC is not Active");
                 break;
             case 3:
-                lblPCPropertiesStatusExplain.setText("This PC is not Active");
+                lblPCPropertiesStatusExplain.setText("This PC is in stock");
                 break;
         }
     }

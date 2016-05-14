@@ -223,7 +223,7 @@ public class PCLogic extends Logic {
         while (rs.next()) {
             dic.add(new QuickDic(rs.getInt("ID"), rs.getString("name")));
         }
-        return new Message(MessageType.GET_COMP_QUICKDIC, dic);
+        return new Message(MessageType.GET_PC_QUICKDIC, dic);
     }
 
     /**
