@@ -79,6 +79,15 @@ public class PCLogic extends Logic {
             filter = "PC.name LIKE '%" + search_model.getName() + "%'";
             isfirst = false;
         }
+        // filter by id
+        if (search_model.getID() != 0) {
+            if (isfirst) {
+                filter = "PC.ID = " + search_model.getID();
+                isfirst = false;
+            } else {
+                filter = filter + " AND PC.ID = " + search_model.getID();
+            }
+        }
         // filter by description
         if (search_model.getDescription() != null && !search_model.getDescription().isEmpty()) {
             if (isfirst) {
@@ -290,7 +299,7 @@ public class PCLogic extends Logic {
     }
 
     public static Message getInstPCComp(PC pc_model) throws SQLException {
-        ArrayList<PCComp> search_results = new ArrayList<PCComp>();
+        ArrayList<PCComp> installedComponents = new ArrayList<PCComp>();
         Connection conDB = DBConnect.mySQLConnection();
         ResultSet rs;
         // define search results schema
@@ -322,15 +331,7 @@ public class PCLogic extends Logic {
         String[] rightKeys = {"pccomp.componentid"};
         
         // start building the search filter
-        String filter = "pccomp.pcid = " + pc_model.getID();
-        ArrayList<PCComp>cmp_model = pc_model.getInstalledComps();
-        if (cmp_model != null && !cmp_model.isEmpty()) {
-            Calendar cal = Calendar.getInstance();
-            Calendar today = Calendar.getInstance();
-            cal.setTime(cmp_model.get(0).getEndDate());
-            if (cal.after(today))
-                filter = filter + " AND pccomp.enddate <> null";
-        }
+        String filter = "pccomp.pcid = " + pc_model.getID() + " AND pccomp.enddate <> null";
 
         // run query on COMPONENT JOIN PCCOMP tables
         rs = DBConnect.innerJoin(conDB, leftTable, rightTable, leftKeys, rightKeys, fields, labels, filter, null);
@@ -345,8 +346,14 @@ public class PCLogic extends Logic {
                                     rs.getInt("PCCOMP_NUMINSTALLED"),
                                     rs.getInt("PCCOMP_WARRENTY"));
             cmp.setPCID(pc_model.getID());
-            search_results.add(cmp);
+            installedComponents.add(cmp);
         }
-        return new Message(MessageType.GET_PC_INST_COMP, search_results);
+        
+        // get PC data
+        ArrayList<PC> pc = (ArrayList<PC>)PCLogic.searchPCByFilter(pc_model, "0,0").getEntity();
+        if (pc.isEmpty()) throw new SQLException("Could not find specific PC in the DB");
+        PC search_result = pc.get(0);
+        search_result.setInstalledComponents(installedComponents);
+        return new Message(MessageType.GET_PC_INST_COMP, search_result);
     }
 }

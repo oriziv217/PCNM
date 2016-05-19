@@ -10,6 +10,7 @@ import Entities.QuickDic;
 import Entities.Status;
 import PCNMClient.PCNMClientModel;
 import PCNMClient.PCNMClientStart;
+import PCNMClient.PCNMClientView.InstPCCompSCR;
 import PCNMClient.PCNMClientView.NetMapSCR;
 import PCNMClient.PCNMClientView.PCCompSCR;
 import PCNMClient.PCNMClientView.PCSCR;
@@ -402,7 +403,16 @@ public class PCCTRL extends CTRL {
         PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_PC_INST_COMP, new PC(ID)));
     }
 
-    public static void setPCInstalledComp(ArrayList<PCComp> insalledComps) {
-        
+    public static void openInstPCCompSCR(ArrayList<PC> pc) {
+        ArrayList<String> enaComp = PCNMClientStart.cur_ent.componentsToString();
+        String PC_String;
+        ArrayList<PCComp> components = pc.get(0).getInstalledComps();
+        ArrayList<String> instComp = new ArrayList<String>();
+        for (PCComp comp : components)
+            instComp.add(comp.toString());
+        pc.get(0).setInstalledComponents(null);
+        PC_String = pc.get(0).toString();
+        PCNMClientStart.appWindow.setTitle("PCNM - Add/Remove PC Components");
+        PCNMClientStart.switchPanels(new InstPCCompSCR(enaComp, PC_String, instComp));
     }
 }

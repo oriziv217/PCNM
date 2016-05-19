@@ -452,6 +452,7 @@ public class InstPCCompSCR extends javax.swing.JPanel {
     private javax.swing.JTextField txtPCCompStatus;
     private javax.swing.JTextField txtPCCompWarrenty;
     // End of variables declaration//GEN-END:variables
+    
     private ListSelectionListener tblPCCompEnaCompListListener = new ListSelectionListener() {
         @Override
         public void valueChanged(ListSelectionEvent lse) {

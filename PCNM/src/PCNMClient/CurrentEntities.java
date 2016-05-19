@@ -66,6 +66,14 @@ public class CurrentEntities {
         return components;
     }
     
+    
+    public ArrayList<String> componentsToString() {
+        ArrayList<String> comp_list = new ArrayList<String>();
+        for (Component cmp : components)
+            comp_list.add(cmp.toString());
+        return comp_list;
+    }
+    
     /**
      * current components setter
      * @param components
