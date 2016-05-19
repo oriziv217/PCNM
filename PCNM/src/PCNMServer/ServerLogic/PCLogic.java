@@ -331,7 +331,7 @@ public class PCLogic extends Logic {
         String[] rightKeys = {"pccomp.componentid"};
         
         // start building the search filter
-        String filter = "pccomp.pcid = " + pc_model.getID() + " AND pccomp.enddate <> null";
+        String filter = "pccomp.pcid = " + pc_model.getID() + " AND pccomp.enddate IS NULL";
 
         // run query on COMPONENT JOIN PCCOMP tables
         rs = DBConnect.innerJoin(conDB, leftTable, rightTable, leftKeys, rightKeys, fields, labels, filter, null);

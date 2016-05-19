@@ -403,16 +403,18 @@ public class PCCTRL extends CTRL {
         PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_PC_INST_COMP, new PC(ID)));
     }
 
-    public static void openInstPCCompSCR(ArrayList<PC> pc) {
-        ArrayList<String> enaComp = PCNMClientStart.cur_ent.componentsToString();
+    public static void openInstPCCompSCR(PC pc) {
+        ArrayList<String> enaCompStrList = new ArrayList<String>();
+        for (Component cmp : enaComp)
+            enaCompStrList.add(cmp.toString());
         String PC_String;
-        ArrayList<PCComp> components = pc.get(0).getInstalledComps();
+        ArrayList<PCComp> components = pc.getInstalledComps();
         ArrayList<String> instComp = new ArrayList<String>();
         for (PCComp comp : components)
             instComp.add(comp.toString());
-        pc.get(0).setInstalledComponents(null);
-        PC_String = pc.get(0).toString();
+        pc.setInstalledComponents(null);
+        PC_String = pc.toString();
         PCNMClientStart.appWindow.setTitle("PCNM - Add/Remove PC Components");
-        PCNMClientStart.switchPanels(new InstPCCompSCR(enaComp, PC_String, instComp));
+        PCNMClientStart.switchPanels(new InstPCCompSCR(enaCompStrList, PC_String, instComp));
     }
 }

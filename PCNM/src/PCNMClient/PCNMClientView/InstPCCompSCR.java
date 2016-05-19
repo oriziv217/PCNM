@@ -99,7 +99,8 @@ public class InstPCCompSCR extends javax.swing.JPanel {
         btnPCCompCancel = new javax.swing.JButton();
 
         setBackground(java.awt.Color.white);
-        setMinimumSize(new java.awt.Dimension(1200, 750));
+        setMinimumSize(new java.awt.Dimension(1200, 800));
+        setPreferredSize(new java.awt.Dimension(1200, 800));
 
         lblPCCompTitle.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         lblPCCompTitle.setForeground(java.awt.Color.red);
@@ -344,7 +345,7 @@ public class InstPCCompSCR extends javax.swing.JPanel {
                                 .addComponent(lblPCCompStatus)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtPCCompStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 155, Short.MAX_VALUE))
+                        .addGap(0, 230, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(btnPCCompApply, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -402,7 +403,7 @@ public class InstPCCompSCR extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnPCCompApply, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnPCCompCancel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(70, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

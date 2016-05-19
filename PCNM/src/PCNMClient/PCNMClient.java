@@ -174,7 +174,7 @@ public class PCNMClient extends AbstractClient {
                     PCCTRL.refreshPCWindow(response.getMsgType(), (PC)response.getEntity());
                 break;
             case GET_PC_INST_COMP:
-                PCCTRL.openInstPCCompSCR((ArrayList<PC>)response.getEntity());
+                PCCTRL.openInstPCCompSCR((PC)response.getEntity());
                 break;
             case DB_PROBLEM:
                 WindowMustHave.showDialog(null, response.getDataString(), DialogType.ERROR);
