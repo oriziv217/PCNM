@@ -1,6 +1,9 @@
 package PCNMClient.PCNMClientView;
 
+import PCNMClient.PCNMClientController.PCCTRL;
+import com.sun.corba.se.spi.activation.BadServerDefinition;
 import java.awt.Font;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,7 +31,7 @@ public class InstPCCompSCR extends javax.swing.JPanel {
     private boolean[] selectedEnaComps;
     private boolean[] selectedInstComps;
     private String[][] enaCompTableContent;
-    private String[][] instCompTableContent;
+    private ArrayList<String[]> instCompTableContent;
     
     /**
      * Creates new form InstPCCompSCR
@@ -55,10 +58,11 @@ public class InstPCCompSCR extends javax.swing.JPanel {
         selectedInstComps = new boolean[instCompRowCounter];
         Arrays.fill(selectedInstComps, false);
         enaCompTableContent = new String[enaCompRowCounter][6];
-        instCompTableContent = new String[instCompRowCounter][9];
+        instCompTableContent = new ArrayList<String[]>();
         loadEnaCompTable();
         setPCData();
         loadInstCompTable();
+        calcPCScore();
         doneInit = true;
     }
     /**
@@ -85,8 +89,8 @@ public class InstPCCompSCR extends javax.swing.JPanel {
         txtPCCompWarrenty = new javax.swing.JTextField();
         lblPCCompStatus = new javax.swing.JLabel();
         txtPCCompStatus = new javax.swing.JTextField();
-        lblPCCompPCScore = new javax.swing.JLabel();
-        lblPCCompScoreVal = new javax.swing.JLabel();
+        lblPCCompOriginalPCScore = new javax.swing.JLabel();
+        lblPCCompOriginalScoreVal = new javax.swing.JLabel();
         lblPCCompEnaComp = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblPCCompEnaComp = new javax.swing.JTable();
@@ -97,6 +101,8 @@ public class InstPCCompSCR extends javax.swing.JPanel {
         btnPCCompUninstComp = new javax.swing.JButton();
         btnPCCompApply = new javax.swing.JButton();
         btnPCCompCancel = new javax.swing.JButton();
+        lblPCCompAfterPCScore = new javax.swing.JLabel();
+        lblPCCompAfterScoreVal = new javax.swing.JLabel();
 
         setBackground(java.awt.Color.white);
         setMinimumSize(new java.awt.Dimension(1200, 800));
@@ -157,13 +163,13 @@ public class InstPCCompSCR extends javax.swing.JPanel {
         txtPCCompStatus.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         txtPCCompStatus.setToolTipText("");
 
-        lblPCCompPCScore.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        lblPCCompPCScore.setForeground(java.awt.Color.red);
-        lblPCCompPCScore.setText("PC Score:");
+        lblPCCompOriginalPCScore.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        lblPCCompOriginalPCScore.setForeground(java.awt.Color.red);
+        lblPCCompOriginalPCScore.setText("Original PC Score:");
 
-        lblPCCompScoreVal.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        lblPCCompScoreVal.setForeground(java.awt.Color.red);
-        lblPCCompScoreVal.setText("100");
+        lblPCCompOriginalScoreVal.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        lblPCCompOriginalScoreVal.setForeground(java.awt.Color.red);
+        lblPCCompOriginalScoreVal.setText("100");
 
         lblPCCompEnaComp.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         lblPCCompEnaComp.setText("Available Components:");
@@ -283,6 +289,14 @@ public class InstPCCompSCR extends javax.swing.JPanel {
             }
         });
 
+        lblPCCompAfterPCScore.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        lblPCCompAfterPCScore.setForeground(java.awt.Color.red);
+        lblPCCompAfterPCScore.setText("After Changes Score:");
+
+        lblPCCompAfterScoreVal.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        lblPCCompAfterScoreVal.setForeground(java.awt.Color.red);
+        lblPCCompAfterScoreVal.setText("100");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -329,23 +343,28 @@ public class InstPCCompSCR extends javax.swing.JPanel {
                         .addGap(160, 160, 160)
                         .addComponent(lblPCPropertiesInstDate1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtPCCompInstallDate, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(lblPCCompPCScore)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblPCCompScoreVal))
+                                .addComponent(txtPCCompInstallDate, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblPCCompWarrenty))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblPCCompWarrenty)
+                                .addComponent(lblPCCompOriginalPCScore)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblPCCompOriginalScoreVal)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(txtPCCompWarrenty, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(lblPCCompStatus)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtPCCompStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 230, Short.MAX_VALUE))
+                                .addComponent(txtPCCompStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblPCCompAfterPCScore)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblPCCompAfterScoreVal)))
+                        .addGap(0, 151, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(btnPCCompApply, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -381,9 +400,12 @@ public class InstPCCompSCR extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblPCCompPCScore)
-                            .addComponent(lblPCCompScoreVal))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblPCCompAfterPCScore, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(lblPCCompOriginalPCScore)
+                                .addComponent(lblPCCompOriginalScoreVal)
+                                .addComponent(lblPCCompAfterScoreVal)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblPCCompEnaComp)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -408,11 +430,42 @@ public class InstPCCompSCR extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPCCompInstCompActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPCCompInstCompActionPerformed
-        // TODO add your handling code here:
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String[] pcString = PCData.split(",");
+        for (int i = 0 ; i < selectedEnaComps.length ; i ++) {
+            if (selectedEnaComps[i]) {
+                String[] newInstlation = new String[9];
+                newInstlation[0] = enaCompTableContent[i][0];
+                newInstlation[1] = enaCompTableContent[i][1];
+                newInstlation[2] = enaCompTableContent[i][2];
+                newInstlation[3] = enaCompTableContent[i][3];
+                newInstlation[4] = enaCompTableContent[i][4];
+                newInstlation[5] = sdf.format(cal.getTime());
+                newInstlation[6] = "";
+                newInstlation[7] = "";
+                newInstlation[8] = pcString[8];
+                instCompTableContent.add(newInstlation);
+                instCompRowCounter ++;
+            }
+        }
+        selectedInstComps = new boolean[instCompRowCounter];
+        Arrays.fill(selectedInstComps, false);
+        loadInstCompTable();
+        calcPCScore();
     }//GEN-LAST:event_btnPCCompInstCompActionPerformed
 
     private void btnPCCompUninstCompActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPCCompUninstCompActionPerformed
-        // TODO add your handling code here:
+        for (int i = 0 ; i < selectedInstComps.length ; i ++) {
+            if (selectedInstComps[i]) {
+                instCompTableContent.remove(i);
+                instCompRowCounter --;
+            }
+        }
+        selectedInstComps = new boolean[instCompRowCounter];
+        Arrays.fill(selectedInstComps, false);
+        loadInstCompTable();
+        calcPCScore();
     }//GEN-LAST:event_btnPCCompUninstCompActionPerformed
 
     private void btnPCCompApplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPCCompApplyActionPerformed
@@ -420,7 +473,7 @@ public class InstPCCompSCR extends javax.swing.JPanel {
     }//GEN-LAST:event_btnPCCompApplyActionPerformed
 
     private void btnPCCompCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPCCompCancelActionPerformed
-        // TODO add your handling code here:
+        PCCTRL.pcCompCancelBtnPressed();
     }//GEN-LAST:event_btnPCCompCancelActionPerformed
 
 
@@ -433,10 +486,12 @@ public class InstPCCompSCR extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lbPCCompDescription;
     private javax.swing.JLabel lbPCCompName;
+    private javax.swing.JLabel lblPCCompAfterPCScore;
+    private javax.swing.JLabel lblPCCompAfterScoreVal;
     private javax.swing.JLabel lblPCCompEnaComp;
     private javax.swing.JLabel lblPCCompInstComp;
-    private javax.swing.JLabel lblPCCompPCScore;
-    private javax.swing.JLabel lblPCCompScoreVal;
+    private javax.swing.JLabel lblPCCompOriginalPCScore;
+    private javax.swing.JLabel lblPCCompOriginalScoreVal;
     private javax.swing.JLabel lblPCCompSpecName;
     private javax.swing.JLabel lblPCCompStatus;
     private javax.swing.JLabel lblPCCompTitle;
@@ -493,10 +548,10 @@ public class InstPCCompSCR extends javax.swing.JPanel {
             for (int i = minIndex ; i <= maxIndex ; i ++) {
                 if (lsm.isSelectedIndex(i)) {
                     String name = (String)dtm.getValueAt(tblPCCompInstComp.convertRowIndexToModel(i), 0);
-                    for (int j = 0 ; j < instCompTableContent.length ; j ++) {
-                        if (instCompTableContent[j][1].equals(name)) {
+                    for (int j = 0 ; j < instCompTableContent.size() ; j ++) {
+                        if (instCompTableContent.get(j)[1].equals(name)) {
                             selectedInstComps[j] = true;
-                            j = instCompTableContent.length;
+                            j = instCompTableContent.size();
                         }
                     }
                 }
@@ -544,15 +599,33 @@ public class InstPCCompSCR extends javax.swing.JPanel {
         dtm.setRowCount(instCompRowCounter);
         for (int i = 0 ; i < compInstList.size() ; i ++) {
             row = compInstList.get(i);
-            instCompTableContent[i] = row.split(",");
-            dtm.setValueAt(instCompTableContent[i][1], i, 0);
-            dtm.setValueAt(instCompTableContent[i][2], i, 1);
-            dtm.setValueAt(Float.parseFloat(instCompTableContent[i][3]), i, 2);
-            dtm.setValueAt(Float.parseFloat(instCompTableContent[i][4]), i, 3);
+            instCompTableContent.add(row.split(","));
+            dtm.setValueAt(instCompTableContent.get(i)[1], i, 0);
+            dtm.setValueAt(instCompTableContent.get(i)[2], i, 1);
+            dtm.setValueAt(Float.parseFloat(instCompTableContent.get(i)[3]), i, 2);
+            dtm.setValueAt(Float.parseFloat(instCompTableContent.get(i)[4]), i, 3);
         }
         DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
         leftRenderer.setHorizontalAlignment(JLabel.LEFT);
         tblPCCompInstComp.getColumnModel().getColumn(2).setCellRenderer(leftRenderer);
         tblPCCompInstComp.getColumnModel().getColumn(3).setCellRenderer(leftRenderer);
     }
+
+    private void calcPCScore() {
+        float score = 0;
+        String[] pcStrings = PCData.split(",");
+        score = Float.parseFloat(pcStrings[10]);
+        for (String[] pccomp : instCompTableContent)
+            score *= Float.parseFloat(pccomp[4]);
+        if (!doneInit) lblPCCompOriginalScoreVal.setText(String.valueOf(roundFloat(score, 2)));
+        lblPCCompAfterScoreVal.setText(String.valueOf(roundFloat(score, 2)));
+    }
+    
+    private float roundFloat(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
+    }
 }
+// private String[][] instCompTableContent;
+// private String PCData;

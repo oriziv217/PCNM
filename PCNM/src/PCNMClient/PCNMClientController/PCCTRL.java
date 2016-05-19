@@ -417,4 +417,12 @@ public class PCCTRL extends CTRL {
         PCNMClientStart.appWindow.setTitle("PCNM - Add/Remove PC Components");
         PCNMClientStart.switchPanels(new InstPCCompSCR(enaCompStrList, PC_String, instComp));
     }
+
+    public static void pcCompCancelBtnPressed() {
+        ArrayList<String>pc_tbl = new ArrayList<String>();
+        for (PC pc : pc_pull)
+            pc_tbl.add(pc.toString());
+        PCNMClientStart.appWindow.setTitle("PCNM - PC Search Results");
+        PCNMClientStart.switchPanels(new PCSearchResultSCR(pc_tbl));
+    }
 }
