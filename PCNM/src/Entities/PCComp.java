@@ -45,6 +45,16 @@ public class PCComp implements Serializable {
         this.endDate = endDate;
     }
 
+    public PCComp (int ID, Date startDate, Date endDate, int numInstalled) {
+        this(ID, startDate, endDate);
+        this.numInstalled = numInstalled;
+    }
+    
+    public PCComp (int ID, Date startDate, Date endDate, int numInstalled, int warrenty) {
+        this(ID, startDate, endDate, numInstalled);
+        this.warrenty = warrenty;
+    }
+    
     public PCComp(int ID, String name, String description, float price, float valueAdd, Date startDate, Date endDate, int numInstalled, int warrenty) {
         this.ID = ID;
         this.name = name;

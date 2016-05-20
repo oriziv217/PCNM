@@ -152,6 +152,11 @@ public enum MessageType {
     GET_PC_INST_COMP,
     
     /**
+     * change PCComp records for a specific PC
+     */
+    CHANGE_PCCOMP,
+    
+    /**
      * SQL Exception was thrown
      */
     DB_PROBLEM

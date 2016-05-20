@@ -355,4 +355,75 @@ public class PCLogic extends Logic {
         search_result.setInstalledComponents(installedComponents);
         return new Message(MessageType.GET_PC_INST_COMP, search_result);
     }
+
+    public static Message addRemovePCComp(PC pc) throws SQLException {
+        int pcID = pc.getID();
+        ArrayList<PCComp> components = pc.getInstalledComps();
+        Boolean isSuccess = new Boolean(false);
+        
+        // case nothing to change
+        if (components.isEmpty()) {
+            isSuccess = true;
+            return new Message(MessageType.CHANGE_PCCOMP, isSuccess);
+        }
+        
+        for (PCComp comp : components) {
+            if (comp.getEndDate() == null)
+                isSuccess = PCLogic.addPCComp(pcID, comp);
+            else
+                isSuccess = PCLogic.removePCComp(pcID, comp);
+            if (isSuccess == false)
+                return new Message(MessageType.CHANGE_PCCOMP, isSuccess);
+        }
+        return new Message(MessageType.CHANGE_PCCOMP, isSuccess);
+    }
+
+    public static boolean addPCComp(int pcID, PCComp comp) throws SQLException {
+        Connection conDB = DBConnect.mySQLConnection();
+        ResultSet rs;
+        boolean isAdded = false;
+        int componentID = comp.getID();
+        
+        int numInstalled;
+        String filter = "PCID = " + pcID + " AND componentID = " + componentID;
+        rs = DBConnect.selectWithFilter(conDB, "pccomp", "MAX(numInstalled) AS Suffix", filter);
+        rs.next();
+        numInstalled = rs.getInt("Suffix");
+        if (rs.wasNull()) numInstalled = 1;
+        else numInstalled ++;
+        
+        String[] fields = { "PCID",
+                            "componentID",
+                            "startDate",
+                            "EndDate",
+                            "numInstalled",
+                            "Warrenty" };
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String[] values = { String.valueOf(pcID),
+                            String.valueOf(comp.getID()),
+                            df.format(comp.getStartDate()),
+                            null,
+                            String.valueOf(numInstalled),
+                            String.valueOf(comp.getWarrenty()) };
+        isAdded = DBConnect.insertSingleRecord (conDB, "pccomp", fields, values);
+        return isAdded;
+    }
+
+    public static boolean removePCComp(int pcID, PCComp comp) throws SQLException {
+        Connection conDB = DBConnect.mySQLConnection();
+        boolean isUpdated;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String[] fields = { "EndDate" };
+        String[] values = { df.format(comp.getEndDate()) };
+        String[] keyName = {"PCID",
+                            "componentID",
+                            "startDate",
+                            "numInstalled" };
+        String[] keyVal = { String.valueOf(pcID),
+                            String.valueOf(comp.getID()),
+                            df.format(comp.getStartDate()),
+                            String.valueOf(comp.getNumInstalled()) };
+        isUpdated = DBConnect.updateSingleRecord (conDB, "pccomp", fields, values, keyName, keyVal);
+        return isUpdated;
+    }
 }

@@ -16,6 +16,7 @@ import PCNMClient.PCNMClientView.PCCompSCR;
 import PCNMClient.PCNMClientView.PCSCR;
 import PCNMClient.PCNMClientView.PCSearchResultSCR;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -427,6 +428,32 @@ public class PCCTRL extends CTRL {
     }
 
     public static void addRemoveComp(int pcid, ArrayList<String[]> toInstall, ArrayList<String[]> toRemove) throws IOException {
+        PC pc = new PC(pcid);
+        ArrayList<PCComp> components = new ArrayList<PCComp>();
+        Calendar sDate = Calendar.getInstance();
+        Calendar eDate = Calendar.getInstance();
         
+        // add components to install
+        if (!toInstall.isEmpty()) {
+            for (String[] cmpStr : toInstall) {
+                String[] sDateStr = cmpStr[5].split("/");
+                sDate.set(Integer.parseInt(sDateStr[2]), Integer.parseInt(sDateStr[1]) - 1, Integer.parseInt(sDateStr[0]));
+                components.add(new PCComp(Integer.parseInt(cmpStr[0]), sDate.getTime(), null, -1, Integer.parseInt(cmpStr[8])));
+            }
+        }
+        
+        // add components to remove
+        if (!toRemove.isEmpty()) {
+            for (String[] cmpStr : toRemove) {
+                String[] sDateStr = cmpStr[5].split("/");
+                sDate.set(Integer.parseInt(sDateStr[2]), Integer.parseInt(sDateStr[1]) - 1, Integer.parseInt(sDateStr[0]));
+                String[] eDateStr = cmpStr[6].split("/");
+                eDate.set(Integer.parseInt(eDateStr[2]), Integer.parseInt(eDateStr[1]) - 1, Integer.parseInt(eDateStr[0]));
+                components.add(new PCComp(Integer.parseInt(cmpStr[0]), sDate.getTime(), eDate.getTime(), Integer.parseInt(cmpStr[7])));
+            }
+        }
+        pc.setInstalledComponents(components);
+        // send to server
+        PCNMClientModel.sendMessageToServer(new Message(MessageType.CHANGE_PCCOMP, pc));
     }
 }

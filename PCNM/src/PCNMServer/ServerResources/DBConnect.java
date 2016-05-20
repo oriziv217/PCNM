@@ -177,6 +177,7 @@ public class DBConnect {
          * 					Must be at list 1 field to insert
          * 					Must cover all fields defined as "not null" in the DB schema
          * 					The method will add the ' modifier
+         *                                      If values[i] = null then null value would be inserted.
          * @return - true if insert was successful otherwise return false
          * @throws SQLException
          */
@@ -205,9 +206,12 @@ public class DBConnect {
                 // set values to insert
                 insert = insert + " VALUES (";
                 for (int i = 0 ; i < values.length ; i ++) {
+                    if (values[i] == null)
+                        insert = insert + "NULL";
+                    else
                         insert = insert + "'" + values[i] + "'";
-                        if (i < values.length - 1)
-                                insert = insert + ", ";
+                    if (i < values.length - 1)
+                            insert = insert + ", ";
                 }
                 insert = insert + ")";
 
