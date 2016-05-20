@@ -246,7 +246,7 @@ public class PCCTRL extends CTRL {
                 if (selectedComponentsFilter[i]) {
                     Calendar cal = Calendar.getInstance();
                     cal.add(Calendar.DAY_OF_MONTH, 1);
-                    search_model.setInstalledComps(new PCComp(PCNMClientStart.cur_ent.getComponents().get(i).getID(), cal.getTime()));
+                    search_model.setInstalledComps(new PCComp(enaComp.get(i).getID(), cal.getTime()));
                 }
         
         // define search model options
@@ -424,5 +424,9 @@ public class PCCTRL extends CTRL {
             pc_tbl.add(pc.toString());
         PCNMClientStart.appWindow.setTitle("PCNM - PC Search Results");
         PCNMClientStart.switchPanels(new PCSearchResultSCR(pc_tbl));
+    }
+
+    public static void addRemoveComp(int pcid, ArrayList<String[]> toInstall, ArrayList<String[]> toRemove) throws IOException {
+        
     }
 }

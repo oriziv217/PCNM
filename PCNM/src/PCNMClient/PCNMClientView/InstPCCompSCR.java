@@ -1,14 +1,18 @@
 package PCNMClient.PCNMClientView;
 
 import PCNMClient.PCNMClientController.PCCTRL;
-import com.sun.corba.se.spi.activation.BadServerDefinition;
+import static PCNMClient.PCNMClientView.WindowMustHave.showDialog;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.StringStack;
 import java.awt.Font;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -446,30 +450,59 @@ public class InstPCCompSCR extends javax.swing.JPanel {
                 newInstlation[7] = "";
                 newInstlation[8] = pcString[8];
                 instCompTableContent.add(newInstlation);
-                instCompRowCounter ++;
             }
         }
         selectedInstComps = new boolean[instCompRowCounter];
         Arrays.fill(selectedInstComps, false);
-        loadInstCompTable();
+        refreshInstCompTable();
         calcPCScore();
+        doneInit = false;
+        tblPCCompEnaComp.clearSelection();
+        Arrays.fill(selectedEnaComps, false);
+        doneInit = true;
     }//GEN-LAST:event_btnPCCompInstCompActionPerformed
 
     private void btnPCCompUninstCompActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPCCompUninstCompActionPerformed
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         for (int i = 0 ; i < selectedInstComps.length ; i ++) {
             if (selectedInstComps[i]) {
-                instCompTableContent.remove(i);
-                instCompRowCounter --;
+                String[] row = instCompTableContent.get(i);
+                if (row[7].isEmpty()) {
+                    instCompTableContent.remove(i);
+                } else {
+                    row[6] = sdf.format(cal.getTime());
+                    instCompTableContent.remove(i);
+                    instCompTableContent.add(i, row);
+                }
             }
         }
         selectedInstComps = new boolean[instCompRowCounter];
         Arrays.fill(selectedInstComps, false);
-        loadInstCompTable();
+        refreshInstCompTable();
         calcPCScore();
+        doneInit = false;
+        tblPCCompInstComp.clearSelection();
+        doneInit = true;
     }//GEN-LAST:event_btnPCCompUninstCompActionPerformed
 
     private void btnPCCompApplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPCCompApplyActionPerformed
-        // TODO add your handling code here:
+        String[] pc = PCData.split(",");
+        int pcid = Integer.parseInt(pc[0]);
+        ArrayList<String[]> toInstall = new ArrayList<String[]>();
+        ArrayList<String[]> toRemove = new ArrayList<String[]>();
+        for (String[] row : instCompTableContent) {
+            if (row[7].isEmpty())
+                toInstall.add(row);
+            if (!row[6].isEmpty())
+                toRemove.add(row);
+        }
+        try {
+            PCCTRL.addRemoveComp(pcid, toInstall, toRemove);
+        } catch (IOException ex) {
+            showDialog(this, "Lost Connection with the server", DialogType.ERROR);
+            System.exit(0);
+        }
     }//GEN-LAST:event_btnPCCompApplyActionPerformed
 
     private void btnPCCompCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPCCompCancelActionPerformed
@@ -611,6 +644,27 @@ public class InstPCCompSCR extends javax.swing.JPanel {
         tblPCCompInstComp.getColumnModel().getColumn(3).setCellRenderer(leftRenderer);
     }
 
+    private void refreshInstCompTable() {
+        DefaultTableModel dtm = (DefaultTableModel)tblPCCompInstComp.getModel();
+        instCompRowCounter = 0;
+        dtm.setRowCount(0);
+        for (int i = 0 ; i < instCompTableContent.size() ; i ++) {
+            String[] row = instCompTableContent.get(i);
+            if (row[6].isEmpty()) {
+                instCompRowCounter ++;
+                Object[] tblRow = new Object[4];
+                tblRow[0] = row[1];
+                tblRow[1] = row[2];
+                tblRow[2] = Float.parseFloat(row[3]);
+                tblRow[3] = Float.parseFloat(row[4]);
+                dtm.addRow(tblRow);
+            }
+        }
+        DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
+        leftRenderer.setHorizontalAlignment(JLabel.LEFT);
+        tblPCCompInstComp.getColumnModel().getColumn(2).setCellRenderer(leftRenderer);
+        tblPCCompInstComp.getColumnModel().getColumn(3).setCellRenderer(leftRenderer);
+    }
     private void calcPCScore() {
         float score = 0;
         String[] pcStrings = PCData.split(",");
@@ -627,5 +681,3 @@ public class InstPCCompSCR extends javax.swing.JPanel {
         return bd.floatValue();
     }
 }
-// private String[][] instCompTableContent;
-// private String PCData;

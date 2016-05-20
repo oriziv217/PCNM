@@ -1,6 +1,5 @@
 package PCNMServer.ServerLogic;
 
-import Entities.Component;
 import Entities.Message;
 import Entities.MessageType;
 import Entities.PC;
@@ -165,7 +164,7 @@ public class PCLogic extends Logic {
                     PCIDFilter = PCIDFilter + ",'" + rs.getString("PCID") + "'";
             }
             PCIDFilter = PCIDFilter + ")";
-            rs1 = DBConnect.selectWithFilter(conDB, "pccomp", "PCID", "EndDate = NULL AND " + componentsFilter + " AND " + PCIDFilter);
+            rs1 = DBConnect.selectWithFilter(conDB, "pccomp", "PCID", "EndDate IS NULL AND " + componentsFilter + " AND " + PCIDFilter);
             while (rs1.next()) {
                 matchedPCs.add(new Integer(rs1.getInt("PCID")));
             }
