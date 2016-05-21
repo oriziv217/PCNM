@@ -176,6 +176,12 @@ public class PCNMClient extends AbstractClient {
             case GET_PC_INST_COMP:
                 PCCTRL.openInstPCCompSCR((PC)response.getEntity());
                 break;
+            case CHANGE_PCCOMP:
+                if ((Boolean)response.getEntity() == false)
+                    WindowMustHave.showDialog(null, "Error acurred while tring to update PC Components to the DB.\n"
+                            + "Please contact your System Administrator", DialogType.ERROR);
+                PCCTRL.pcCompCancelBtnPressed();
+                break;
             case DB_PROBLEM:
                 WindowMustHave.showDialog(null, response.getDataString(), DialogType.ERROR);
                 break;

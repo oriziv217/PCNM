@@ -36,6 +36,7 @@ public class InstPCCompSCR extends javax.swing.JPanel {
     private boolean[] selectedInstComps;
     private String[][] enaCompTableContent;
     private ArrayList<String[]> instCompTableContent;
+    private int newInstSuffix;
     
     /**
      * Creates new form InstPCCompSCR
@@ -63,6 +64,7 @@ public class InstPCCompSCR extends javax.swing.JPanel {
         Arrays.fill(selectedInstComps, false);
         enaCompTableContent = new String[enaCompRowCounter][6];
         instCompTableContent = new ArrayList<String[]>();
+        newInstSuffix = 0;
         loadEnaCompTable();
         setPCData();
         loadInstCompTable();
@@ -109,8 +111,8 @@ public class InstPCCompSCR extends javax.swing.JPanel {
         lblPCCompAfterScoreVal = new javax.swing.JLabel();
 
         setBackground(java.awt.Color.white);
-        setMinimumSize(new java.awt.Dimension(1200, 800));
-        setPreferredSize(new java.awt.Dimension(1200, 800));
+        setMinimumSize(new java.awt.Dimension(1400, 800));
+        setPreferredSize(new java.awt.Dimension(1400, 800));
 
         lblPCCompTitle.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         lblPCCompTitle.setForeground(java.awt.Color.red);
@@ -188,7 +190,7 @@ public class InstPCCompSCR extends javax.swing.JPanel {
                 {null, null, null, null}
             },
             new String [] {
-                "Name", "Description", "Price", "Value Add"
+                "Name", "Description", "Price", "Factor"
             }
         ) {
             Class[] types = new Class [] {
@@ -208,6 +210,16 @@ public class InstPCCompSCR extends javax.swing.JPanel {
         });
         tblPCCompEnaComp.setRowHeight(32);
         jScrollPane2.setViewportView(tblPCCompEnaComp);
+        if (tblPCCompEnaComp.getColumnModel().getColumnCount() > 0) {
+            tblPCCompEnaComp.getColumnModel().getColumn(0).setMinWidth(50);
+            tblPCCompEnaComp.getColumnModel().getColumn(0).setPreferredWidth(100);
+            tblPCCompEnaComp.getColumnModel().getColumn(1).setMinWidth(100);
+            tblPCCompEnaComp.getColumnModel().getColumn(1).setPreferredWidth(192);
+            tblPCCompEnaComp.getColumnModel().getColumn(2).setMinWidth(50);
+            tblPCCompEnaComp.getColumnModel().getColumn(2).setPreferredWidth(50);
+            tblPCCompEnaComp.getColumnModel().getColumn(3).setMinWidth(50);
+            tblPCCompEnaComp.getColumnModel().getColumn(3).setPreferredWidth(70);
+        }
         tblPCCompEnaComp.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 24));
         tblPCCompEnaComp.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         tblPCCompEnaComp.getSelectionModel().addListSelectionListener(tblPCCompEnaCompListListener);
@@ -225,7 +237,7 @@ public class InstPCCompSCR extends javax.swing.JPanel {
                 {null, null, null, null}
             },
             new String [] {
-                "Name", "Description", "Price", "Value Add"
+                "Name", "Description", "Price", "Factor"
             }
         ) {
             Class[] types = new Class [] {
@@ -245,6 +257,16 @@ public class InstPCCompSCR extends javax.swing.JPanel {
         });
         tblPCCompInstComp.setRowHeight(32);
         jScrollPane3.setViewportView(tblPCCompInstComp);
+        if (tblPCCompInstComp.getColumnModel().getColumnCount() > 0) {
+            tblPCCompInstComp.getColumnModel().getColumn(0).setMinWidth(100);
+            tblPCCompInstComp.getColumnModel().getColumn(0).setPreferredWidth(200);
+            tblPCCompInstComp.getColumnModel().getColumn(1).setMinWidth(100);
+            tblPCCompInstComp.getColumnModel().getColumn(1).setPreferredWidth(400);
+            tblPCCompInstComp.getColumnModel().getColumn(2).setMinWidth(93);
+            tblPCCompInstComp.getColumnModel().getColumn(2).setPreferredWidth(93);
+            tblPCCompInstComp.getColumnModel().getColumn(3).setMinWidth(93);
+            tblPCCompInstComp.getColumnModel().getColumn(3).setPreferredWidth(93);
+        }
         tblPCCompInstComp.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 24));
         tblPCCompInstComp.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         tblPCCompInstComp.getSelectionModel().addListSelectionListener(tblPCCompInstCompListListener);
@@ -318,12 +340,12 @@ public class InstPCCompSCR extends javax.swing.JPanel {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(btnPCCompInstComp, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
                                     .addComponent(btnPCCompUninstComp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane3)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblPCCompInstComp)
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jScrollPane3)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -368,7 +390,7 @@ public class InstPCCompSCR extends javax.swing.JPanel {
                                 .addComponent(lblPCCompAfterPCScore)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lblPCCompAfterScoreVal)))
-                        .addGap(0, 151, Short.MAX_VALUE))
+                        .addGap(0, 351, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(btnPCCompApply, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -439,6 +461,7 @@ public class InstPCCompSCR extends javax.swing.JPanel {
         String[] pcString = PCData.split(",");
         for (int i = 0 ; i < selectedEnaComps.length ; i ++) {
             if (selectedEnaComps[i]) {
+                newInstSuffix ++;
                 String[] newInstlation = new String[9];
                 newInstlation[0] = enaCompTableContent[i][0];
                 newInstlation[1] = enaCompTableContent[i][1];
@@ -447,19 +470,19 @@ public class InstPCCompSCR extends javax.swing.JPanel {
                 newInstlation[4] = enaCompTableContent[i][4];
                 newInstlation[5] = sdf.format(cal.getTime());
                 newInstlation[6] = "";
-                newInstlation[7] = "";
+                newInstlation[7] = "NEW " + newInstSuffix;
                 newInstlation[8] = pcString[8];
                 instCompTableContent.add(newInstlation);
             }
         }
-        selectedInstComps = new boolean[instCompRowCounter];
-        Arrays.fill(selectedInstComps, false);
-        refreshInstCompTable();
-        calcPCScore();
         doneInit = false;
         tblPCCompEnaComp.clearSelection();
-        Arrays.fill(selectedEnaComps, false);
+        refreshInstCompTable();
         doneInit = true;
+        calcPCScore();
+        selectedInstComps = new boolean[instCompRowCounter];
+        Arrays.fill(selectedInstComps, false);
+        Arrays.fill(selectedEnaComps, false);
     }//GEN-LAST:event_btnPCCompInstCompActionPerformed
 
     private void btnPCCompUninstCompActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPCCompUninstCompActionPerformed
@@ -477,13 +500,13 @@ public class InstPCCompSCR extends javax.swing.JPanel {
                 }
             }
         }
-        selectedInstComps = new boolean[instCompRowCounter];
-        Arrays.fill(selectedInstComps, false);
-        refreshInstCompTable();
-        calcPCScore();
         doneInit = false;
         tblPCCompInstComp.clearSelection();
+        refreshInstCompTable();
         doneInit = true;
+        selectedInstComps = new boolean[instCompRowCounter];
+        Arrays.fill(selectedInstComps, false);
+        calcPCScore();
     }//GEN-LAST:event_btnPCCompUninstCompActionPerformed
 
     private void btnPCCompApplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPCCompApplyActionPerformed
@@ -492,7 +515,7 @@ public class InstPCCompSCR extends javax.swing.JPanel {
         ArrayList<String[]> toInstall = new ArrayList<String[]>();
         ArrayList<String[]> toRemove = new ArrayList<String[]>();
         for (String[] row : instCompTableContent) {
-            if (row[7].isEmpty())
+            if (row[7].contains("NEW") && row[6].isEmpty())
                 toInstall.add(row);
             if (!row[6].isEmpty())
                 toRemove.add(row);
@@ -581,8 +604,9 @@ public class InstPCCompSCR extends javax.swing.JPanel {
             for (int i = minIndex ; i <= maxIndex ; i ++) {
                 if (lsm.isSelectedIndex(i)) {
                     String name = (String)dtm.getValueAt(tblPCCompInstComp.convertRowIndexToModel(i), 0);
+                    String[] identifier = name.split("/");
                     for (int j = 0 ; j < instCompTableContent.size() ; j ++) {
-                        if (instCompTableContent.get(j)[1].equals(name)) {
+                        if (instCompTableContent.get(j)[1].equals(identifier[0]) && instCompTableContent.get(j)[7].equals(identifier[1])) {
                             selectedInstComps[j] = true;
                             j = instCompTableContent.size();
                         }
@@ -633,7 +657,8 @@ public class InstPCCompSCR extends javax.swing.JPanel {
         for (int i = 0 ; i < compInstList.size() ; i ++) {
             row = compInstList.get(i);
             instCompTableContent.add(row.split(","));
-            dtm.setValueAt(instCompTableContent.get(i)[1], i, 0);
+            String name = instCompTableContent.get(i)[1] + "/" + instCompTableContent.get(i)[7];
+            dtm.setValueAt(name, i, 0);
             dtm.setValueAt(instCompTableContent.get(i)[2], i, 1);
             dtm.setValueAt(Float.parseFloat(instCompTableContent.get(i)[3]), i, 2);
             dtm.setValueAt(Float.parseFloat(instCompTableContent.get(i)[4]), i, 3);
@@ -653,7 +678,7 @@ public class InstPCCompSCR extends javax.swing.JPanel {
             if (row[6].isEmpty()) {
                 instCompRowCounter ++;
                 Object[] tblRow = new Object[4];
-                tblRow[0] = row[1];
+                tblRow[0] = row[1] + "/" + row[7];
                 tblRow[1] = row[2];
                 tblRow[2] = Float.parseFloat(row[3]);
                 tblRow[3] = Float.parseFloat(row[4]);
@@ -670,7 +695,8 @@ public class InstPCCompSCR extends javax.swing.JPanel {
         String[] pcStrings = PCData.split(",");
         score = Float.parseFloat(pcStrings[10]);
         for (String[] pccomp : instCompTableContent)
-            score *= Float.parseFloat(pccomp[4]);
+            if (pccomp[6].isEmpty())
+                score *= Float.parseFloat(pccomp[4]);
         if (!doneInit) lblPCCompOriginalScoreVal.setText(String.valueOf(roundFloat(score, 2)));
         lblPCCompAfterScoreVal.setText(String.valueOf(roundFloat(score, 2)));
     }
