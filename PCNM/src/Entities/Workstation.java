@@ -115,8 +115,19 @@ public class Workstation implements Serializable, Comparable<Workstation> {
      * Default constructor
      */
     public Workstation() {
+        this.ID = 0;
+        this.name = "";
+        this.description = "";
+        this.importanceFactor = 0;
+        this.status = Status.Error;
+        this.type = null;
     }
 
+    public Workstation(int ID) {
+        this();
+        this.ID = ID;
+    }
+    
     /**
      * No ID and no type constructor - used for new Workstations and for search filters
      * @param name

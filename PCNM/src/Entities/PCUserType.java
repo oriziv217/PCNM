@@ -18,7 +18,18 @@ public class PCUserType implements Serializable {
     /**
      * Default Constructor
      */
-    public PCUserType(){ super(); }
+    public PCUserType() {
+        this.ID = 0;
+        this.name = "";
+        this.description = "";
+        this.importance = 0;
+        this.status = Status.Error;
+    }
+    
+    public PCUserType(int ID) {
+        this();
+        this.ID = ID;
+    }
     
     /**
      *

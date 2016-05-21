@@ -1,6 +1,7 @@
 package PCNMClient.PCNMClientView;
 
 import PCNMClient.PCNMClientController.NetMapCTRL;
+import static PCNMClient.PCNMClientView.WindowMustHave.showDialog;
 import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -36,12 +37,13 @@ public class NetMapSCR extends javax.swing.JPanel {
         btnMngWorkstation = new javax.swing.JButton();
         btnMngPCComp = new javax.swing.JButton();
         btnMngPC = new javax.swing.JButton();
+        btnMngTrioCoupling = new javax.swing.JButton();
 
         setBackground(java.awt.Color.white);
         setAlignmentX(0.0F);
         setAlignmentY(0.0F);
         setFont(new java.awt.Font("Times New Roman", 1, 11)); // NOI18N
-        setMinimumSize(new java.awt.Dimension(900, 500));
+        setMinimumSize(new java.awt.Dimension(660, 500));
 
         jplScreenLabel.setBackground(java.awt.Color.white);
         jplScreenLabel.setName("jplScreenLabel"); // NOI18N
@@ -57,17 +59,13 @@ public class NetMapSCR extends javax.swing.JPanel {
         jplScreenLabel.setLayout(jplScreenLabelLayout);
         jplScreenLabelLayout.setHorizontalGroup(
             jplScreenLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jplScreenLabelLayout.createSequentialGroup()
-                .addContainerGap(264, Short.MAX_VALUE)
-                .addComponent(lblScreenTitle)
-                .addGap(260, 260, 260))
+            .addComponent(lblScreenTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jplScreenLabelLayout.setVerticalGroup(
             jplScreenLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jplScreenLabelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblScreenTitle)
-                .addContainerGap())
+                .addGap(0, 22, Short.MAX_VALUE)
+                .addComponent(lblScreenTitle))
         );
 
         btnClose.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
@@ -163,30 +161,44 @@ public class NetMapSCR extends javax.swing.JPanel {
             }
         });
 
+        btnMngTrioCoupling.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnMngTrioCoupling.setForeground(java.awt.Color.red);
+        btnMngTrioCoupling.setText("Define PC-User-Workstation Connections");
+        btnMngTrioCoupling.setToolTipText("Manage Workstations");
+        btnMngTrioCoupling.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnMngTrioCoupling.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnMngTrioCoupling.setInheritsPopupMenu(true);
+        btnMngTrioCoupling.setMinimumSize(new java.awt.Dimension(618, 700));
+        btnMngTrioCoupling.setName("btnMngUserTyp"); // NOI18N
+        btnMngTrioCoupling.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMngTrioCouplingActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jplScreenLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(btnMngWorkstation, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(btnMngPC, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnMngTrioCoupling, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnMngWorkstation, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnMngPC, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnMngUserTyp, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnMngPCComp, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addComponent(jplScreenLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnMngUserTyp, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnMngPCComp, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -200,7 +212,9 @@ public class NetMapSCR extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnMngWorkstation, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnMngPC, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 195, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(btnMngTrioCoupling, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 117, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -266,11 +280,22 @@ public class NetMapSCR extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnMngPCActionPerformed
 
+    private void btnMngTrioCouplingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMngTrioCouplingActionPerformed
+        try {
+            NetMapCTRL.btnMngTrioCouplingPressed();
+        } catch (IOException ex) {
+            showDialog(this, "Lost Connection with the server", DialogType.ERROR);
+            System.exit(0);
+        }
+        
+    }//GEN-LAST:event_btnMngTrioCouplingActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClose;
     private javax.swing.JButton btnMngPC;
     private javax.swing.JButton btnMngPCComp;
+    private javax.swing.JButton btnMngTrioCoupling;
     private javax.swing.JButton btnMngUserTyp;
     private javax.swing.JButton btnMngWorkstation;
     private javax.swing.JButton btnQuit;

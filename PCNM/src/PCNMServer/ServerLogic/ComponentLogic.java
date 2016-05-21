@@ -132,7 +132,7 @@ public class ComponentLogic extends Logic {
         String resultString;
         
         // check if comp is installed on a pc
-        if (comp.getStatus() != Status.ENABLE) {
+        if (comp.getStatus() == Status.DISABLE) {
             ResultSet rs = DBConnect.selectWithFilter(conDB, "pccomp", "ID", "componentID = '" + comp.getID() + "' "
                     + "AND EndDate = null");
             if (rs.next())

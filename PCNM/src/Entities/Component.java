@@ -74,6 +74,11 @@ public class Component implements Serializable, Comparable<Component> {
         this.status = comp.getStatus();
     }
 
+    Component(int ID) {
+        this();
+        this.ID = ID;
+    }
+
     /**
      * ID getter
      * @return

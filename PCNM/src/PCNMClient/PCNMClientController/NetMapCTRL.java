@@ -65,4 +65,8 @@ public class NetMapCTRL extends CTRL {
         PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_COMP_ENABLE, cmp));
         PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_SPEC_ENABLE, spc));
     }
+
+    public static void btnMngTrioCouplingPressed() throws IOException {
+        PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_ACTIVE_TRIOS));
+    }
 }

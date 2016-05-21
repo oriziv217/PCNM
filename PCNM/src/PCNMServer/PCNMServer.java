@@ -7,6 +7,7 @@ import PCNMServer.ServerLogic.ComponentLogic;
 import PCNMServer.ServerLogic.EmployeesLogic;
 import PCNMServer.ServerLogic.PCLogic;
 import PCNMServer.ServerLogic.PCSpecLogic;
+import PCNMServer.ServerLogic.TrioLogic;
 import PCNMServer.ServerLogic.UserTypesLogic;
 import PCNMServer.ServerLogic.WorkstationLogic;
 import java.io.IOException;
@@ -137,6 +138,9 @@ public class PCNMServer extends AbstractServer {
                 break;
             case CHANGE_PCCOMP:
                 client.sendToClient(PCLogic.addRemovePCComp((PC)message.getEntity()));
+                break;
+            case GET_ACTIVE_TRIOS:
+                client.sendToClient(TrioLogic.getActiveTrios());
                 break;
             }
         } catch (IOException e) {

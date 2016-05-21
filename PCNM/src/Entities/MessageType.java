@@ -157,6 +157,11 @@ public enum MessageType {
     CHANGE_PCCOMP,
     
     /**
+     * Get all active couplings of PC-User Type-Workstations
+     */
+    GET_ACTIVE_TRIOS,
+    
+    /**
      * SQL Exception was thrown
      */
     DB_PROBLEM
