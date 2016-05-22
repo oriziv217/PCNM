@@ -16,7 +16,6 @@ import PCNMClient.PCNMClientView.PCCompSCR;
 import PCNMClient.PCNMClientView.PCSCR;
 import PCNMClient.PCNMClientView.PCSearchResultSCR;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;

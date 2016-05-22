@@ -5,15 +5,16 @@ import Entities.Employee;
 import Entities.Message;
 import Entities.MessageType;
 import Entities.PC;
-import Entities.PCComp;
 import Entities.PCSpec;
 import Entities.PCUserType;
 import Entities.QuickDic;
+import Entities.TrioCouple;
 import Entities.WSType;
 import Entities.Workstation;
 import PCNMClient.PCNMClientController.ComponentCTRL;
 import PCNMClient.PCNMClientController.HomeCTRL;
 import PCNMClient.PCNMClientController.PCCTRL;
+import PCNMClient.PCNMClientController.TrioCTRL;
 import PCNMClient.PCNMClientController.UserTypesCTRL;
 import PCNMClient.PCNMClientController.WorkstationCTRL;
 import PCNMClient.PCNMClientView.*;
@@ -181,6 +182,9 @@ public class PCNMClient extends AbstractClient {
                     WindowMustHave.showDialog(null, "Error acurred while tring to update PC Components to the DB.\n"
                             + "Please contact your System Administrator", DialogType.ERROR);
                 PCCTRL.pcCompCancelBtnPressed();
+                break;
+            case GET_ACTIVE_TRIOS:
+                TrioCTRL.openTrioScreen((ArrayList<TrioCouple>)response.getEntity());
                 break;
             case DB_PROBLEM:
                 WindowMustHave.showDialog(null, response.getDataString(), DialogType.ERROR);

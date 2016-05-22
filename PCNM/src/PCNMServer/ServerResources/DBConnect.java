@@ -328,4 +328,109 @@ public class DBConnect {
         Statement stmnt = conDB.createStatement();
         return stmnt.executeQuery(joinQuery);
         }
+    
+    /**
+     * 
+     * @param conDB - connection to the DB schema - must be active and open connection
+     * @param fields - Array of attributes to project
+     *                 If this parameter is empty or equal to null then method assumes "SELECT *"
+     *                 You can also add SQL functions and constants to this parameter.
+     * @param labels - Array of column labels to project
+     *                 If this parameter is empty or equal to null then no labels will be used.
+     *                 The method will match: fields[i] AS labels[i].
+     *                 If this label[i] is empty (or null) then the method will not match a label to fields[i].
+     *                 Labels array must not be longer then fields array.
+     * @param fromTable - Table to be used in the FROM clause
+     * @param joinOns - Matrix of tables to join with and their keys.
+     *                  The first cell of each row contains the joined table: JOIN joinOns[i][0]
+     *                  Every couple of cells will be used as join-key: ON joinOns[i][j] = joinOns[i][j+1] AND... (j >=1)
+     *                  Row's length must be odd. All cells must not be empty (or null).
+     *                  This parameter is optional (can be null or empty).
+     * @param filter - A set of logical filters.
+     *                 This parameter is optional (can be null or empty).
+     * @param options - A set of optional SQL clauses such as ORDER BY, GROUP BY...
+     *                  This parameter is optional (can be null or empty).
+     * @return - Query results
+     * @throws SQLException
+     */
+    public static ResultSet multiJoin ( Connection conDB,
+                                        String[] fields, String[] labels,
+                                        String fromTable, String[][] joinOns,
+                                        String filter, String options) throws SQLException {
+        // input verification
+        if (conDB.isClosed()) throw new SQLException("Connection is closed");
+        if (fromTable == null || fromTable.isEmpty()) throw new SQLException("Missing tables");
+        if (fields != null && labels != null && fields.length < labels.length) throw new SQLException("Error matching fields to labels");
+
+        // start building query string
+        String joinQuery = "SELECT ";
+        boolean isFirst = true;
+        
+        // set the select clause, optionaly with colomn labels
+        // case 1: SELECT *
+        if (fields == null || fields.length == 0 || fields[0].equals("*")) {
+            joinQuery = joinQuery + "*";
+            
+        // case 2: SELECT colomn1, colomn2,...
+        } else if (labels == null || labels.length == 0) {
+            for (String field : fields) {
+                if (field != null && !field.isEmpty()) {
+                    if (!isFirst) joinQuery = joinQuery + ", ";
+                    else isFirst = false;
+                    joinQuery = joinQuery + field;
+                }
+            }
+            
+        // case 3: SELECT colomn1 AS label1, colomn2 AS label2,...
+        } else {
+            // run over all labels
+            for (int i = 0 ; i < labels.length ; i ++) {
+                if (!isFirst) joinQuery = joinQuery + ", ";
+                else isFirst = false;
+                joinQuery = joinQuery + fields[i];
+                // case specific colomn has no label
+                if (labels[i] != null && !labels[i].isEmpty())
+                    joinQuery = joinQuery + " AS " + labels[i];
+            }
+            // case more colomns then labels
+            for (int i = labels.length ; i < fields.length ; i ++) {
+                if (!isFirst) joinQuery = joinQuery + ", ";
+                else isFirst = false;
+                joinQuery = joinQuery + fields[i];
+            }
+        }
+        
+        // define the from clause    
+        joinQuery = joinQuery + " FROM " + fromTable;
+        // define the join clause
+        if (joinOns != null && joinOns.length > 0) {
+            for (String[] joinOn : joinOns) {
+                if (joinOn.length != 0) {
+                    if (joinOn.length % 2 == 0 || joinOn[0] == null || joinOn[0].isEmpty()) throw new SQLException("Invalid join definition");
+                    joinQuery = joinQuery + " JOIN " + joinOn[0];
+                    isFirst = true;
+                    for (int i = 1 ; i < joinOn.length - 1 ; i += 2) {
+                        if (joinOn[i] == null || joinOn[i].isEmpty()
+                                || joinOn[i+1] == null || joinOn[i+1].isEmpty()) throw new SQLException("Invalid join definition");
+                        if (isFirst) {
+                            joinQuery = joinQuery + " ON " + joinOn[i] + " = " + joinOn[i+1];
+                            isFirst = false;
+                        } else {
+                            joinQuery = joinQuery + " AND " + joinOn[i] + " = " + joinOn[i+1];
+                        }
+                    }
+                }
+            }
+        }
+        // define filter
+        if (filter != null && !filter.isEmpty())
+            joinQuery = joinQuery + " WHERE " + filter;
+        // define ORDER BY, GROUP BY, etc'
+        if (options != null && !options.isEmpty())
+            joinQuery = joinQuery + " " + options;
+        
+        // create and execute SQL statement
+        Statement stmnt = conDB.createStatement();
+        return stmnt.executeQuery(joinQuery);
+        }
 }
