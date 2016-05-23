@@ -3,7 +3,6 @@ package PCNMServer.ServerLogic;
 import Entities.Message;
 import Entities.MessageType;
 import Entities.PC;
-import Entities.PCComp;
 import Entities.PCSpec;
 import Entities.PCUserType;
 import Entities.TrioCouple;

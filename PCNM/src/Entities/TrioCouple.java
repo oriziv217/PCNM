@@ -146,7 +146,7 @@ public class TrioCouple implements Serializable, Comparable<TrioCouple> {
             }
         }
         
-        total_score = (float) workstation.getImportanceFactor();
+        total_score *= (float) workstation.getImportanceFactor();
         if (total_score == 0) return;
         
         total_score *= (float) userType.getImportance();

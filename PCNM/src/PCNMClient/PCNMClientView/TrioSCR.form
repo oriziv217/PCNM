@@ -158,7 +158,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbFltrFieldActionPerformed"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="cmbFltrField.setSelectedIndex(fltrField);&#xd;&#xa;"/>
+        <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="cmbFltrField.setSelectedIndex(fltrField);&#xd;&#xa;if (fltrField == 0) txtFilterStr.setEnabled(false);&#xd;&#xa;else txtFilterStr.setEnabled(true);&#xd;&#xa;"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="lblFilterStr">
@@ -211,6 +211,9 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbScoreFilterActionPerformed"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="cmbScoreFilter.setSelectedIndex(scoreFilterMode);&#xd;&#xa;if (scoreFilterMode == 0) spnScoreFilter.setEnabled(false);&#xd;&#xa;else spnScoreFilter.setEnabled(true);&#xd;&#xa;"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JSpinner" name="spnScoreFilter">
       <Properties>
@@ -226,7 +229,7 @@
         <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="spnScoreFilterStateChanged"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="spnScoreFilter.setValue(ComponentCTRL.getPriceFilter());&#xd;&#xa;"/>
+        <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="spnScoreFilter.setValue(scoreFilter);&#xd;&#xa;"/>
       </AuxValues>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
@@ -325,7 +328,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbStartDateFilterModeActionPerformed"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="cmbStartDateFilterMode.setSelectedIndex(fltrInstDateMode);&#xd;&#xa;"/>
+        <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="cmbStartDateFilterMode.setSelectedIndex(startDateFilterMode);&#xd;&#xa;if (startDateFilterMode == 0) dtpStartDateFilter.setEnabled(false);&#xd;&#xa;else dtpStartDateFilter.setEnabled(true);&#xd;&#xa;"/>
       </AuxValues>
     </Component>
     <Component class="org.jdesktop.swingx.JXDatePicker" name="dtpStartDateFilter">
@@ -339,7 +342,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dtpStartDateFilterActionPerformed"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="dtpStartDateFilter.setFormats(new SimpleDateFormat( &quot;dd/MM/yyyy&quot; ));&#xd;&#xa;if (fltrInstDate != null) dtpStartDateFilter.setDate(fltrInstDate);&#xd;&#xa;else dtpStartDateFilter.setDate(new Date());&#xd;&#xa;"/>
+        <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="dtpStartDateFilter.setFormats(new SimpleDateFormat( &quot;dd/MM/yyyy&quot; ));&#xd;&#xa;if (startDateFilter != null) dtpStartDateFilter.setDate(startDateFilter);&#xd;&#xa;else dtpStartDateFilter.setDate(new Date());&#xd;&#xa;"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="btnClose">
