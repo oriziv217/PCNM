@@ -1,9 +1,16 @@
 package PCNMClient.PCNMClientController;
 
+import Entities.Message;
+import Entities.MessageType;
+import Entities.PC;
+import Entities.PCComp;
 import Entities.TrioCouple;
+import PCNMClient.PCNMClientModel;
 import PCNMClient.PCNMClientStart;
 import PCNMClient.PCNMClientView.NetMapSCR;
+import PCNMClient.PCNMClientView.TrioPropertiesSCR;
 import PCNMClient.PCNMClientView.TrioSCR;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -102,5 +109,34 @@ public class TrioCTRL extends CTRL {
                                 Double.toString(tc.getUserType().getImportance()),
                                 Float.toString(tc.getTotal_score()) };
         return tcStrings;
+    }
+
+    public static void viewTrioProperties(Date sDate, int PCID, int WSID, int PCUTID) throws IOException {
+        TrioCouple trio = new TrioCouple(PCID, WSID, PCUTID, sDate);
+        PCNMClientModel.sendMessageToServer(new Message(MessageType.VIEW_TRIO_PROP, trio));
+    }
+    
+    public static void addNewTrio() throws IOException {
+        PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_DATA_ADD_TRIO));
+    }
+    
+    public static void endTrio(Date sDate, int PCID, int WSID, int PCUTID, Date eDate) throws IOException {
+        TrioCouple trio = new TrioCouple(PCID, WSID, PCUTID, sDate, eDate);
+        PCNMClientModel.sendMessageToServer(new Message(MessageType.END_TRIO_PROP, trio));
+    }
+
+    public static void openTrioPropertiesScreen(TrioCouple trioCouple) {
+        PC pc = trioCouple.getPc();
+        ArrayList<PCComp> comps = pc.getInstalledComps();
+        ArrayList<String[]> compStrings = new ArrayList<String[]>();
+        for (PCComp cmp : comps)
+            compStrings.add(cmp.toString().split(","));
+        pc.setInstalledComponents(null);
+        String[] pcStrings = pc.toString().split(",");
+        String[] wsStrings = trioCouple.getWorkstation().toString().split(",");
+        String[] pcutStrings = trioCouple.getUserType().toString().split(",");
+        
+        PCNMClientStart.appWindow.setTitle("PCNM - PC-Workstation-User Type Connection Properties");
+        PCNMClientStart.switchPanels(new TrioPropertiesSCR(pcStrings, compStrings, wsStrings, pcutStrings));
     }
 }

@@ -82,4 +82,20 @@ public class UserTypesLogic extends Logic {
             return getAllEntities();
         throw new SQLException("Error updating user " + pcUserType.getName());
     }
+    
+    public static PCUserType getPCUserTypeByID (int ID) throws SQLException {
+        Connection conDB = DBConnect.mySQLConnection();
+        PCUserType pcut = new PCUserType(ID);
+        ResultSet rs;
+        String filter = "id = " + ID;
+        rs = DBConnect.selectWithFilter(conDB, "pcusertype", null, filter);
+        
+        if (rs.first()) {
+            pcut.setName(rs.getString("name"));
+            pcut.setDescription(rs.getString("description"));
+            pcut.setImportance(rs.getDouble("importance"));
+            pcut.setStatus(intToStatus(rs.getInt("status")));
+        }
+        return pcut;
+    }
 }

@@ -74,5 +74,15 @@ public class TrioLogic extends Logic {
         }
         return new Message(MessageType.GET_ACTIVE_TRIOS, search_results);
     }
+
+    public static Message getTrioByKey(TrioCouple trio) throws SQLException {
+        PC pc = PCLogic.getPCByID(trio.getPCID());
+        Workstation ws = WorkstationLogic.getWorkstationByID(trio.getWorkstationID());
+        PCUserType pcut = UserTypesLogic.getPCUserTypeByID(trio.getUserTypeID());
+        trio.setPc(pc);
+        trio.setWorkstation(ws);
+        trio.setUserType(pcut);
+        return new Message(MessageType.VIEW_TRIO_PROP, trio);
+    }
     
 }

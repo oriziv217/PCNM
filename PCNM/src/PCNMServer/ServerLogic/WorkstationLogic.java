@@ -330,4 +330,53 @@ public class WorkstationLogic extends Logic {
         resultString = "Not OK";
         return new Message(MessageType.UPDATE_WSTYPE, null, resultString);
     }
+    
+    public static Workstation getWorkstationByID (int ID) throws SQLException {
+        Workstation ws = new Workstation(ID);
+        Connection conDB = DBConnect.mySQLConnection();
+        ResultSet rs;
+        // define search results schema
+        String[] fields = { "workstation.id",
+                            "workstation.name",
+                            "workstation.description",
+                            "workstation.importance",
+                            "workstation.status",
+                            "wstype.id",
+                            "wstype.name",
+                            "wstype.description",
+                            "wstype.minimalscore",
+                            "wstype.status" };
+        String[] labels = { "WSID",
+                            "WSNAME",
+                            "WSDESCRIPTION",
+                            "WSIMPORTANCE",
+                            "WSSTATUS",
+                            "WSTID",
+                            "WSTNAME",
+                            "WSTDESCRIPTION",
+                            "WSTMINIMALSCORE",
+                            "WSTSTATUS" };
+
+        // define join keys
+        String[] leftKeys = { "workstation.wstypeid" };
+        String[] rightKeys = { "wstype.id" };
+
+        // start building the search filter
+        String filter = "workstation.id = " + ID;
+
+        // run query and process resault-set
+        rs = DBConnect.innerJoin(conDB, "workstation", "wstype", leftKeys, rightKeys, fields, labels, filter, null);
+            if (rs.first()) {
+                ws.setName(rs.getString("WSNAME"));
+                ws.setDiscription(rs.getString("WSDESCRIPTION"));
+                ws.setImportanceFactor(rs.getDouble("WSIMPORTANCE"));
+                ws.setStatus(intToStatus(rs.getInt("WSSTATUS")));
+                ws.setType(new WSType(  rs.getInt("WSTID"),
+                                        rs.getString("WSTNAME"),
+                                        rs.getString("WSTDESCRIPTION"),
+                                        rs.getInt("WSTMINIMALSCORE"),
+                                        intToStatus(rs.getInt("WSTSTATUS"))));
+            }
+        return ws;
+    }
 }

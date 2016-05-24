@@ -162,6 +162,21 @@ public enum MessageType {
     GET_ACTIVE_TRIOS,
     
     /**
+     * Get trio coupling full properties
+     */
+    VIEW_TRIO_PROP,
+    
+    /**
+     * Get all available PCs, Workstations and PC User Types
+     */
+    GET_DATA_ADD_TRIO,
+    
+    /**
+     * Set end date for a trio coupling
+     */
+    END_TRIO_PROP,
+    
+    /**
      * SQL Exception was thrown
      */
     DB_PROBLEM

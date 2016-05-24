@@ -67,7 +67,7 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btnViewTrio" min="-2" pref="233" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="btnUpdateTrio" min="-2" pref="233" max="-2" attributes="0"/>
+                      <Component id="btnEndTrio" min="-2" pref="233" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="224" max="-2" attributes="0"/>
                       <Component id="btnQuit" min="-2" pref="120" max="-2" attributes="0"/>
                   </Group>
@@ -105,7 +105,7 @@
                   <Component id="btnQuit" alignment="3" min="-2" pref="60" max="-2" attributes="0"/>
                   <Component id="btnNewTrio" alignment="3" min="-2" pref="60" max="-2" attributes="0"/>
                   <Component id="btnViewTrio" alignment="3" min="-2" pref="60" max="-2" attributes="0"/>
-                  <Component id="btnUpdateTrio" alignment="3" min="-2" pref="60" max="-2" attributes="0"/>
+                  <Component id="btnEndTrio" alignment="3" min="-2" pref="60" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -428,12 +428,12 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnViewTrioActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="btnUpdateTrio">
+    <Component class="javax.swing.JButton" name="btnEndTrio">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Times New Roman" size="18" style="1"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Update Selected Connection"/>
+        <Property name="text" type="java.lang.String" value="Disband Selected Connection"/>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="&quot;Add new workstation&quot;" type="code"/>
         </Property>
@@ -453,7 +453,7 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUpdateTrioActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEndTrioActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnQuit">

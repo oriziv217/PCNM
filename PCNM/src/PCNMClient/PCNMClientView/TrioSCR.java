@@ -1,6 +1,7 @@
 package PCNMClient.PCNMClientView;
 
 import PCNMClient.PCNMClientController.TrioCTRL;
+import PCNMClient.PCNMClientStart;
 import static PCNMClient.PCNMClientView.WindowMustHave.showDialog;
 import java.awt.Font;
 import java.io.IOException;
@@ -30,6 +31,8 @@ public class TrioSCR extends javax.swing.JPanel {
     private int formMode;
     private int onScreenTrioID;
     private int activeTriosRowCounter;
+    private int selectedRow;
+    private FormFrame tiroPropertiesForm;
 
     /**
      * Creates new form TrioSCR
@@ -80,7 +83,7 @@ public class TrioSCR extends javax.swing.JPanel {
         btnClose = new javax.swing.JButton();
         btnNewTrio = new javax.swing.JButton();
         btnViewTrio = new javax.swing.JButton();
-        btnUpdateTrio = new javax.swing.JButton();
+        btnEndTrio = new javax.swing.JButton();
         btnQuit = new javax.swing.JButton();
 
         setBackground(java.awt.Color.white);
@@ -233,16 +236,16 @@ public class TrioSCR extends javax.swing.JPanel {
             }
         });
 
-        btnUpdateTrio.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        btnUpdateTrio.setText("Update Selected Connection");
-        btnUpdateTrio.setToolTipText("Add new workstation");
-        btnUpdateTrio.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        btnUpdateTrio.setMaximumSize(new java.awt.Dimension(99, 33));
-        btnUpdateTrio.setMinimumSize(new java.awt.Dimension(99, 33));
-        btnUpdateTrio.setPreferredSize(new java.awt.Dimension(99, 33));
-        btnUpdateTrio.addActionListener(new java.awt.event.ActionListener() {
+        btnEndTrio.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        btnEndTrio.setText("Disband Selected Connection");
+        btnEndTrio.setToolTipText("Add new workstation");
+        btnEndTrio.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnEndTrio.setMaximumSize(new java.awt.Dimension(99, 33));
+        btnEndTrio.setMinimumSize(new java.awt.Dimension(99, 33));
+        btnEndTrio.setPreferredSize(new java.awt.Dimension(99, 33));
+        btnEndTrio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUpdateTrioActionPerformed(evt);
+                btnEndTrioActionPerformed(evt);
             }
         });
 
@@ -300,7 +303,7 @@ public class TrioSCR extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(btnViewTrio, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnUpdateTrio, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnEndTrio, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(224, 224, 224)
                         .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -332,7 +335,7 @@ public class TrioSCR extends javax.swing.JPanel {
                     .addComponent(btnQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnNewTrio, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnViewTrio, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnUpdateTrio, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnEndTrio, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -427,125 +430,76 @@ public class TrioSCR extends javax.swing.JPanel {
 
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
         doneInit = false;
-        TrioCTRL.setFieldFilterMode(fltrField);
-        TrioCTRL.setFieldFilterString(fltrStirng);
-        TrioCTRL.setStartDateFilterMode(startDateFilterMode);
-        TrioCTRL.setStartDateFilter(startDateFilter);
-        TrioCTRL.setScoreFilterMode(scoreFilterMode);
-        TrioCTRL.setScoreFilter(scoreFilter);
+        setAllFilters();
         TrioCTRL.closeBtnPressed();
     }//GEN-LAST:event_btnCloseActionPerformed
 
     private void btnNewTrioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewTrioActionPerformed
-//        formMode = 1;
-//        onScreenTrioID = 0;
-//        pcPropertiesClearFields();
-//        pcPropertiesForm = new FormFrame();
-//        pcPropertiesForm.setSize(pnlPCProperties.getMinimumSize());
-//        pcPropertiesForm.setLocationRelativeTo(null);
-//        lblPCPropertiesTitle.setText("Add New PC");
-//        pcPropertiesForm.getContentPane().add(pnlPCProperties);
-//        pcPropertiesForm.addWindowListener(exitListener);
-//        pcPropertiesForm.getContentPane().setVisible(true);
-//        PCNMClientStart.appWindow.setEnabled(false);
-//        pcPropertiesForm.setVisible(true);
+        setAllFilters();
+        try {
+            TrioCTRL.addNewTrio();
+        } catch (IOException e) {
+            showDialog(this, "Lost Connection with the server", DialogType.ERROR);
+            System.exit(0);
+        }
     }//GEN-LAST:event_btnNewTrioActionPerformed
 
     private void btnViewTrioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewTrioActionPerformed
-//        selectedRow = tblSearchResault.getSelectedRow();
-//        if (selectedRow == -1) {
-//            showDialog(this, "Please select PC", DialogType.INFO);
-//            return;
-//        }
-//        formMode = 3;
-//        int index = getIDByName(tblSearchResault.convertRowIndexToModel(selectedRow));
-//        onScreenPCID = Integer.parseInt(tableContent[index][0]);
-//        txtPCPropertiesName.setText(tableContent[index][1]);
-//        txtPCPropertiesName.setEditable(false);
-//        txtPCPropertiesDescription.setText(tableContent[index][2]);
-//        txtPCPropertiesDescription.setEditable(false);
-//        Calendar cal = Calendar.getInstance();
-//        String[] parsedInstDate = tableContent[index][3].split("/");
-//        cal.set(Integer.parseInt(parsedInstDate[2]), Integer.parseInt(parsedInstDate[1]) - 1, Integer.parseInt(parsedInstDate[0]));
-//        dtpPCPropertiesInstalDate.setDate(cal.getTime());
-//        dtpPCPropertiesInstalDate.setEditable(false);
-//        int specSelectedIndex = getSpecIndex(tableContent[index][5]);
-//        cmbPCPropertiesSpec.setSelectedIndex(specSelectedIndex);
-//        cmbPCPropertiesSpec.setEnabled(false);
-//        txtPCPropertiesSpecScore.setText(tableContent[index][10]);
-//        txtPCPropertiesSpecPrtice.setText(tableContent[index][9]);
-//        txtPCPropertiesSpecWarrenty.setText(tableContent[index][8]);
-//        int statusSelecetdIndex = 0;
-//        switch (tableContent[index][4]) {
-//            case "Enabled":
-//            statusSelecetdIndex = 1;
-//            break;
-//            case "Disabled":
-//            statusSelecetdIndex = 2;
-//            break;
-//            case "Suspended":
-//            statusSelecetdIndex = 3;
-//            break;
-//        }
-//        cmbPCPropertiesStatus.setSelectedIndex(statusSelecetdIndex);
-//        cmbPCPropertiesStatus.setEnabled(false);
-//
-//        pcPropertiesForm = new FormFrame();
-//        pcPropertiesForm.setSize(pnlPCProperties.getMinimumSize());
-//        pcPropertiesForm.setLocationRelativeTo(null);
-//        lblPCPropertiesTitle.setText("View PC Properties");
-//        pcPropertiesForm.getContentPane().add(pnlPCProperties);
-//        pcPropertiesForm.addWindowListener(exitListener);
-//        pcPropertiesForm.getContentPane().setVisible(true);
-//        PCNMClientStart.appWindow.setEnabled(false);
-//        pcPropertiesForm.setVisible(true);
+        selectedRow = tblActiveTrios.getSelectedRow();
+        if (selectedRow == -1) {
+            showDialog(this, "Please select a row", DialogType.INFO);
+            return;
+        }
+        int index = tblActiveTrios.convertRowIndexToModel(selectedRow);
+        DefaultTableModel dtm = (DefaultTableModel)tblActiveTrios.getModel();
+        int trioIndex = getTrioIndex((String)dtm.getValueAt(index, 0),
+                                    (String)dtm.getValueAt(index, 1),
+                                    (String)dtm.getValueAt(index, 3),
+                                    (String)dtm.getValueAt(index, 4));
+        setAllFilters();
+        Calendar cal = Calendar.getInstance();
+        String[] trio = trio_tbl.get(trioIndex);
+        String[] sDateStrings = trio[0].split("/");
+        cal.set(Integer.parseInt(sDateStrings[2]), Integer.parseInt(sDateStrings[1]) - 1, Integer.parseInt(sDateStrings[0]));
+        int pcID = Integer.parseInt(trio[1]);
+        int wsID = Integer.parseInt(trio[6]);
+        int pcutID = Integer.parseInt(trio[9]);
+        try {
+            TrioCTRL.viewTrioProperties(cal.getTime(), pcID, wsID, pcutID);
+        } catch (IOException e) {
+            showDialog(this, "Lost Connection with the server", DialogType.ERROR);
+            System.exit(0);
+        }
     }//GEN-LAST:event_btnViewTrioActionPerformed
 
-    private void btnUpdateTrioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateTrioActionPerformed
-//        selectedRow = tblSearchResault.getSelectedRow();
-//        if (selectedRow == -1) {
-//            showDialog(this, "Please select PC", DialogType.INFO);
-//            return;
-//        }
-//        formMode = 2;
-//        int index = getIDByName(tblSearchResault.convertRowIndexToModel(selectedRow));
-//        onScreenPCID = Integer.parseInt(tableContent[index][0]);
-//        txtPCPropertiesName.setText(tableContent[index][1]);
-//        txtPCPropertiesDescription.setText(tableContent[index][2]);
-//        Calendar cal = Calendar.getInstance();
-//        String[] parsedInstDate = tableContent[index][3].split("/");
-//        cal.set(Integer.parseInt(parsedInstDate[2]), Integer.parseInt(parsedInstDate[1]) - 1, Integer.parseInt(parsedInstDate[0]));
-//        dtpPCPropertiesInstalDate.setDate(cal.getTime());
-//        dtpPCPropertiesInstalDate.getMonthView().setUpperBound(new Date());
-//        int specSelectedIndex = getSpecIndex(tableContent[index][5]);
-//        cmbPCPropertiesSpec.setSelectedIndex(specSelectedIndex);
-//        txtPCPropertiesSpecScore.setText(tableContent[index][10]);
-//        txtPCPropertiesSpecPrtice.setText(tableContent[index][9]);
-//        txtPCPropertiesSpecWarrenty.setText(tableContent[index][8]);
-//        int statusSelecetdIndex = 0;
-//        switch (tableContent[index][4]) {
-//            case "Enabled":
-//            statusSelecetdIndex = 1;
-//            break;
-//            case "Disabled":
-//            statusSelecetdIndex = 2;
-//            break;
-//            case "Suspended":
-//            statusSelecetdIndex = 3;
-//            break;
-//        }
-//        cmbPCPropertiesStatus.setSelectedIndex(statusSelecetdIndex);
-//
-//        pcPropertiesForm = new FormFrame();
-//        pcPropertiesForm.setSize(pnlPCProperties.getMinimumSize());
-//        pcPropertiesForm.setLocationRelativeTo(null);
-//        lblPCPropertiesTitle.setText("Update PC Properties");
-//        pcPropertiesForm.getContentPane().add(pnlPCProperties);
-//        pcPropertiesForm.addWindowListener(exitListener);
-//        pcPropertiesForm.getContentPane().setVisible(true);
-//        PCNMClientStart.appWindow.setEnabled(false);
-//        pcPropertiesForm.setVisible(true);
-    }//GEN-LAST:event_btnUpdateTrioActionPerformed
+    private void btnEndTrioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEndTrioActionPerformed
+        selectedRow = tblActiveTrios.getSelectedRow();
+        if (selectedRow == -1) {
+            showDialog(this, "Please select a row", DialogType.INFO);
+            return;
+        }
+        int index = tblActiveTrios.convertRowIndexToModel(selectedRow);
+        DefaultTableModel dtm = (DefaultTableModel)tblActiveTrios.getModel();
+        int trioIndex = getTrioIndex((String)dtm.getValueAt(index, 0),
+                                    (String)dtm.getValueAt(index, 1),
+                                    (String)dtm.getValueAt(index, 3),
+                                    (String)dtm.getValueAt(index, 4));
+        setAllFilters();
+        Calendar sDate = Calendar.getInstance();
+        Calendar eDate = Calendar.getInstance();
+        String[] trio = trio_tbl.get(trioIndex);
+        String[] sDateStrings = trio[0].split("/");
+        sDate.set(Integer.parseInt(sDateStrings[2]), Integer.parseInt(sDateStrings[1]) - 1, Integer.parseInt(sDateStrings[0]));
+        int pcID = Integer.parseInt(trio[1]);
+        int wsID = Integer.parseInt(trio[6]);
+        int pcutID = Integer.parseInt(trio[9]);
+        try {
+            TrioCTRL.endTrio(sDate.getTime(), pcID, wsID, pcutID, eDate.getTime());
+        } catch (IOException e) {
+            showDialog(this, "Lost Connection with the server", DialogType.ERROR);
+            System.exit(0);
+        }
+    }//GEN-LAST:event_btnEndTrioActionPerformed
 
     private void btnQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitActionPerformed
         TrioCTRL.QuitBtnPressed();
@@ -554,9 +508,9 @@ public class TrioSCR extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClose;
+    private javax.swing.JButton btnEndTrio;
     private javax.swing.JButton btnNewTrio;
     private javax.swing.JButton btnQuit;
-    private javax.swing.JButton btnUpdateTrio;
     private javax.swing.JButton btnViewTrio;
     private javax.swing.JComboBox cmbFltrField;
     private javax.swing.JComboBox cmbScoreFilter;
@@ -615,5 +569,26 @@ public class TrioSCR extends javax.swing.JPanel {
         DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
         leftRenderer.setHorizontalAlignment(JLabel.LEFT);
         tblActiveTrios.getColumnModel().getColumn(5).setCellRenderer(leftRenderer);
+    }
+
+    private int getTrioIndex(String sDate, String pcName, String wsName, String pcutName) {
+        for (int i = 0 ; i < trio_tbl.size() ; i ++) {
+            String[] trio = trio_tbl.get(i);
+            if (sDate.equals(trio[0]))
+                if (pcName.equals(trio[2]))
+                    if (wsName.equals(trio[7]))
+                        if (pcutName.equals(trio[10]))
+                            return i;
+        }
+        return -1;
+    }
+
+    private void setAllFilters() {
+        TrioCTRL.setFieldFilterMode(cmbFltrField.getSelectedIndex());
+        TrioCTRL.setFieldFilterString(txtFilterStr.getText());
+        TrioCTRL.setStartDateFilterMode(cmbStartDateFilterMode.getSelectedIndex());
+        TrioCTRL.setStartDateFilter(dtpStartDateFilter.getDate());
+        TrioCTRL.setScoreFilterMode(cmbScoreFilter.getSelectedIndex());
+        TrioCTRL.setScoreFilter((Float)spnScoreFilter.getValue());
     }
 }

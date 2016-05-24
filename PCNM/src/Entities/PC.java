@@ -274,7 +274,7 @@ public class PC implements Serializable, Comparable<PC> {
                 break;
         }
         pc = pc + "," + spec.toString();
-        if (installedComps == null) pc = pc + ",";
+        if (installedComps == null || installedComps.isEmpty()) pc = pc + ",";
         else
             for (PCComp cmp : installedComps)
                 pc = pc + "," + cmp.toString();

@@ -426,4 +426,65 @@ public class PCLogic extends Logic {
         isUpdated = DBConnect.updateSingleRecord (conDB, "pccomp", fields, values, keyName, keyVal);
         return isUpdated;
     }
+    
+    public static PC getPCByID (int ID) throws SQLException {
+        PC pc = new PC(ID);
+        Connection conDB = DBConnect.mySQLConnection();
+        ResultSet rs;
+        // define search results schema
+        String[] fields = { "PC.id",
+                            "PC.name",
+                            "PC.description",
+                            "PC.specInstallation",
+                            "PC.status",
+                            "PCSPEC.id",
+                            "PCSPEC.name",
+                            "PCSPEC.description",
+                            "PCSPEC.warranty",
+                            "PCSPEC.price",
+                            "PCSPEC.score",
+                            "PCSPEC.status"};
+        String[] labels = { "PCID",
+                            "PCName",
+                            "PCDescription",
+                            "PCSpecInstallation",
+                            "PCStatus",
+                            "PCSpecID",
+                            "PCSpecName",
+                            "PCSpecDescription",
+                            "PCSpecWarrenty",
+                            "PCSpecPrice",
+                            "PCSpecScore",
+                            "PCSpecStatus"};
+        
+        //define join tables
+        String leftTable = "PC";
+        String rightTable = "PCSPEC";
+        
+        // define join keys
+        String[] leftKeys = {"PC.PCSpecID"};
+        String[] rightKeys = {"PCSPEC.ID"};
+        
+        // start building the search filter
+        String filter = "PC.ID = " + ID;
+        // run query on PC JOIN PCSpec tables
+        rs = DBConnect.innerJoin(conDB, leftTable, rightTable, leftKeys, rightKeys, fields, labels, filter, null);
+        if (rs.first()) {
+            pc.setName(rs.getString("PCNAME"));
+            pc.setDescription(rs.getString("PCDESCRIPTION"));
+            pc.setSpec(new PCSpec(  rs.getInt("PCSPECID"),
+                                    rs.getString("PCSPECNAME"),
+                                    rs.getString("PCSPECDESCRIPTION"),
+                                    rs.getInt("PCSPECWARRENTY"),
+                                    rs.getFloat("PCSPECPRICE"),
+                                    rs.getInt("PCSPECSCORE"),
+                                    intToStatus(rs.getInt("PCSPECSTATUS"))));
+            pc.setInstallDate(rs.getTimestamp("PCSpecInstallation"));
+            pc.setStatus(intToStatus(rs.getInt("PCSTATUS")));
+            Message temp = PCLogic.getInstPCComp(pc);
+            PC tempPC = (PC)temp.getEntity();
+            pc.setInstalledComponents(tempPC.getInstalledComps());
+        }
+        return pc;
+    }
 }

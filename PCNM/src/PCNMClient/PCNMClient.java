@@ -186,6 +186,9 @@ public class PCNMClient extends AbstractClient {
             case GET_ACTIVE_TRIOS:
                 TrioCTRL.openTrioScreen((ArrayList<TrioCouple>)response.getEntity());
                 break;
+            case VIEW_TRIO_PROP:
+                TrioCTRL.openTrioPropertiesScreen((TrioCouple)response.getEntity());
+                break;
             case DB_PROBLEM:
                 WindowMustHave.showDialog(null, response.getDataString(), DialogType.ERROR);
                 break;
