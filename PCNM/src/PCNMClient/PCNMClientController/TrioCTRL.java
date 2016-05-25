@@ -139,4 +139,12 @@ public class TrioCTRL extends CTRL {
         PCNMClientStart.appWindow.setTitle("PCNM - PC-Workstation-User Type Connection Properties");
         PCNMClientStart.switchPanels(new TrioPropertiesSCR(pcStrings, compStrings, wsStrings, pcutStrings));
     }
+
+    public static void closeBtnPressedPropertiesScreen() {
+        ArrayList<String[]> trio_tbl = new ArrayList<String[]>();
+        for (TrioCouple tc : TrioCTRL.activeTrios)
+            trio_tbl.add(activeTrioToStrings(tc));
+        PCNMClientStart.appWindow.setTitle("PCNM - Active PC-Workstation-User Type Connections");
+        PCNMClientStart.switchPanels(new TrioSCR(trio_tbl));
+    }
 }

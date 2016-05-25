@@ -1,7 +1,6 @@
 package PCNMClient.PCNMClientView;
 
 import PCNMClient.PCNMClientController.TrioCTRL;
-import PCNMClient.PCNMClientStart;
 import static PCNMClient.PCNMClientView.WindowMustHave.showDialog;
 import java.awt.Font;
 import java.io.IOException;
