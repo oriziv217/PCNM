@@ -189,6 +189,24 @@ public class PCNMClient extends AbstractClient {
             case VIEW_TRIO_PROP:
                 TrioCTRL.openTrioPropertiesScreen((TrioCouple)response.getEntity());
                 break;
+            case GET_PC_ADD_TRIO:
+                TrioCTRL.setAvailablePCs((ArrayList<PC>)response.getEntity());
+                PCNMClientStart.gotAllData ++;
+                if (PCNMClientStart.gotAllData == 3)
+                    TrioCTRL.openTrioAddScreen();
+                break;
+            case GET_WORKSTATION_ADD_TRIO:
+                TrioCTRL.setAvailableWSs((ArrayList<Workstation>)response.getEntity());
+                PCNMClientStart.gotAllData ++;
+                if (PCNMClientStart.gotAllData == 3)
+                    TrioCTRL.openTrioAddScreen();
+                break;
+            case GET_PCUSERTYPE_ADD_TRIO:
+                TrioCTRL.setAvailablePCUTs((ArrayList<PCUserType>)response.getEntity());
+                PCNMClientStart.gotAllData ++;
+                if (PCNMClientStart.gotAllData == 3)
+                    TrioCTRL.openTrioAddScreen();
+                break;
             case DB_PROBLEM:
                 WindowMustHave.showDialog(null, response.getDataString(), DialogType.ERROR);
                 break;

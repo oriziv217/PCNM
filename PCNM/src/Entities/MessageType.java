@@ -167,9 +167,19 @@ public enum MessageType {
     VIEW_TRIO_PROP,
     
     /**
-     * Get all available PCs, Workstations and PC User Types
+     * Get all available PCs
      */
-    GET_DATA_ADD_TRIO,
+    GET_PC_ADD_TRIO,
+    
+    /**
+     * Get all available Workstations
+     */
+    GET_WORKSTATION_ADD_TRIO,
+    
+    /**
+     * Get all available PC User Types
+     */
+    GET_PCUSERTYPE_ADD_TRIO,
     
     /**
      * Set end date for a trio coupling

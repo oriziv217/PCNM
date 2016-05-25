@@ -98,4 +98,22 @@ public class UserTypesLogic extends Logic {
         }
         return pcut;
     }
+
+    public static Message getActivePCUserTypes() throws SQLException {
+        Connection conDB = DBConnect.mySQLConnection();
+        String filter = "status = 1";
+        ResultSet rs = DBConnect.selectWithFilter(conDB, "pcusertype", null, filter);
+        ArrayList<PCUserType> search_reasults = new ArrayList<PCUserType>();
+        
+        if (rs.isBeforeFirst()) {
+            while (rs.next()) {
+                search_reasults.add(new PCUserType( rs.getInt("ID"),
+                                                    rs.getString("name"),
+                                                    rs.getString("description"),
+                                                    roundDouble(rs.getDouble("importance"), 2),
+                                                    intToStatus(rs.getInt("status"))));
+            }
+        }
+        return new Message(MessageType.GET_PCUSERTYPE_ADD_TRIO, search_reasults);
+    }
 }

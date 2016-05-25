@@ -487,4 +487,70 @@ public class PCLogic extends Logic {
         }
         return pc;
     }
+
+    public static Message searchPCByCustomFilter(String filter) throws SQLException {
+        ArrayList<PC> search_results = new ArrayList<PC>();
+        Connection conDB = DBConnect.mySQLConnection();
+        ResultSet rs, rs1;
+        // define search results schema
+        String[] fields = { "PC.id",
+                            "PC.name",
+                            "PC.description",
+                            "PC.specInstallation",
+                            "PC.status",
+                            "PCSPEC.id",
+                            "PCSPEC.name",
+                            "PCSPEC.description",
+                            "PCSPEC.warranty",
+                            "PCSPEC.price",
+                            "PCSPEC.score",
+                            "PCSPEC.status" };
+        String[] labels = { "PCID",
+                            "PCName",
+                            "PCDescription",
+                            "PCSpecInstallation",
+                            "PCStatus",
+                            "PCSpecID",
+                            "PCSpecName",
+                            "PCSpecDescription",
+                            "PCSpecWarrenty",
+                            "PCSpecPrice",
+                            "PCSpecScore",
+                            "PCSpecStatus" };
+        
+        //define join tables
+        String leftTable = "PC";
+        String rightTable = "PCSPEC";
+        
+        // define join keys
+        String[] leftKeys = {"PC.PCSpecID"};
+        String[] rightKeys = {"PCSPEC.ID"};
+        
+        // run query on PC JOIN PCSpec tables
+        rs = DBConnect.innerJoin(conDB, leftTable, rightTable, leftKeys, rightKeys, fields, labels, filter, null);
+
+        // build search results list
+        if (rs.isBeforeFirst()) {
+            while (rs.next()) {
+                PC availablePC = new PC(rs.getInt("PCID"),
+                                        rs.getString("PCNAME"),
+                                        rs.getString("PCDESCRIPTION"),
+                                        new PCSpec( rs.getInt("PCSPECID"),
+                                                    rs.getString("PCSPECNAME"),
+                                                    rs.getString("PCSPECDESCRIPTION"),
+                                                    rs.getInt("PCSPECWARRENTY"),
+                                                    rs.getFloat("PCSPECPRICE"),
+                                                    rs.getInt("PCSPECSCORE"),
+                                                    intToStatus(rs.getInt("PCSPECSTATUS"))),
+                                        rs.getTimestamp("PCSpecInstallation"),
+                                        intToStatus(rs.getInt("PCSTATUS")),
+                                        null);
+                // add installed components
+                PC tempPC = (PC)PCLogic.getInstPCComp(availablePC).getEntity();
+                availablePC.setInstalledComponents(tempPC.getInstalledComps());
+                search_results.add(availablePC);
+            }
+        }
+        return new Message(MessageType.GET_PC_ADD_TRIO, search_results);
+    }
 }

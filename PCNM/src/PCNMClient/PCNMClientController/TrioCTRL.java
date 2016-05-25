@@ -4,10 +4,13 @@ import Entities.Message;
 import Entities.MessageType;
 import Entities.PC;
 import Entities.PCComp;
+import Entities.PCUserType;
 import Entities.TrioCouple;
+import Entities.Workstation;
 import PCNMClient.PCNMClientModel;
 import PCNMClient.PCNMClientStart;
 import PCNMClient.PCNMClientView.NetMapSCR;
+import PCNMClient.PCNMClientView.TrioAddSCR;
 import PCNMClient.PCNMClientView.TrioPropertiesSCR;
 import PCNMClient.PCNMClientView.TrioSCR;
 import java.io.IOException;
@@ -29,6 +32,9 @@ public class TrioCTRL extends CTRL {
     private static float scoreFilter;
     
     private static ArrayList<TrioCouple> activeTrios;
+    private static ArrayList<PC> availablePCs;
+    private static ArrayList<Workstation> availableWSs;
+    private static ArrayList<PCUserType> availablePCUTs;
 
     public static int getFieldFilterMode() {
         return fieldFilterMode;
@@ -78,6 +84,18 @@ public class TrioCTRL extends CTRL {
         TrioCTRL.scoreFilter = scoreFilter;
     }
     
+    public static void setAvailablePCs (ArrayList<PC> pcs) {
+        TrioCTRL.availablePCs = pcs;
+    }
+    
+    public static void setAvailableWSs (ArrayList<Workstation> wss) {
+        TrioCTRL.availableWSs = wss;
+    }
+    
+    public static void setAvailablePCUTs (ArrayList<PCUserType> pcuts) {
+        TrioCTRL.availablePCUTs = pcuts;
+    }
+    
     public static void openTrioScreen(ArrayList<TrioCouple> activTrios) {
         TrioCTRL.activeTrios = activTrios;
         ArrayList<String[]> trio_tbl = new ArrayList<String[]>();
@@ -117,7 +135,14 @@ public class TrioCTRL extends CTRL {
     }
     
     public static void addNewTrio() throws IOException {
-        PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_DATA_ADD_TRIO));
+        PCNMClientStart.gotAllData = 0;
+        TrioCTRL.availablePCs = new ArrayList<PC>();
+        TrioCTRL.availableWSs = new ArrayList<Workstation>();
+        TrioCTRL.availablePCUTs = new ArrayList<PCUserType>();
+        
+        PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_PC_ADD_TRIO));
+        PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_WORKSTATION_ADD_TRIO));
+        PCNMClientModel.sendMessageToServer(new Message(MessageType.GET_PCUSERTYPE_ADD_TRIO));
     }
     
     public static void endTrio(Date sDate, int PCID, int WSID, int PCUTID, Date eDate) throws IOException {
@@ -146,5 +171,39 @@ public class TrioCTRL extends CTRL {
             trio_tbl.add(activeTrioToStrings(tc));
         PCNMClientStart.appWindow.setTitle("PCNM - Active PC-Workstation-User Type Connections");
         PCNMClientStart.switchPanels(new TrioSCR(trio_tbl));
+    }
+
+    public static void openTrioAddScreen() {
+        ArrayList<String[]> pcsList = new ArrayList<String[]>();
+        ArrayList<String[]> workstationsList = new ArrayList<String[]>();
+        ArrayList<String[]> usertypesList = new ArrayList<String[]>();
+        
+        if (TrioCTRL.availablePCs != null) {
+            for (PC pc : TrioCTRL.availablePCs) {
+                float pcCompMultiplier = 1;
+                ArrayList<PCComp> compsList = pc.getInstalledComps();
+                if (compsList != null && !compsList.isEmpty())
+                    for (PCComp comp : compsList)
+                        pcCompMultiplier *= comp.getValueAdd();
+                pc.setInstalledComponents(null);
+                String pcString = pc.toString() + String.valueOf(roundFloat(pcCompMultiplier, 2));
+                pcsList.add(pcString.split(","));
+            }
+        }
+        
+        if (TrioCTRL.availableWSs != null) {
+            for (Workstation ws : TrioCTRL.availableWSs) {
+                workstationsList.add(ws.toString().split(","));
+            }
+        }
+        
+        if (TrioCTRL.availablePCUTs != null) {
+            for (PCUserType pcut : TrioCTRL.availablePCUTs) {
+                usertypesList.add(pcut.toString().split(","));
+            }
+        }
+        
+        PCNMClientStart.appWindow.setTitle("PCNM - PC-Workstation-User Type Add New Connection");
+        PCNMClientStart.switchPanels(new TrioAddSCR(pcsList, workstationsList, usertypesList));
     }
 }

@@ -26,6 +26,8 @@ public class PCNMServer extends AbstractServer {
      */
     public static final int DEFAULT_PORT = 11111;
     
+    private String filter;
+    
     /**
      * Default constructor
      */
@@ -144,6 +146,19 @@ public class PCNMServer extends AbstractServer {
                 break;
             case VIEW_TRIO_PROP:
                 client.sendToClient(TrioLogic.getTrioByKey((TrioCouple)message.getEntity()));
+                break;
+            case GET_PC_ADD_TRIO:
+                filter = "id NOT IN (SELECT pcid FROM triocoupling WHERE duedate IS NULL)" +
+                        " AND status < 3";
+                client.sendToClient(PCLogic.searchPCByCustomFilter(filter));
+                break;
+            case GET_WORKSTATION_ADD_TRIO:
+                filter = "id NOT IN (SELECT workstationID FROM triocoupling WHERE duedate IS NULL)" + 
+                        " AND status < 3";
+                client.sendToClient(WorkstationLogic.searchWorkstationByCustomFilter(filter));
+                break;
+            case GET_PCUSERTYPE_ADD_TRIO:
+                client.sendToClient(UserTypesLogic.getActivePCUserTypes());
                 break;
             }
         } catch (IOException e) {
