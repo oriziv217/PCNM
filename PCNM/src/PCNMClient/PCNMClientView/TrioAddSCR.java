@@ -1,22 +1,58 @@
 package PCNMClient.PCNMClientView;
 
+import PCNMClient.PCNMClientController.TrioCTRL;
+import java.awt.Font;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import javax.swing.JLabel;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author ori ziv
  */
 public class TrioAddSCR extends javax.swing.JPanel {
+    private boolean doneInit;
+    private ArrayList<String[]> pcsList;
+    private ArrayList<String[]> workstationsList;
+    private ArrayList<String[]> usertypesList;
+    private float pcTotalScore;
+    private float workstationMultiplier;
+    private float usertypeMultiplier;
+    private float trioTotalScore;
+    private int selectedPCIndex;
+    private int selectedWorkstationIndex;
+    private int selectedUserTypeIndex;
 
     /**
      * Creates new form TrioAddSCR
      */
     public TrioAddSCR() {
+        doneInit = false;
         initComponents();
+        doneInit = true;
     }
 
     public TrioAddSCR(ArrayList<String[]> pcsList, ArrayList<String[]> workstationsList, ArrayList<String[]> usertypesList) {
         this();
+        doneInit = false;
+        this.pcsList = pcsList;
+        this.workstationsList = workstationsList;
+        this.usertypesList = usertypesList;
+        pcTotalScore = 0;
+        workstationMultiplier = 0;
+        usertypeMultiplier = 0;
+        selectedPCIndex = -1;
+        selectedUserTypeIndex = -1;
+        selectedWorkstationIndex = -1;
+        loadPCTable();
+        loadWorkstationTable();
+        loadUserTypeTable();
+        doneInit = true;
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,19 +63,421 @@ public class TrioAddSCR extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lblScreenTitle = new javax.swing.JLabel();
+        lblPcTable = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblPC = new javax.swing.JTable();
+        lblWorkstationTable = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblWorkstation = new javax.swing.JTable();
+        lblUserTypeTable = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblUserType = new javax.swing.JTable();
+        lblTrioTotalScore = new javax.swing.JLabel();
+        txtTrioTotalScore = new javax.swing.JTextField();
+        btnConfirm = new javax.swing.JButton();
+        btnClose = new javax.swing.JButton();
+
+        setBackground(java.awt.Color.white);
+        setMinimumSize(new java.awt.Dimension(1475, 735));
+
+        lblScreenTitle.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
+        lblScreenTitle.setForeground(java.awt.Color.red);
+        lblScreenTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblScreenTitle.setText("Add New PC-Workstation-User Type Connection");
+        lblScreenTitle.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblScreenTitle.setName("lblScreenTitle"); // NOI18N
+
+        lblPcTable.setBackground(java.awt.Color.white);
+        lblPcTable.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        lblPcTable.setText("Available PCs");
+
+        tblPC.setAutoCreateRowSorter(true);
+        tblPC.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        tblPC.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Name", "Type", "Score"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.Float.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblPC.setRowHeight(32);
+        jScrollPane1.setViewportView(tblPC);
+        if (tblPC.getColumnModel().getColumnCount() > 0) {
+            tblPC.getColumnModel().getColumn(0).setMinWidth(200);
+            tblPC.getColumnModel().getColumn(0).setPreferredWidth(200);
+            tblPC.getColumnModel().getColumn(1).setMinWidth(200);
+            tblPC.getColumnModel().getColumn(1).setPreferredWidth(200);
+            tblPC.getColumnModel().getColumn(2).setMinWidth(100);
+            tblPC.getColumnModel().getColumn(2).setPreferredWidth(100);
+        }
+        tblPC.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 24));
+        tblPC.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tblPC.getSelectionModel().addListSelectionListener(tblPCListListener);
+
+        lblWorkstationTable.setBackground(java.awt.Color.white);
+        lblWorkstationTable.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        lblWorkstationTable.setText("Available Workstations");
+
+        tblWorkstation.setAutoCreateRowSorter(true);
+        tblWorkstation.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        tblWorkstation.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Name", "Type", "Multiplier"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.Float.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblWorkstation.setRowHeight(32);
+        jScrollPane2.setViewportView(tblWorkstation);
+        if (tblWorkstation.getColumnModel().getColumnCount() > 0) {
+            tblWorkstation.getColumnModel().getColumn(0).setMinWidth(200);
+            tblWorkstation.getColumnModel().getColumn(0).setPreferredWidth(200);
+            tblWorkstation.getColumnModel().getColumn(1).setMinWidth(200);
+            tblWorkstation.getColumnModel().getColumn(1).setPreferredWidth(200);
+            tblWorkstation.getColumnModel().getColumn(2).setMinWidth(100);
+            tblWorkstation.getColumnModel().getColumn(2).setPreferredWidth(100);
+        }
+        tblPC.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 24));
+        tblWorkstation.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tblWorkstation.getSelectionModel().addListSelectionListener(tblWorkstationListListener);
+
+        lblUserTypeTable.setBackground(java.awt.Color.white);
+        lblUserTypeTable.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        lblUserTypeTable.setText("User Types");
+
+        tblUserType.setAutoCreateRowSorter(true);
+        tblUserType.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        tblUserType.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Name", "Multiplier"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Float.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblUserType.setRowHeight(32);
+        jScrollPane3.setViewportView(tblUserType);
+        if (tblUserType.getColumnModel().getColumnCount() > 0) {
+            tblUserType.getColumnModel().getColumn(0).setMinWidth(200);
+            tblUserType.getColumnModel().getColumn(0).setPreferredWidth(200);
+            tblUserType.getColumnModel().getColumn(1).setMinWidth(100);
+            tblUserType.getColumnModel().getColumn(1).setPreferredWidth(100);
+        }
+        tblPC.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 24));
+        tblUserType.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tblUserType.getSelectionModel().addListSelectionListener(tblUserTypeListListener);
+
+        lblTrioTotalScore.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
+        lblTrioTotalScore.setForeground(java.awt.Color.red);
+        lblTrioTotalScore.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTrioTotalScore.setText("Connection Total Rate:");
+        lblTrioTotalScore.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblTrioTotalScore.setName("lblScreenTitle"); // NOI18N
+
+        txtTrioTotalScore.setEditable(false);
+        txtTrioTotalScore.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
+        txtTrioTotalScore.setForeground(java.awt.Color.red);
+
+        btnConfirm.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnConfirm.setText("Confirm");
+        btnConfirm.setToolTipText("Add new workstation");
+        btnConfirm.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnConfirm.setMaximumSize(new java.awt.Dimension(99, 33));
+        btnConfirm.setMinimumSize(new java.awt.Dimension(99, 33));
+        btnConfirm.setPreferredSize(new java.awt.Dimension(99, 33));
+        btnConfirm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConfirmActionPerformed(evt);
+            }
+        });
+
+        btnClose.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        btnClose.setForeground(java.awt.Color.red);
+        btnClose.setToolTipText("Close screen and return to Network Mapping screen");
+        btnClose.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnClose.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnClose.setInheritsPopupMenu(true);
+        btnClose.setLabel("Close");
+        btnClose.setName("btnClose"); // NOI18N
+        btnClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCloseActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(lblScreenTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblPcTable)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblWorkstationTable))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblUserTypeTable)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblTrioTotalScore)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtTrioTotalScore, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblScreenTitle)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblWorkstationTable)
+                            .addComponent(lblUserTypeTable))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3)
+                            .addComponent(jScrollPane2)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblPcTable)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblTrioTotalScore)
+                        .addComponent(txtTrioTotalScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(39, 39, 39))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
+//        try {
+//            TrioCTRL.
+//        } catch (IOException e) {
+//            showDialog(this, "Lost Connection with the server", DialogType.ERROR);
+//            System.exit(0);
+//        }
+    }//GEN-LAST:event_btnConfirmActionPerformed
+
+    private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
+        TrioCTRL.closeBtnPressedAddScreen();
+    }//GEN-LAST:event_btnCloseActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnClose;
+    private javax.swing.JButton btnConfirm;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel lblPcTable;
+    private javax.swing.JLabel lblScreenTitle;
+    private javax.swing.JLabel lblTrioTotalScore;
+    private javax.swing.JLabel lblUserTypeTable;
+    private javax.swing.JLabel lblWorkstationTable;
+    private javax.swing.JTable tblPC;
+    private javax.swing.JTable tblUserType;
+    private javax.swing.JTable tblWorkstation;
+    private javax.swing.JTextField txtTrioTotalScore;
     // End of variables declaration//GEN-END:variables
+
+    private void loadPCTable() {
+        DefaultTableModel dtm = (DefaultTableModel)tblPC.getModel();
+        dtm.setRowCount(pcsList.size());
+        int currentRow = 0;
+        for (String[] row : pcsList) {
+            dtm.setValueAt(row[1], currentRow, 0);
+            dtm.setValueAt(row[6], currentRow, 1);
+            dtm.setValueAt(Float.parseFloat(row[12]), currentRow, 2);
+            currentRow ++;
+        }
+        DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
+        leftRenderer.setHorizontalAlignment(JLabel.LEFT);
+        tblPC.getColumnModel().getColumn(2).setCellRenderer(leftRenderer);
+    }
+
+    private void loadWorkstationTable() {
+        DefaultTableModel dtm = (DefaultTableModel)tblWorkstation.getModel();
+        dtm.setRowCount(workstationsList.size());
+        int currentRow = 0;
+        for (String[] row : workstationsList) {
+            dtm.setValueAt(row[1], currentRow, 0);
+            dtm.setValueAt(row[6], currentRow, 1);
+            dtm.setValueAt(Float.parseFloat(row[3]), currentRow, 2);
+            currentRow ++;
+        }
+        DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
+        leftRenderer.setHorizontalAlignment(JLabel.LEFT);
+        tblWorkstation.getColumnModel().getColumn(2).setCellRenderer(leftRenderer);
+    }
+
+    private void loadUserTypeTable() {
+        DefaultTableModel dtm = (DefaultTableModel)tblUserType.getModel();
+        dtm.setRowCount(usertypesList.size());
+        int currentRow = 0;
+        for (String[] row : usertypesList) {
+            dtm.setValueAt(row[1], currentRow, 0);
+            dtm.setValueAt(Float.parseFloat(row[3]), currentRow, 1);
+            currentRow ++;
+        }
+        DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
+        leftRenderer.setHorizontalAlignment(JLabel.LEFT);
+        tblUserType.getColumnModel().getColumn(1).setCellRenderer(leftRenderer);
+    }
+
+    private ListSelectionListener tblPCListListener = new ListSelectionListener() {
+        @Override
+        public void valueChanged(ListSelectionEvent lse) {
+            if (!doneInit || lse.getValueIsAdjusting()) return;
+            ListSelectionModel lsm = (ListSelectionModel)lse.getSource();
+            if (lsm.isSelectionEmpty())
+                return;
+            int selected = lsm.getMinSelectionIndex();
+            DefaultTableModel dtm = (DefaultTableModel)tblPC.getModel();
+            String name = (String)dtm.getValueAt(tblPC.convertRowIndexToModel(selected), 0);
+            for (int i = 0 ; i < pcsList.size() ; i ++) {
+                String[] row = pcsList.get(i);
+                if (row[1].equals(name)) {
+                    selectedPCIndex = i;
+                    i = pcsList.size();
+                }
+            }
+            calcTrioScore();
+        }
+    };
+    
+    private ListSelectionListener tblWorkstationListListener = new ListSelectionListener() {
+        @Override
+        public void valueChanged(ListSelectionEvent lse) {
+            if (!doneInit || lse.getValueIsAdjusting()) return;
+            ListSelectionModel lsm = (ListSelectionModel)lse.getSource();
+            if (lsm.isSelectionEmpty())
+                return;
+            int selected = lsm.getMinSelectionIndex();
+            DefaultTableModel dtm = (DefaultTableModel)tblWorkstation.getModel();
+            String name = (String)dtm.getValueAt(tblWorkstation.convertRowIndexToModel(selected), 0);
+            for (int i = 0 ; i < workstationsList.size() ; i ++) {
+                String[] row = workstationsList.get(i);
+                if (row[1].equals(name)) {
+                    selectedWorkstationIndex = i;
+                    i = workstationsList.size();
+                }
+            }
+            calcTrioScore();
+        }
+    };
+    
+    private ListSelectionListener tblUserTypeListListener = new ListSelectionListener() {
+        @Override
+        public void valueChanged(ListSelectionEvent lse) {
+            if (!doneInit || lse.getValueIsAdjusting()) return;
+            ListSelectionModel lsm = (ListSelectionModel)lse.getSource();
+            if (lsm.isSelectionEmpty())
+                return;
+            int selected = lsm.getMinSelectionIndex();
+            DefaultTableModel dtm = (DefaultTableModel)tblUserType.getModel();
+            String name = (String)dtm.getValueAt(tblUserType.convertRowIndexToModel(selected), 0);
+            for (int i = 0 ; i < usertypesList.size() ; i ++) {
+                String[] row = usertypesList.get(i);
+                if (row[1].equals(name)) {
+                    selectedUserTypeIndex = i;
+                    i = usertypesList.size();
+                }
+            }
+            calcTrioScore();
+        }
+    };
+    
+    private void calcTrioScore() {
+        if (selectedPCIndex >= 0)
+            pcTotalScore = Float.parseFloat(pcsList.get(selectedPCIndex)[12]);
+        if (selectedWorkstationIndex >= 0)
+            workstationMultiplier = Float.parseFloat(workstationsList.get(selectedWorkstationIndex)[3]);
+        if (selectedUserTypeIndex >= 0)
+            usertypeMultiplier = Float.parseFloat(usertypesList.get(selectedUserTypeIndex)[3]);
+        trioTotalScore = roundFloat(pcTotalScore * workstationMultiplier * usertypeMultiplier, 2);
+        if (trioTotalScore > 0)
+            txtTrioTotalScore.setText(String.valueOf(trioTotalScore));
+    }
+    
+    private float roundFloat(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
+    }
 }
