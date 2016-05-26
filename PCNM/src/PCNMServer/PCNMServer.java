@@ -148,13 +148,13 @@ public class PCNMServer extends AbstractServer {
                 client.sendToClient(TrioLogic.getTrioByKey((TrioCouple)message.getEntity()));
                 break;
             case GET_PC_ADD_TRIO:
-                filter = "id NOT IN (SELECT pcid FROM triocoupling WHERE duedate IS NULL)" +
-                        " AND status < 3";
+                filter = "PC.id NOT IN (SELECT pcid FROM triocoupling WHERE duedate IS NULL)" +
+                        " AND PC.status <> 2";
                 client.sendToClient(PCLogic.searchPCByCustomFilter(filter));
                 break;
             case GET_WORKSTATION_ADD_TRIO:
-                filter = "id NOT IN (SELECT workstationID FROM triocoupling WHERE duedate IS NULL)" + 
-                        " AND status < 3";
+                filter = "workstation.id NOT IN (SELECT workstationID FROM triocoupling WHERE duedate IS NULL)" + 
+                        " AND workstation.status < 3";
                 client.sendToClient(WorkstationLogic.searchWorkstationByCustomFilter(filter));
                 break;
             case GET_PCUSERTYPE_ADD_TRIO:
