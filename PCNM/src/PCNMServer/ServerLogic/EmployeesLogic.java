@@ -66,6 +66,7 @@ public class EmployeesLogic extends Logic {
             } else {
                 return new Message(MessageType.LOGIN_ANSWER, "Bad User Name or Password");
             }
+        conDB.close();
         return new Message(MessageType.LOGIN_ANSWER, emp, "User logged-in");
     }
 
@@ -90,6 +91,7 @@ public class EmployeesLogic extends Logic {
             if (row.getType() != EmpType.Error && row.getStatus() != Status.Error)
                 emp_tbl.add(new Employee(row.getID(), row.getName(), row.getUserName(), row.getPassword(), row.getType(), row.getStatus()));
         }
+        conDB.close();
         return new Message(MessageType.GET_EMPLOYEES, emp_tbl);
     }
 
@@ -137,6 +139,7 @@ public class EmployeesLogic extends Logic {
         
         Connection conDB = DBConnect.mySQLConnection();
         boolean isSuccess = DBConnect.insertSingleRecord(conDB, "employee", fields, values);
+        conDB.close();
         if (isSuccess) {
             employee.setID(-1);
             return getAllEntities();
@@ -171,6 +174,7 @@ public class EmployeesLogic extends Logic {
             if (!updated)
                 throw new SQLException("DB Problem");
         }
+        conDB.close();
         return getAllEntities();
     }
 }

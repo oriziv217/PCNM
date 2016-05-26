@@ -26,6 +26,7 @@ public class WorkstationLogic extends Logic {
         while (rs.next()) {
             keys.add(rs.getInt("ID"));
         }
+        conDB.close();
         return keys;
     }
 
@@ -55,6 +56,7 @@ public class WorkstationLogic extends Logic {
                 //(int ID, String name, String description, int minimalScore, Status status)
                 types_tbl.add(new WSType(row.getID(), row.getName(), row.getDescription(), row.getMinimalScore(), row.getStatus()));
         }
+        conDB.close();
         return new Message(MessageType.GET_ALL_WORKSTATION_TYPES, types_tbl);
     }
 
@@ -162,6 +164,7 @@ public class WorkstationLogic extends Logic {
         } catch (SQLException e) {
             return null;
         }
+        conDB.close();
         return search_results;
     }
 
@@ -177,6 +180,7 @@ public class WorkstationLogic extends Logic {
                                 rs.getInt("minimalscore"),
                                 intToStatus(rs.getInt("status")));
         }
+        conDB.close();
         return wst;
     }
 
@@ -194,6 +198,7 @@ public class WorkstationLogic extends Logic {
         while (rs.next()) {
             dic.add(new QuickDic(rs.getInt("ID"), rs.getString("name")));
         }
+        conDB.close();
         return new Message(MessageType.GET_WORKSTATION_QUICKDIC, dic);
     }
 
@@ -221,9 +226,11 @@ public class WorkstationLogic extends Logic {
         if (isAdded) {
             resultString = "OK";
             Workstation added = getWorkstationsWithFilter(newWS).get(0);
+            conDB.close();
             return new Message (MessageType.ADD_WORKSTATION, added, resultString);
         }
         resultString = "Not OK";
+        conDB.close();
         return new Message(MessageType.ADD_WORKSTATION, null, resultString);
     }
 
@@ -255,9 +262,11 @@ public class WorkstationLogic extends Logic {
         isUpdated = DBConnect.updateSingleRecord (conDB, "workstation", fields, values, keyName, keyVal);
         if (isUpdated) {
             resultString = "OK";
+            conDB.close();
             return new Message (MessageType.UPDATE_WORKSTATION, ws, resultString);
         }
         resultString = "Not OK";
+        conDB.close();
         return new Message(MessageType.UPDATE_WORKSTATION, null, resultString);
     }
 
@@ -286,8 +295,10 @@ public class WorkstationLogic extends Logic {
             rs = DBConnect.selectWithFilter(conDB, "wstype", null, "name = '" + wst.getName() + "'");
             rs.first();
             wst.setID(rs.getInt("ID"));
+            conDB.close();
             return new Message (MessageType.ADD_WSTYPE, wst, resultString);
         }
+        conDB.close();
         resultString = "Not OK";
         return new Message(MessageType.ADD_WSTYPE, null, resultString);
     }
@@ -325,9 +336,11 @@ public class WorkstationLogic extends Logic {
         isUpdated = DBConnect.updateSingleRecord (conDB, "wstype", fields, values, keyName, keyVal);
         if (isUpdated) {
             resultString = "OK";
+            conDB.close();
             return new Message (MessageType.UPDATE_WSTYPE, wst, resultString);
         }
         resultString = "Not OK";
+        conDB.close();
         return new Message(MessageType.UPDATE_WSTYPE, null, resultString);
     }
     
@@ -366,17 +379,18 @@ public class WorkstationLogic extends Logic {
 
         // run query and process resault-set
         rs = DBConnect.innerJoin(conDB, "workstation", "wstype", leftKeys, rightKeys, fields, labels, filter, null);
-            if (rs.first()) {
-                ws.setName(rs.getString("WSNAME"));
-                ws.setDiscription(rs.getString("WSDESCRIPTION"));
-                ws.setImportanceFactor(rs.getDouble("WSIMPORTANCE"));
-                ws.setStatus(intToStatus(rs.getInt("WSSTATUS")));
-                ws.setType(new WSType(  rs.getInt("WSTID"),
-                                        rs.getString("WSTNAME"),
-                                        rs.getString("WSTDESCRIPTION"),
-                                        rs.getInt("WSTMINIMALSCORE"),
-                                        intToStatus(rs.getInt("WSTSTATUS"))));
-            }
+        if (rs.first()) {
+            ws.setName(rs.getString("WSNAME"));
+            ws.setDiscription(rs.getString("WSDESCRIPTION"));
+            ws.setImportanceFactor(rs.getDouble("WSIMPORTANCE"));
+            ws.setStatus(intToStatus(rs.getInt("WSSTATUS")));
+            ws.setType(new WSType(  rs.getInt("WSTID"),
+                                    rs.getString("WSTNAME"),
+                                    rs.getString("WSTDESCRIPTION"),
+                                    rs.getInt("WSTMINIMALSCORE"),
+                                    intToStatus(rs.getInt("WSTSTATUS"))));
+        }
+        conDB.close();
         return ws;
     }
 
@@ -428,6 +442,7 @@ public class WorkstationLogic extends Logic {
                                                                 intToStatus(rs.getInt("WSTSTATUS")))));
             }
         }
+        conDB.close();
         return new Message(MessageType.GET_WORKSTATION_ADD_TRIO, search_results);
     }
 }

@@ -100,6 +100,7 @@ public class ComponentLogic extends Logic {
                                                 roundFloat(rs.getFloat("valueAdd"), 2),
                                                 intToStatus(rs.getInt("status"))));
         }
+        conDB.close();
         return new Message(mType, search_results);
     }
     
@@ -117,6 +118,7 @@ public class ComponentLogic extends Logic {
         while (rs.next()) {
             dic.add(new QuickDic(rs.getInt("ID"), rs.getString("name")));
         }
+        conDB.close();
         return new Message(MessageType.GET_COMP_QUICKDIC, dic);
     }
 
@@ -160,6 +162,7 @@ public class ComponentLogic extends Logic {
             return new Message (MessageType.UPDATE_COMPONENT, comp, resultString);
         }
         resultString = "Not OK";
+        conDB.close();
         return new Message(MessageType.UPDATE_COMPONENT, null, resultString);
     }
 
@@ -193,6 +196,7 @@ public class ComponentLogic extends Logic {
             return new Message (MessageType.ADD_COMPONENT, comp, resultString);
         }
         resultString = "Not OK";
+        conDB.close();
         return new Message(MessageType.ADD_COMPONENT, null, resultString);
     }
 }

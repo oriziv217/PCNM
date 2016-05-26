@@ -37,6 +37,7 @@ public class UserTypesLogic extends Logic {
             if (row.getStatus() != Status.Error)
                 users_tbl.add(new PCUserType(row.getID(), row.getName(), row.getDescription(), row.getImportance(), row.getStatus()));
         }
+        conDB.close();
         return new Message(MessageType.GET_ALL_USERS, users_tbl);
     }
 
@@ -96,6 +97,7 @@ public class UserTypesLogic extends Logic {
             pcut.setImportance(rs.getDouble("importance"));
             pcut.setStatus(intToStatus(rs.getInt("status")));
         }
+        conDB.close();
         return pcut;
     }
 
@@ -114,6 +116,7 @@ public class UserTypesLogic extends Logic {
                                                     intToStatus(rs.getInt("status"))));
             }
         }
+        conDB.close();
         return new Message(MessageType.GET_PCUSERTYPE_ADD_TRIO, search_reasults);
     }
 }

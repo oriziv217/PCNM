@@ -110,6 +110,7 @@ public class PCSpecLogic extends Logic {
                                             rs.getInt("score"),
                                             intToStatus(rs.getInt("status"))));
         }
+        conDB.close();
         return new Message(msgType, search_results);
     }
     

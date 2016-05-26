@@ -215,6 +215,7 @@ public class PCLogic extends Logic {
                 if (isExpired < 0 && warrentyFilterMode == 2) search_results.remove(i);
             }
         }
+        conDB.close();
         return new Message(MessageType.PC_SEARCH, search_results);
     }
 
@@ -232,6 +233,7 @@ public class PCLogic extends Logic {
         while (rs.next()) {
             dic.add(new QuickDic(rs.getInt("ID"), rs.getString("name")));
         }
+        conDB.close();
         return new Message(MessageType.GET_PC_QUICKDIC, dic);
     }
 
@@ -263,9 +265,11 @@ public class PCLogic extends Logic {
             rs = DBConnect.selectWithFilter(conDB, "pc", null, "name = '" + pc.getName() + "'");
             rs.first();
             pc.setID(rs.getInt("ID"));
+            conDB.close();
             return new Message (MessageType.ADD_PC, pc, resultString);
         }
         resultString = "Not OK";
+        conDB.close();
         return new Message(MessageType.ADD_PC, null, resultString);
     }
 
@@ -289,6 +293,7 @@ public class PCLogic extends Logic {
         String[] keyName = { "id" };
         String[] keyVal = { Integer.toString(pc.getID()) };
         isUpdated = DBConnect.updateSingleRecord (conDB, "pc", fields, values, keyName, keyVal);
+        conDB.close();
         if (isUpdated) {
             resultString = "OK";
             return new Message (MessageType.UPDATE_PC, pc, resultString);
@@ -353,6 +358,7 @@ public class PCLogic extends Logic {
         if (pc.isEmpty()) throw new SQLException("Could not find specific PC in the DB");
         PC search_result = pc.get(0);
         search_result.setInstalledComponents(installedComponents);
+        conDB.close();
         return new Message(MessageType.GET_PC_INST_COMP, search_result);
     }
 
@@ -406,6 +412,7 @@ public class PCLogic extends Logic {
                             String.valueOf(numInstalled),
                             String.valueOf(comp.getWarrenty()) };
         isAdded = DBConnect.insertSingleRecord (conDB, "pccomp", fields, values);
+        conDB.close();
         return isAdded;
     }
 
@@ -424,6 +431,7 @@ public class PCLogic extends Logic {
                             df.format(comp.getStartDate()),
                             String.valueOf(comp.getNumInstalled()) };
         isUpdated = DBConnect.updateSingleRecord (conDB, "pccomp", fields, values, keyName, keyVal);
+        conDB.close();
         return isUpdated;
     }
     
@@ -485,13 +493,14 @@ public class PCLogic extends Logic {
             PC tempPC = (PC)temp.getEntity();
             pc.setInstalledComponents(tempPC.getInstalledComps());
         }
+        conDB.close();
         return pc;
     }
 
     public static Message searchPCByCustomFilter(String filter) throws SQLException {
         ArrayList<PC> search_results = new ArrayList<PC>();
         Connection conDB = DBConnect.mySQLConnection();
-        ResultSet rs, rs1;
+        ResultSet rs;
         // define search results schema
         String[] fields = { "PC.id",
                             "PC.name",
@@ -551,6 +560,7 @@ public class PCLogic extends Logic {
                 search_results.add(availablePC);
             }
         }
+        conDB.close();
         return new Message(MessageType.GET_PC_ADD_TRIO, search_results);
     }
 }

@@ -72,6 +72,7 @@ public class TrioLogic extends Logic {
             pcut.setImportance(roundDouble(rs.getDouble("PCUTFactor"), 2));
             search_results.add(new TrioCouple(pc, pcut, ws, rs.getTimestamp("TStart")));
         }
+        conDB.close();
         return new Message(MessageType.GET_ACTIVE_TRIOS, search_results);
     }
 
@@ -84,5 +85,4 @@ public class TrioLogic extends Logic {
         trio.setUserType(pcut);
         return new Message(MessageType.VIEW_TRIO_PROP, trio);
     }
-    
 }
