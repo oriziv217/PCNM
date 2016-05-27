@@ -182,6 +182,11 @@ public enum MessageType {
     GET_PCUSERTYPE_ADD_TRIO,
     
     /**
+     * Add new Trio coupling record to the DB
+     */
+    ADD_TRIO,
+    
+    /**
      * Set end date for a trio coupling
      */
     END_TRIO_PROP,

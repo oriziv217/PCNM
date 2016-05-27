@@ -11,6 +11,7 @@ import PCNMServer.ServerResources.DBConnect;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -84,5 +85,28 @@ public class TrioLogic extends Logic {
         trio.setWorkstation(ws);
         trio.setUserType(pcut);
         return new Message(MessageType.VIEW_TRIO_PROP, trio);
+    }
+
+    public static Message addTrio(TrioCouple newTrio) throws SQLException {
+        String[] fields = { "PCID",
+                            "workstationID",
+                            "PCUserTypeID",
+                            "startDate",
+                            "dueDate" };
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String[] values = { String.valueOf(newTrio.getPCID()),
+                            String.valueOf(newTrio.getWorkstationID()),
+                            String.valueOf(newTrio.getUserTypeID()),
+                            sdf.format(newTrio.getStartDate()),
+                            null };
+        
+        Connection conDB = DBConnect.mySQLConnection();
+        boolean isSuccess = DBConnect.insertSingleRecord(conDB, "triocoupling", fields, values);
+        conDB.close();
+        if (isSuccess) {
+            TrioCouple addedTrio = (TrioCouple)TrioLogic.getTrioByKey(newTrio).getEntity();
+            return new Message(MessageType.ADD_TRIO, addedTrio, "OK");
+        }
+        return new Message(MessageType.ADD_TRIO, newTrio, "NOT OK");
     }
 }

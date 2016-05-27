@@ -207,6 +207,15 @@ public class PCNMClient extends AbstractClient {
                 if (PCNMClientStart.gotAllData == 3)
                     TrioCTRL.openTrioAddScreen();
                 break;
+            case ADD_TRIO:
+                if (response.getDataString().equals("NOT OK")) {
+                    WindowMustHave.showDialog(null, "Error acurred while tring to add new connection to the DB.\n"
+                            + "Please contact your System Administrator", DialogType.ERROR);
+                    TrioCTRL.closeBtnPressedAddScreen();
+                } else {
+                    TrioCTRL.refreshTrioSCR((TrioCouple)response.getEntity());
+                }
+                break;
             case DB_PROBLEM:
                 WindowMustHave.showDialog(null, response.getDataString(), DialogType.ERROR);
                 break;

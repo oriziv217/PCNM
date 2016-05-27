@@ -1,9 +1,12 @@
 package PCNMClient.PCNMClientView;
 
 import PCNMClient.PCNMClientController.TrioCTRL;
+import static PCNMClient.PCNMClientView.WindowMustHave.showDialog;
 import java.awt.Font;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JLabel;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -23,6 +26,7 @@ public class TrioAddSCR extends javax.swing.JPanel {
     private float pcTotalScore;
     private float workstationMultiplier;
     private float usertypeMultiplier;
+    private float trioMinScore;
     private float trioTotalScore;
     private int selectedPCIndex;
     private int selectedWorkstationIndex;
@@ -77,9 +81,11 @@ public class TrioAddSCR extends javax.swing.JPanel {
         txtTrioTotalScore = new javax.swing.JTextField();
         btnConfirm = new javax.swing.JButton();
         btnClose = new javax.swing.JButton();
+        lblTrioMinScore = new javax.swing.JLabel();
+        txtTrioMinScore = new javax.swing.JTextField();
 
         setBackground(java.awt.Color.white);
-        setMinimumSize(new java.awt.Dimension(1475, 735));
+        setMinimumSize(new java.awt.Dimension(1475, 740));
 
         lblScreenTitle.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
         lblScreenTitle.setForeground(java.awt.Color.red);
@@ -224,7 +230,7 @@ public class TrioAddSCR extends javax.swing.JPanel {
         tblUserType.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tblUserType.getSelectionModel().addListSelectionListener(tblUserTypeListListener);
 
-        lblTrioTotalScore.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
+        lblTrioTotalScore.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
         lblTrioTotalScore.setForeground(java.awt.Color.red);
         lblTrioTotalScore.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTrioTotalScore.setText("Connection Total Rate:");
@@ -232,13 +238,14 @@ public class TrioAddSCR extends javax.swing.JPanel {
         lblTrioTotalScore.setName("lblScreenTitle"); // NOI18N
 
         txtTrioTotalScore.setEditable(false);
-        txtTrioTotalScore.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
+        txtTrioTotalScore.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
         txtTrioTotalScore.setForeground(java.awt.Color.red);
 
         btnConfirm.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         btnConfirm.setText("Confirm");
         btnConfirm.setToolTipText("Add new workstation");
         btnConfirm.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnConfirm.setEnabled(false);
         btnConfirm.setMaximumSize(new java.awt.Dimension(99, 33));
         btnConfirm.setMinimumSize(new java.awt.Dimension(99, 33));
         btnConfirm.setPreferredSize(new java.awt.Dimension(99, 33));
@@ -261,6 +268,17 @@ public class TrioAddSCR extends javax.swing.JPanel {
                 btnCloseActionPerformed(evt);
             }
         });
+
+        lblTrioMinScore.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
+        lblTrioMinScore.setForeground(java.awt.Color.red);
+        lblTrioMinScore.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTrioMinScore.setText("Connection Min' Rate:");
+        lblTrioMinScore.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblTrioMinScore.setName("lblScreenTitle"); // NOI18N
+
+        txtTrioMinScore.setEditable(false);
+        txtTrioMinScore.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
+        txtTrioMinScore.setForeground(java.awt.Color.red);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -286,11 +304,15 @@ public class TrioAddSCR extends javax.swing.JPanel {
                             .addComponent(lblUserTypeTable)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblTrioTotalScore)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtTrioTotalScore, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtTrioTotalScore, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblTrioMinScore)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtTrioMinScore, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -302,9 +324,9 @@ public class TrioAddSCR extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblWorkstationTable)
-                            .addComponent(lblUserTypeTable))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblWorkstationTable, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblUserTypeTable, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane3)
@@ -314,24 +336,29 @@ public class TrioAddSCR extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnConfirm, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lblTrioTotalScore)
+                        .addComponent(lblTrioMinScore)
+                        .addComponent(txtTrioMinScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(txtTrioTotalScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(39, 39, 39))
+                    .addComponent(btnClose, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(66, 66, 66))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmActionPerformed
-//        try {
-//            TrioCTRL.
-//        } catch (IOException e) {
-//            showDialog(this, "Lost Connection with the server", DialogType.ERROR);
-//            System.exit(0);
-//        }
+        int pcID = Integer.parseInt(pcsList.get(selectedPCIndex)[0]);
+        int wsID = Integer.parseInt(workstationsList.get(selectedWorkstationIndex)[0]);
+        int pcutID = Integer.parseInt(usertypesList.get(selectedUserTypeIndex)[0]);
+        Date sDate = new Date();
+        try {
+            TrioCTRL.addTrioConfirmBtnPressed(pcID, wsID, pcutID, sDate);
+        } catch (IOException e) {
+            showDialog(this, "Lost Connection with the server", DialogType.ERROR);
+            System.exit(0);
+        }
     }//GEN-LAST:event_btnConfirmActionPerformed
 
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
@@ -347,12 +374,14 @@ public class TrioAddSCR extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lblPcTable;
     private javax.swing.JLabel lblScreenTitle;
+    private javax.swing.JLabel lblTrioMinScore;
     private javax.swing.JLabel lblTrioTotalScore;
     private javax.swing.JLabel lblUserTypeTable;
     private javax.swing.JLabel lblWorkstationTable;
     private javax.swing.JTable tblPC;
     private javax.swing.JTable tblUserType;
     private javax.swing.JTable tblWorkstation;
+    private javax.swing.JTextField txtTrioMinScore;
     private javax.swing.JTextField txtTrioTotalScore;
     // End of variables declaration//GEN-END:variables
 
@@ -360,10 +389,14 @@ public class TrioAddSCR extends javax.swing.JPanel {
         DefaultTableModel dtm = (DefaultTableModel)tblPC.getModel();
         dtm.setRowCount(pcsList.size());
         int currentRow = 0;
+        int pcBaseScore;
+        float pcMultiplier;
         for (String[] row : pcsList) {
             dtm.setValueAt(row[1], currentRow, 0);
             dtm.setValueAt(row[6], currentRow, 1);
-            dtm.setValueAt(Float.parseFloat(row[12]), currentRow, 2);
+            pcBaseScore = Integer.parseInt(row[10]);
+            pcMultiplier = Float.parseFloat(row[12]);
+            dtm.setValueAt(roundFloat(pcBaseScore * pcMultiplier, 2), currentRow, 2);
             currentRow ++;
         }
         DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
@@ -435,6 +468,8 @@ public class TrioAddSCR extends javax.swing.JPanel {
                 String[] row = workstationsList.get(i);
                 if (row[1].equals(name)) {
                     selectedWorkstationIndex = i;
+                    trioMinScore = Float.parseFloat(workstationsList.get(i)[8]);
+                    txtTrioMinScore.setText(String.valueOf(trioMinScore));
                     i = workstationsList.size();
                 }
             }
@@ -465,14 +500,17 @@ public class TrioAddSCR extends javax.swing.JPanel {
     
     private void calcTrioScore() {
         if (selectedPCIndex >= 0)
-            pcTotalScore = Float.parseFloat(pcsList.get(selectedPCIndex)[12]);
+            pcTotalScore = Float.parseFloat(pcsList.get(selectedPCIndex)[12]) * Integer.parseInt(pcsList.get(selectedPCIndex)[10]);
         if (selectedWorkstationIndex >= 0)
             workstationMultiplier = Float.parseFloat(workstationsList.get(selectedWorkstationIndex)[3]);
         if (selectedUserTypeIndex >= 0)
             usertypeMultiplier = Float.parseFloat(usertypesList.get(selectedUserTypeIndex)[3]);
         trioTotalScore = roundFloat(pcTotalScore * workstationMultiplier * usertypeMultiplier, 2);
-        if (trioTotalScore > 0)
+        if (trioTotalScore > 0) {
             txtTrioTotalScore.setText(String.valueOf(trioTotalScore));
+            if (trioTotalScore >= trioMinScore) btnConfirm.setEnabled(true);
+            else btnConfirm.setEnabled(false);
+        }
     }
     
     private float roundFloat(float d, int decimalPlace) {

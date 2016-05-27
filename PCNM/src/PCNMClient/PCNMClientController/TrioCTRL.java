@@ -214,4 +214,18 @@ public class TrioCTRL extends CTRL {
         PCNMClientStart.appWindow.setTitle("PCNM - Active PC-Workstation-User Type Connections");
         PCNMClientStart.switchPanels(new TrioSCR(trio_tbl));
     }
+
+    public static void addTrioConfirmBtnPressed(int pcID, int wsID, int pcutID, Date sDate) throws IOException {
+        TrioCouple newTrio = new TrioCouple(pcID, pcutID, wsID, sDate);
+        PCNMClientModel.sendMessageToServer(new Message(MessageType.ADD_TRIO, newTrio));
+    }
+
+    public static void refreshTrioSCR(TrioCouple newTrio) {
+        TrioCTRL.activeTrios.add(newTrio);
+        ArrayList<String[]> trio_tbl = new ArrayList<String[]>();
+        for (TrioCouple tc : TrioCTRL.activeTrios)
+            trio_tbl.add(activeTrioToStrings(tc));
+        PCNMClientStart.appWindow.setTitle("PCNM - Active PC-Workstation-User Type Connections");
+        PCNMClientStart.switchPanels(new TrioSCR(trio_tbl));
+    }
 }

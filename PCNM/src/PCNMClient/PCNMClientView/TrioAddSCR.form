@@ -6,7 +6,7 @@
       <Color blue="ff" green="ff" id="white" palette="1" red="ff" type="palette"/>
     </Property>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[1475, 735]"/>
+      <Dimension value="[1475, 740]"/>
     </Property>
   </Properties>
   <AuxValues>
@@ -49,11 +49,15 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="lblTrioTotalScore" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="txtTrioTotalScore" min="-2" pref="189" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="btnConfirm" min="-2" pref="189" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="txtTrioTotalScore" min="-2" pref="170" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="lblTrioMinScore" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="txtTrioMinScore" min="-2" pref="170" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
+                      <Component id="btnConfirm" min="-2" pref="189" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btnClose" min="-2" pref="120" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -69,7 +73,7 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="lblWorkstationTable" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="lblUserTypeTable" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -86,17 +90,17 @@
                   </Group>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                  <Component id="btnConfirm" alignment="0" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lblTrioTotalScore" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblTrioMinScore" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtTrioMinScore" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtTrioTotalScore" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="103" alignment="1" groupAlignment="3" attributes="0">
-                      <Component id="btnConfirm" alignment="3" min="-2" pref="60" max="-2" attributes="0"/>
-                      <Component id="btnClose" alignment="3" min="-2" pref="60" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="btnClose" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace min="39" pref="39" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="66" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -296,7 +300,7 @@
     <Component class="javax.swing.JLabel" name="lblTrioTotalScore">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Times New Roman" size="48" style="1"/>
+          <Font name="Times New Roman" size="36" style="1"/>
         </Property>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="0" green="0" id="red" palette="1" red="ff" type="palette"/>
@@ -311,7 +315,7 @@
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Times New Roman" size="48" style="1"/>
+          <Font name="Times New Roman" size="36" style="1"/>
         </Property>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="0" green="0" id="red" palette="1" red="ff" type="palette"/>
@@ -332,6 +336,7 @@
             <BevelBorder/>
           </Border>
         </Property>
+        <Property name="enabled" type="boolean" value="false"/>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[99, 33]"/>
         </Property>
@@ -372,6 +377,31 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCloseActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblTrioMinScore">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Times New Roman" size="36" style="1"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" id="red" palette="1" red="ff" type="palette"/>
+        </Property>
+        <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="text" type="java.lang.String" value="Connection Min&apos; Rate:"/>
+        <Property name="horizontalTextPosition" type="int" value="0"/>
+        <Property name="name" type="java.lang.String" value="lblScreenTitle" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txtTrioMinScore">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Times New Roman" size="36" style="1"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" id="red" palette="1" red="ff" type="palette"/>
+        </Property>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

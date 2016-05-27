@@ -160,6 +160,9 @@ public class PCNMServer extends AbstractServer {
             case GET_PCUSERTYPE_ADD_TRIO:
                 client.sendToClient(UserTypesLogic.getActivePCUserTypes());
                 break;
+            case ADD_TRIO:
+                client.sendToClient(TrioLogic.addTrio((TrioCouple)message.getEntity()));
+                break;
             }
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, String.format("Lost connection with client %s", client.toString()));

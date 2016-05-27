@@ -86,7 +86,7 @@ public class DBConnect {
          */
         public static ResultSet selectWithFilter (Connection conDB, String table, String fields, String filter) throws SQLException {
                 // if connection is closed throw exception
-                if (conDB.isClosed()) throw new SQLException("Connection is closed");
+                if (conDB == null || conDB.isClosed()) throw new SQLException("Connection is closed");
                 // if no table supplied throw exception
                 if (table == null) throw new SQLException("No table specified");
 
@@ -130,7 +130,7 @@ public class DBConnect {
          */
         public static boolean updateSingleRecord (Connection conDB, String table, String[] fields, String[] values, String[] keyName, String[] keyVal) throws SQLException {
                 // if connection is closed throw exception
-                if (conDB.isClosed()) throw new SQLException("Connection is closed");
+                if (conDB == null || conDB.isClosed()) throw new SQLException("Connection is closed");
                 // if no table supplied throw exception
                 if (table == null) throw new SQLException("No table specified");
                 // if no fields supplied throw exception
@@ -183,7 +183,7 @@ public class DBConnect {
          */
         public static boolean insertSingleRecord (Connection conDB, String table, String[] fields, String[] values) throws SQLException {
                 // if connection is closed throw exception
-                if (conDB.isClosed()) throw new SQLException("Connection is closed");
+                if (conDB == null || conDB.isClosed()) throw new SQLException("Connection is closed");
                 // if no table supplied throw exception
                 if (table == null) throw new SQLException("No table specified");
                 // if no records supplied throw exception
@@ -234,7 +234,7 @@ public class DBConnect {
          */
         public static boolean DeleteRecords (Connection conDB, String table, String filter) throws SQLException {
                 // if connection is closed throw exception
-                if (conDB.isClosed()) throw new SQLException("Connection is closed");
+                if (conDB == null || conDB.isClosed()) throw new SQLException("Connection is closed");
                 // if no table supplied throw exception
                 if (table == null) throw new SQLException("No table specified");
                 // if no filter supplied throw exception
@@ -271,7 +271,7 @@ public class DBConnect {
                                             String[] fields, String[]labels,
                                             String filter, String options) throws SQLException {
         // input verification
-        if (conDB.isClosed()) throw new SQLException("Connection is closed");
+        if (conDB == null || conDB.isClosed()) throw new SQLException("Connection is closed");
         if (leftTable == null || rightTable == null) throw new SQLException("Missing tables to join");
         if (rightKeys == null || rightKeys.length == 0
             || leftKeys == null || leftKeys.length == 0
@@ -358,7 +358,7 @@ public class DBConnect {
                                         String fromTable, String[][] joinOns,
                                         String filter, String options) throws SQLException {
         // input verification
-        if (conDB.isClosed()) throw new SQLException("Connection is closed");
+        if (conDB == null || conDB.isClosed()) throw new SQLException("Connection is closed");
         if (fromTable == null || fromTable.isEmpty()) throw new SQLException("Missing tables");
         if (fields != null && labels != null && fields.length < labels.length) throw new SQLException("Error matching fields to labels");
 

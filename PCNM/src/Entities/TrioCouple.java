@@ -21,7 +21,7 @@ public class TrioCouple implements Serializable, Comparable<TrioCouple> {
     private Date dueDate;
     private float total_score;
 
-    public TrioCouple(int PCID, int userTypeID, int workstationID, Date startDate) {
+    public TrioCouple(int PCID, int workstationID, int userTypeID, Date startDate) {
         this.PCID = PCID;
         this.pc = new PC(PCID);
         this.userTypeID = userTypeID;
@@ -42,7 +42,7 @@ public class TrioCouple implements Serializable, Comparable<TrioCouple> {
         this.userType = userType;
         this.userTypeID = userType.getID();
         this.workstation = workstation;
-        this.workstationID = userType.getID();
+        this.workstationID = workstation.getID();
         this.startDate = startDate;
         calcTotalScore();
     }
