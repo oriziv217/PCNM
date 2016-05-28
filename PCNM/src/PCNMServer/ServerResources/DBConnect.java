@@ -432,5 +432,36 @@ public class DBConnect {
         // create and execute SQL statement
         Statement stmnt = conDB.createStatement();
         return stmnt.executeQuery(joinQuery);
+    }
+    
+    /**
+         * This method executes an SQL Update query on a specific table in a specific schema with a specific filter
+         * 
+         * @param conDB - connection to the DB schema - must be active and open connection
+         * @param table - table name - must be a name of an existing table.
+         * 					Table string shell look like this: "table_name"
+         * @param set - fields to set from the table.
+         * 					Fields string shell look like this: "field1 = value1, field2 = value2"
+         * @param filter - query filter.
+         * 					If null is supplied or if filter is an empty string then no WHERE clause will be added to the query.
+         * 					Filter string shell look like this: field1 = 'value1' AND field2 = 'value2'"
+         * @return int - number of effected rows
+         * @throws SQLException
+         */
+        public static int updateWithFilter (Connection conDB, String table, String set, String filter) throws SQLException {
+                // if connection is closed throw exception
+                if (conDB == null || conDB.isClosed()) throw new SQLException("Connection is closed");
+                // if no table supplied throw exception
+                if (table == null) throw new SQLException("No table specified");
+                // if no fields to set throw exception
+                if (set == null || set.isEmpty()) throw new SQLException("No fields to set");
+
+                String update = "UPDATE " + table + " SET " + set;
+                if (filter != null && !filter.isEmpty())
+                    update = update + " WHERE " + filter;
+
+                // execute query
+                Statement stmnt = conDB.createStatement();
+                return stmnt.executeUpdate(update);
         }
 }

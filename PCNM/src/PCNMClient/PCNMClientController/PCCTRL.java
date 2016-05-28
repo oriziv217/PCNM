@@ -285,8 +285,8 @@ public class PCCTRL extends CTRL {
     /**
      * This method implements Open PS Specification management screen button press event in the PC search screen
      */
-    public static void openPCSpecSCRBtnPressed() {
-        
+    public static void openPCSpecSCRBtnPressed() throws IOException {
+        PCNMClientModel.sendMessageToServer(new Message(MessageType.Get_ALL_PCSPECS));
     }
 
     /**

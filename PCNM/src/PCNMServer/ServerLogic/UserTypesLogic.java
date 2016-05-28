@@ -80,6 +80,7 @@ public class UserTypesLogic extends Logic {
             String[] keyVal = {String.valueOf(pcUserType.getID())};
             Connection conDB = DBConnect.mySQLConnection();
             boolean isSuccess = DBConnect.updateSingleRecord (conDB, "pcusertype", fields, values, keyName, keyVal);
+            conDB.close();
             if (isSuccess)
                 return getAllEntities();
             throw new SQLException("Error updating user " + pcUserType.getName());

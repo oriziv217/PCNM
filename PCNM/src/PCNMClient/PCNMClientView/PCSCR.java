@@ -539,7 +539,12 @@ public class PCSCR extends javax.swing.JPanel {
         Window window = SwingUtilities.getWindowAncestor(this);
         JFrame frame = (JFrame) window;
         frame.setTitle("PCNM - Manage PC Specifications");
-        PCCTRL.openPCSpecSCRBtnPressed();
+        try {
+            PCCTRL.openPCSpecSCRBtnPressed();
+        } catch (IOException ex) {
+            showDialog(this, "Lost Connection with the server", DialogType.ERROR);
+            System.exit(0);
+        }
     }//GEN-LAST:event_btnOpenPCSpecSCRActionPerformed
 
 

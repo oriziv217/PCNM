@@ -14,6 +14,7 @@ import Entities.Workstation;
 import PCNMClient.PCNMClientController.ComponentCTRL;
 import PCNMClient.PCNMClientController.HomeCTRL;
 import PCNMClient.PCNMClientController.PCCTRL;
+import PCNMClient.PCNMClientController.PCSpecCTRL;
 import PCNMClient.PCNMClientController.TrioCTRL;
 import PCNMClient.PCNMClientController.UserTypesCTRL;
 import PCNMClient.PCNMClientController.WorkstationCTRL;
@@ -146,6 +147,9 @@ public class PCNMClient extends AbstractClient {
                 PCNMClientStart.gotAllData ++;
                 if (PCNMClientStart.gotAllData == 2)
                     PCCTRL.openPCSCR();
+                break;
+            case Get_ALL_PCSPECS:
+                PCSpecCTRL.openPCSPecSCR((ArrayList<PCSpec>)response.getEntity());
                 break;
             case GET_SPEC_ENABLE:
                 PCCTRL.setEnaSpec((ArrayList<PCSpec>)response.getEntity());

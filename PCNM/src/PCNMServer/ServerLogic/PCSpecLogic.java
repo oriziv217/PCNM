@@ -129,4 +129,93 @@ public class PCSpecLogic extends Logic {
         if (lines_num > 0) return false;
         return true;
     }
+
+    public static Message getAllSpecs() throws SQLException {
+        ArrayList<PCSpec> search_results = new ArrayList<PCSpec>();
+        Connection conDB = DBConnect.mySQLConnection();
+        ResultSet rs;
+
+        // run query and process resault-set
+        rs = DBConnect.selectWithFilter(conDB, "pcspec", null, null);
+        while (rs.next()) {
+            search_results.add(new PCSpec(  rs.getInt("ID"),
+                                            rs.getString("name"),
+                                            rs.getString("description"),
+                                            rs.getInt("warranty"),
+                                            roundFloat(rs.getFloat("price"), 2),
+                                            rs.getInt("score"),
+                                            intToStatus(rs.getInt("status"))));
+        }
+        conDB.close();
+        return new Message(MessageType.Get_ALL_PCSPECS, search_results);
+    }
+
+    public static Message addNewSpec(PCSpec newSpec) throws SQLException {
+        Connection conDB = DBConnect.mySQLConnection();
+        ResultSet rs;
+        boolean isAdded;
+        String[] fields = { "name",
+                            "description",
+                            "warranty",
+                            "price",
+                            "score",
+                            "status" };
+        String[] values = { newSpec.getName(),
+                            newSpec.getDescription(),
+                            String.valueOf(newSpec.getWarranty()),
+                            String.valueOf(newSpec.getPrice()),
+                            String.valueOf(newSpec.getScore()),
+                            String.valueOf(statusToInt(newSpec.getStatus())) };
+        isAdded = DBConnect.insertSingleRecord (conDB, "pcspec", fields, values);
+        if (isAdded) {
+            rs = DBConnect.selectWithFilter(conDB, "pcspec", null, "name = '" + newSpec.getName() + "'");
+            if (!rs.first()) throw new SQLException("Error Reading DB");
+            newSpec.setID(rs.getInt("ID"));
+            resetScore(0.9, newSpec.getID(), newSpec.getScore());
+            conDB.close();
+            return getAllSpecs();
+        }
+        conDB.close();
+        return getAllSpecs();
+    }
+
+    private static void resetScore(double factor, int id, int score) throws SQLException {
+        Connection conDB = DBConnect.mySQLConnection();
+        String table = "pcspec";
+        String set = "score = score * " + factor;
+        String filter = "score < " + score + " AND id <> " + id;
+        DBConnect.updateWithFilter(conDB, table, set, filter);
+        conDB.close();
+    }
+
+    public static Message updateSpec(PCSpec toUpdate) throws SQLException {
+        if (isUpdateAllowed(toUpdate)) {
+            int sts = statusToInt(toUpdate.getStatus());
+            if (sts == 4) throw new SQLException("Invalid input");
+
+            String[] fields = { "ID",
+                                "name",
+                                "description",
+                                "warranty",
+                                "price",
+                                "score",
+                                "status" };
+            String[] values = { String.valueOf(toUpdate.getID()),
+                                toUpdate.getName(),
+                                toUpdate.getDescription(),
+                                String.valueOf(toUpdate.getWarranty()),
+                                String.valueOf(toUpdate.getPrice()),
+                                String.valueOf(toUpdate.getScore()),
+                                String.valueOf(sts) };
+            String[] keyName = { "id" };
+            String[] keyVal = { String.valueOf(toUpdate.getID()) };
+            Connection conDB = DBConnect.mySQLConnection();
+            boolean isSuccess = DBConnect.updateSingleRecord (conDB, "pcspec", fields, values, keyName, keyVal);
+            conDB.close();
+            if (isSuccess)
+                return getAllSpecs();
+            throw new SQLException("Error updating user " + toUpdate.getName());
+        }
+        throw new SQLException("This PC Specification is installed on an active PC");
+    }
 }

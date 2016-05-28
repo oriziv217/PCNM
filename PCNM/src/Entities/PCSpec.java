@@ -86,6 +86,12 @@ public class PCSpec implements Serializable {
         this.ID = ID;
     }
     
+    public PCSpec (int ID, int score) {
+        this();
+        this.ID = ID;
+        this.score = score;
+    }
+    
     public PCSpec(String name, String description, int warranty, float price, int score, Status status) {
         this();
         this.name = name;

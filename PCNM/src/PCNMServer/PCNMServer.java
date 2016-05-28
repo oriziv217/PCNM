@@ -120,8 +120,17 @@ public class PCNMServer extends AbstractServer {
             case GET_COMP_ENABLE:
                 client.sendToClient(ComponentLogic.getComponentsWithFilter(message.getMsgType(), (Component)message.getEntity()));
                 break;
+            case Get_ALL_PCSPECS:
+                client.sendToClient(PCSpecLogic.getAllSpecs());
+                break;
             case GET_SPEC_ENABLE:
                 client.sendToClient(PCSpecLogic.getSpecsWithFilter(message.getMsgType(), (PCSpec)message.getEntity()));
+                break;
+            case ADD_PCSPEC:
+                client.sendToClient(PCSpecLogic.addNewSpec((PCSpec)message.getEntity()));
+                break;
+            case UPDATE_PCSPEC:
+                client.sendToClient(PCSpecLogic.updateSpec((PCSpec)message.getEntity()));
                 break;
             case PC_SEARCH:
                 client.sendToClient(PCLogic.searchPCByFilter((PC)message.getEntity(), message.getDataString()));

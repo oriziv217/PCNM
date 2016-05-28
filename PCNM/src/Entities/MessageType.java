@@ -122,9 +122,24 @@ public enum MessageType {
     GET_COMP_ENABLE,
     
     /**
+     * Get All PC Specifications
+     */
+    Get_ALL_PCSPECS,
+    
+    /**
      * Get only enabled PC Specifications
      */
     GET_SPEC_ENABLE,
+    
+    /**
+     * Add new PC Specification to the DB
+     */
+    ADD_PCSPEC,
+    
+    /**
+     * Update PC Specification in the DB
+     */
+    UPDATE_PCSPEC,
     
     /**
      * Search the DB for PCs according to search filters

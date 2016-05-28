@@ -4,6 +4,7 @@ import Entities.Component;
 import Entities.WSType;
 import Entities.Workstation;
 import Entities.PC;
+import Entities.PCSpec;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -16,12 +17,14 @@ public class CurrentEntities {
     private ArrayList<Workstation> workstations;
     private ArrayList<Component> components;
     private ArrayList<PC> pcs;
+    private ArrayList<PCSpec> pcspecs;
 
     /**
      * Default constructor
      */
     public CurrentEntities() {
         wstypes = new ArrayList<WSType>();
+        pcspecs = new ArrayList<PCSpec>();
         workstations = new ArrayList<Workstation>();
         components = new ArrayList<Component>();
         pcs = new ArrayList<PC>();
@@ -33,6 +36,14 @@ public class CurrentEntities {
      */
     public ArrayList<WSType> getWstypes() {
         return wstypes;
+    }
+    
+    /**
+     * current PC Specifications getter
+     * @return
+     */
+    public ArrayList<PCSpec> getPCSpecs() {
+        return pcspecs;
     }
 
     /**
@@ -50,12 +61,21 @@ public class CurrentEntities {
     public ArrayList<PC> getPcs() {
         return pcs;
     }
+    
     /**
      * current workstation types setter
      * @param wstypes
      */
     public void setWstypes(ArrayList<WSType> wstypes) {
         this.wstypes = wstypes;
+    }
+    
+    /**
+     * current PC Specifications setter
+     * @param pcspecs
+     */
+    public void setPCSpecs(ArrayList<PCSpec> pcspecs) {
+        this.pcspecs = pcspecs;
     }
     
     /**
@@ -99,12 +119,21 @@ public class CurrentEntities {
         this.pcs = pcs;
         Collections.sort(this.pcs);
     }
+    
     /**
      * add workstation type to current array
      * @param wst
      */
     public void addToWstypes (WSType wst) {
         wstypes.add(wst);
+    }
+    
+    /**
+     * add PC Specification to current array
+     * @param pcs
+     */
+    public void addToPCSpecs (PCSpec pcs) {
+        pcspecs.add(pcs);
     }
     
     /**
@@ -169,6 +198,19 @@ public class CurrentEntities {
     }
     
     /**
+     * get the index of a specific PC Specification (by ID)
+     * if no match return -1
+     * @param ID
+     * @return
+     */
+    public int pcspecIndexByID (int ID) {
+        for (int i = 0 ; i < pcspecs.size() ; i ++)
+            if (ID == pcspecs.get(i).getID())
+                return i;
+        return -1;
+    }
+    
+    /**
      * return the index of the first occurrence of workstation type with a specific name
      * if no occurrence found return -1
      * @param name
@@ -177,6 +219,19 @@ public class CurrentEntities {
     public int wstypeIndexByName (String name) {
         for (int i = 0 ; i < wstypes.size() ; i ++)
             if (name.equals(wstypes.get(i).getName()))
+                return i;
+        return -1;
+    }
+    
+    /**
+     * return the index of the first occurrence of PC Specification with a specific name
+     * if no occurrence found return -1
+     * @param name
+     * @return
+     */
+    public int pcspecIndexByName (String name) {
+        for (int i = 0 ; i < pcspecs.size() ; i ++)
+            if (name.equals(pcspecs.get(i).getName()))
                 return i;
         return -1;
     }
@@ -192,6 +247,20 @@ public class CurrentEntities {
         if (index == -1) return false;
         wstypes.remove(index);
         wstypes.add(wst);
+        return true;
+    }
+    
+    /**
+     * update PC Specification with a specific ID
+     * return true if updated
+     * @param pcs
+     * @return
+     */
+    public boolean pcspecUpdate (PCSpec pcs) {
+        int index = pcspecIndexByID(pcs.getID());
+        if (index == -1) return false;
+        pcspecs.remove(index);
+        pcspecs.add(pcs);
         return true;
     }
     
@@ -280,5 +349,16 @@ public class CurrentEntities {
         for (WSType row : wstypes)
             wstStr.add(row.toString());
         return wstStr;
+    }
+    
+    /**
+     * return an array of comma separated representation of current PC Specifications
+     * @return
+     */
+    public ArrayList<String> pcspecsToString() {
+        ArrayList<String> pcsStr = new ArrayList<String>();
+        for (PCSpec row : pcspecs)
+            pcsStr.add(row.toString());
+        return pcsStr;
     }
 }
