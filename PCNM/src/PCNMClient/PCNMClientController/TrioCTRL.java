@@ -220,12 +220,19 @@ public class TrioCTRL extends CTRL {
         PCNMClientModel.sendMessageToServer(new Message(MessageType.ADD_TRIO, newTrio));
     }
 
-    public static void refreshTrioSCR(TrioCouple newTrio) {
-        TrioCTRL.activeTrios.add(newTrio);
-        ArrayList<String[]> trio_tbl = new ArrayList<String[]>();
-        for (TrioCouple tc : TrioCTRL.activeTrios)
-            trio_tbl.add(activeTrioToStrings(tc));
-        PCNMClientStart.appWindow.setTitle("PCNM - Active PC-Workstation-User Type Connections");
-        PCNMClientStart.switchPanels(new TrioSCR(trio_tbl));
+    public static void refreshTrioSCR(MessageType msgType, TrioCouple trio) {
+        if (msgType == MessageType.ADD_TRIO)
+            TrioCTRL.activeTrios.add(trio);
+        if (msgType == MessageType.END_TRIO_PROP)
+            for (int i = 0 ; i < activeTrios.size() ; i ++) {
+                TrioCouple tc = activeTrios.get(i);
+                if (tc.getPCID() == trio.getPCID())
+                    if (tc.getWorkstationID() ==  trio.getWorkstationID())
+                        if (tc.getUserTypeID() == trio.getUserTypeID()) {
+                            activeTrios.remove(i);
+                            i = activeTrios.size();
+                        }
+            }
+        TrioCTRL.closeBtnPressedAddScreen();
     }
 }

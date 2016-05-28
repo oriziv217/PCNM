@@ -113,5 +113,20 @@ public class PCSpecLogic extends Logic {
         conDB.close();
         return new Message(msgType, search_results);
     }
-    
+
+    protected static boolean isUpdateAllowed(PCSpec spec) throws SQLException {
+        if (spec.getStatus() != Status.DISABLE) return true;
+        
+        Connection conDB = DBConnect.mySQLConnection();
+        String table = "pc";
+        String fields = "COUNT(*) AS LINES_NUM";
+        String filter = "PCSpecID = " + spec.getID() + " AND status <> " + statusToInt(Status.DISABLE);
+        ResultSet rs = DBConnect.selectWithFilter(conDB, table, fields, filter);
+
+        if (!rs.first()) throw new SQLException("Error reading DB");
+        int lines_num = rs.getInt("LINES_NUM");
+        conDB.close();
+        if (lines_num > 0) return false;
+        return true;
+    }
 }

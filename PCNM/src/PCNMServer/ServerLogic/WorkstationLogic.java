@@ -259,6 +259,12 @@ public class WorkstationLogic extends Logic {
                             String.valueOf(ws.getType().getID()) };
         String[] keyName = { "id" };
         String[] keyVal = { Integer.toString(ws.getID()) };
+        if (!isWorkstationUpdateAllowed(ws)) {
+            rs = DBConnect.selectWithFilter(conDB, "workstation", "status", "ID = " + ws.getID());
+            if (!rs.first()) throw new SQLException("Error Reading DB");
+            ws.setStatus(intToStatus(rs.getInt("status")));
+            return new Message(MessageType.UPDATE_WORKSTATION, ws, "This Workstation is referenced to an active PC-User-Type connection");
+        }
         isUpdated = DBConnect.updateSingleRecord (conDB, "workstation", fields, values, keyName, keyVal);
         if (isUpdated) {
             resultString = "OK";
@@ -270,6 +276,38 @@ public class WorkstationLogic extends Logic {
         return new Message(MessageType.UPDATE_WORKSTATION, null, resultString);
     }
 
+    protected static boolean isWorkstationUpdateAllowed(Workstation ws) throws SQLException {
+        if (ws.getStatus() != Status.DISABLE) return true;
+        
+        Connection conDB = DBConnect.mySQLConnection();
+        String table = "triocoupling";
+        String fields = "COUNT(*) AS LINES_NUM";
+        String filter = "workstationID = " + ws.getID() + " AND dueDate IS NULL";
+        ResultSet rs = DBConnect.selectWithFilter(conDB, table, fields, filter);
+
+        if (!rs.first()) throw new SQLException("Error reading DB");
+        int lines_num = rs.getInt("LINES_NUM");
+        conDB.close();
+        if (lines_num > 0) return false;
+        return true;
+    }
+    
+    protected static boolean isWSTypeUpdateAllowed(WSType wst) throws SQLException {
+        if (wst.getStatus() != Status.DISABLE) return true;
+        
+        Connection conDB = DBConnect.mySQLConnection();
+        String table = "workstation";
+        String fields = "COUNT(*) AS LINES_NUM";
+        String filter = "wstypeID = " + wst.getID() + " AND status <> " + statusToInt(Status.DISABLE);
+        ResultSet rs = DBConnect.selectWithFilter(conDB, table, fields, filter);
+
+        if (!rs.first()) throw new SQLException("Error reading DB");
+        int lines_num = rs.getInt("LINES_NUM");
+        conDB.close();
+        if (lines_num > 0) return false;
+        return true;
+    }
+    
     /**
      * This method adds a new workstation type record to the DB
      * @param wst
@@ -310,16 +348,13 @@ public class WorkstationLogic extends Logic {
      * @throws SQLException
      */
     public static Message updateWSType(WSType wst) throws SQLException {
+        if (!isWSTypeUpdateAllowed(wst))
+            return new Message(MessageType.UPDATE_WSTYPE, wst, "This Workstation Type is still in used by Active Workstations");
+        
         Connection conDB = DBConnect.mySQLConnection();
         ResultSet rs;
         String resultString;
         boolean isUpdated;
-        
-        if (wst.getStatus() != Status.ENABLE) {
-            rs = DBConnect.selectWithFilter(conDB, "workstation", "ID", "wstypeID = '" + wst.getID() + "'");
-            if (rs.next())
-                return new Message (MessageType.UPDATE_WSTYPE, wst, "Depandancy Error");
-        }
         
         String[] fields = { "id",
                             "name",

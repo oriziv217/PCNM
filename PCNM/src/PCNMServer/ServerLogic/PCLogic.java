@@ -6,6 +6,7 @@ import Entities.PC;
 import Entities.PCComp;
 import Entities.PCSpec;
 import Entities.QuickDic;
+import Entities.Status;
 import PCNMServer.ServerResources.DBConnect;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -292,6 +293,14 @@ public class PCLogic extends Logic {
                             String.valueOf(statusToInt(pc.getStatus())) };
         String[] keyName = { "id" };
         String[] keyVal = { Integer.toString(pc.getID()) };
+
+        if (!isUpdateAllowed(pc)) {
+            ResultSet rs = DBConnect.selectWithFilter(conDB, "PC", "status", "ID = " + pc.getID());
+            if (!rs.first()) throw new SQLException("Error reading DB");
+            pc.setStatus(intToStatus(rs.getInt("status")));
+            return new Message (MessageType.UPDATE_PC, pc, "This PC is used in an active workstation");
+        }
+        
         isUpdated = DBConnect.updateSingleRecord (conDB, "pc", fields, values, keyName, keyVal);
         conDB.close();
         if (isUpdated) {
@@ -302,6 +311,22 @@ public class PCLogic extends Logic {
         return new Message(MessageType.UPDATE_PC, null, resultString);
     }
 
+    protected static boolean isUpdateAllowed(PC pc) throws SQLException {
+        if (pc.getStatus() != Status.DISABLE) return true;
+        
+        Connection conDB = DBConnect.mySQLConnection();
+        String table = "triocoupling";
+        String fields = "COUNT(*) AS LINES_NUM";
+        String filter = "PCID = " + pc.getID() + " AND dueDate IS NULL";
+        ResultSet rs = DBConnect.selectWithFilter(conDB, table, fields, filter);
+
+        if (!rs.first()) throw new SQLException("Error reading DB");
+        int lines_num = rs.getInt("LINES_NUM");
+        conDB.close();
+        if (lines_num > 0) return false;
+        return true;
+    }
+    
     public static Message getInstPCComp(PC pc_model) throws SQLException {
         ArrayList<PCComp> installedComponents = new ArrayList<PCComp>();
         Connection conDB = DBConnect.mySQLConnection();

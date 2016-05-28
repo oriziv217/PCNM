@@ -70,18 +70,37 @@ public class UserTypesLogic extends Logic {
      * @throws SQLException
      */
     public static Object updatePCUserType(PCUserType pcUserType) throws SQLException {
-        int sts = statusToInt(pcUserType.getStatus());
-        if (sts == 4) throw new SQLException("Invalid input");
+        if (isUpdateAllowed(pcUserType)) {
+            int sts = statusToInt(pcUserType.getStatus());
+            if (sts == 4) throw new SQLException("Invalid input");
+
+            String[] fields = {"id", "name", "description", "importance", "status"};
+            String[] values = {String.valueOf(pcUserType.getID()), pcUserType.getName(), pcUserType.getDescription(), String.valueOf(pcUserType.getImportance()), String.valueOf(sts)};
+            String[] keyName = {"id"};
+            String[] keyVal = {String.valueOf(pcUserType.getID())};
+            Connection conDB = DBConnect.mySQLConnection();
+            boolean isSuccess = DBConnect.updateSingleRecord (conDB, "pcusertype", fields, values, keyName, keyVal);
+            if (isSuccess)
+                return getAllEntities();
+            throw new SQLException("Error updating user " + pcUserType.getName());
+        }
+        throw new SQLException("This User Type is referenced in an active workstation-PC connection");
+    }
+    
+    protected static boolean isUpdateAllowed(PCUserType user) throws SQLException {
+        if (user.getStatus() != Status.DISABLE) return true;
         
-        String[] fields = {"id", "name", "description", "importance", "status"};
-        String[] values = {String.valueOf(pcUserType.getID()), pcUserType.getName(), pcUserType.getDescription(), String.valueOf(pcUserType.getImportance()), String.valueOf(sts)};
-        String[] keyName = {"id"};
-        String[] keyVal = {String.valueOf(pcUserType.getID())};
         Connection conDB = DBConnect.mySQLConnection();
-        boolean isSuccess = DBConnect.updateSingleRecord (conDB, "pcusertype", fields, values, keyName, keyVal);
-        if (isSuccess)
-            return getAllEntities();
-        throw new SQLException("Error updating user " + pcUserType.getName());
+        String table = "triocoupling";
+        String fields = "COUNT(*) AS LINES_NUM";
+        String filter = "PCUserTypeID = " + user.getID() + " AND dueDate IS NULL";
+        ResultSet rs = DBConnect.selectWithFilter(conDB, table, fields, filter);
+
+        if (!rs.first()) throw new SQLException("Error reading DB");
+        int lines_num = rs.getInt("LINES_NUM");
+        conDB.close();
+        if (lines_num > 0) return false;
+        return true;
     }
     
     public static PCUserType getPCUserTypeByID (int ID) throws SQLException {

@@ -109,4 +109,45 @@ public class TrioLogic extends Logic {
         }
         return new Message(MessageType.ADD_TRIO, newTrio, "NOT OK");
     }
+
+    public static Message UpdateTrio(TrioCouple trio) throws SQLException {
+        Connection conDB = DBConnect.mySQLConnection();
+        String resultString;
+        String endDate;
+        boolean isUpdated;
+
+        String[] fields = { "PCID",
+                            "workstationID",
+                            "PCUserTypeID",
+                            "startDate",
+                            "dueDate" };
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if (trio.getDueDate() != null)
+            endDate = sdf.format(trio.getDueDate());
+        else endDate = null;
+        String[] values = { String.valueOf(trio.getPCID()),
+                            String.valueOf(trio.getWorkstationID()),
+                            String.valueOf(trio.getUserTypeID()),
+                            sdf.format(trio.getStartDate()),
+                            endDate };
+        
+        String[] keyName = {    "PCID",
+                                "workstationID",
+                                "PCUserTypeID",
+                                "startDate" };
+        String[] keyVal = {     String.valueOf(trio.getPCID()),
+                                String.valueOf(trio.getWorkstationID()),
+                                String.valueOf(trio.getUserTypeID()),
+                                sdf.format(trio.getStartDate()) };
+        
+        isUpdated = DBConnect.updateSingleRecord (conDB, "triocoupling", fields, values, keyName, keyVal);
+        if (isUpdated) {
+            resultString = "OK";
+            conDB.close();
+            return new Message (MessageType.END_TRIO_PROP, trio, resultString);
+        }
+        resultString = "Not OK";
+        conDB.close();
+        return new Message(MessageType.END_TRIO_PROP, null, resultString);
+    }
 }

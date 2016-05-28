@@ -2,6 +2,7 @@ package PCNMServer.ServerLogic;
 
 import Entities.Status;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 
 /**
  * This class implements some common business logic functionality

@@ -134,12 +134,8 @@ public class ComponentLogic extends Logic {
         String resultString;
         
         // check if comp is installed on a pc
-        if (comp.getStatus() == Status.DISABLE) {
-            ResultSet rs = DBConnect.selectWithFilter(conDB, "pccomp", "ID", "componentID = '" + comp.getID() + "' "
-                    + "AND EndDate = null");
-            if (rs.next())
-                return new Message (MessageType.UPDATE_COMPONENT, comp, "This component is installed on PC(s)");
-        }
+        if (!isUpdateAllowed(comp))
+            return new Message (MessageType.UPDATE_COMPONENT, comp, "This component is installed on PC(s)");
         
         // update DB record
         String[] fields = { "id",
@@ -166,6 +162,22 @@ public class ComponentLogic extends Logic {
         return new Message(MessageType.UPDATE_COMPONENT, null, resultString);
     }
 
+    protected static boolean isUpdateAllowed(Component cmp) throws SQLException {
+        if (cmp.getStatus() != Status.DISABLE) return true;
+        
+        Connection conDB = DBConnect.mySQLConnection();
+        String table = "pccomp";
+        String fields = "COUNT(*) AS LINES_NUM";
+        String filter = "componentID = " + cmp.getID() + " AND EndDate IS NULL";
+        ResultSet rs = DBConnect.selectWithFilter(conDB, table, fields, filter);
+
+        if (!rs.first()) throw new SQLException("Error reading DB");
+        int lines_num = rs.getInt("LINES_NUM");
+        conDB.close();
+        if (lines_num > 0) return false;
+        return true;
+    }
+    
     /**
      * This method adds a new component record to the DB
      * @param comp

@@ -88,8 +88,11 @@ public class PCNMClient extends AbstractClient {
                 if (response.getDataString().equals("Not OK"))
                     WindowMustHave.showDialog(null, "Error acurred while tring to update Waorkstation to the DB.\n"
                             + "Please contact your System Administrator", DialogType.ERROR);
-                else
+                else {
+                    if (response.getDataString().equals("This Workstation is referenced to an active PC-User-Type connection"))
+                        WindowMustHave.showDialog(null, response.getDataString(), DialogType.INFO);
                     WorkstationCTRL.refreshWorkstationWindow(response.getMsgType(), (Workstation)response.getEntity());
+                }
                 break;
             case MANAGE_WSTYPES:
                 WorkstationCTRL.openWSTypeMngScreen((ArrayList<WSType>)response.getEntity());
@@ -105,9 +108,8 @@ public class PCNMClient extends AbstractClient {
                 if (response.getDataString().equals("Not OK"))
                     WindowMustHave.showDialog(null, "Error acurred while tring to update Waorkstation Type to the DB.\n"
                             + "Please contact your System Administrator", DialogType.ERROR);
-                else if (response.getDataString().equals("Depandancy Error")) {
-                    WindowMustHave.showDialog(null, "Can not update Workstation Type's status\n"
-                            + "while Workstations of this type exists.", DialogType.INFO);
+                else if (response.getDataString().equals("This Workstation Type is still in used by Active Workstations")) {
+                    WindowMustHave.showDialog(null, response.getDataString(), DialogType.INFO);
                     WorkstationCTRL.refreshWSTypeWindow(MessageType.UPDATE_WSTYPE, null);
                 } else
                     WorkstationCTRL.refreshWSTypeWindow(response.getMsgType(), (WSType)response.getEntity());
@@ -171,8 +173,11 @@ public class PCNMClient extends AbstractClient {
                 if (response.getDataString().equals("Not OK"))
                     WindowMustHave.showDialog(null, "Error acurred while tring to update PC to the DB.\n"
                             + "Please contact your System Administrator", DialogType.ERROR);
-                else
+                else {
+                    if (response.getDataString().equals("This PC is used in an active workstation"))
+                        WindowMustHave.showDialog(null, response.getDataString(), DialogType.INFO);
                     PCCTRL.refreshPCWindow(response.getMsgType(), (PC)response.getEntity());
+                }
                 break;
             case GET_PC_INST_COMP:
                 PCCTRL.openInstPCCompSCR((PC)response.getEntity());
@@ -213,8 +218,14 @@ public class PCNMClient extends AbstractClient {
                             + "Please contact your System Administrator", DialogType.ERROR);
                     TrioCTRL.closeBtnPressedAddScreen();
                 } else {
-                    TrioCTRL.refreshTrioSCR((TrioCouple)response.getEntity());
+                    TrioCTRL.refreshTrioSCR(response.getMsgType(), (TrioCouple)response.getEntity());
                 }
+                break;
+            case END_TRIO_PROP:
+                if (response.getDataString().equals("NOT OK"))
+                    WindowMustHave.showDialog(null, "Error acurred while tring to end connection to the DB.\n"
+                            + "Please contact your System Administrator", DialogType.ERROR);
+                TrioCTRL.refreshTrioSCR(response.getMsgType(), (TrioCouple)response.getEntity());
                 break;
             case DB_PROBLEM:
                 WindowMustHave.showDialog(null, response.getDataString(), DialogType.ERROR);
