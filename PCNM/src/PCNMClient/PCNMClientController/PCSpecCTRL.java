@@ -18,9 +18,14 @@ public class PCSpecCTRL extends CTRL {
 
     public static void openPCSPecSCR(ArrayList<PCSpec> allSpecs) {
         ArrayList<String[]> scr_tbl = new ArrayList<String[]>();
+        ArrayList<PCSpec> enabledSpecs = new ArrayList<PCSpec>();
         PCNMClientStart.cur_ent.setPCSpecs(allSpecs);
-        for (PCSpec pcs : allSpecs)
+        for (PCSpec pcs : allSpecs) {
             scr_tbl.add(pcs.toString().split(","));
+            if (pcs.getStatus() == Status.ENABLE)
+                enabledSpecs.add(pcs);
+        }
+        PCCTRL.setEnaSpec(enabledSpecs);
         PCNMClientStart.switchPanels(new PCSPecSCR(scr_tbl));
     }
     
