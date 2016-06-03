@@ -216,7 +216,7 @@ public class TrioCTRL extends CTRL {
     }
 
     public static void addTrioConfirmBtnPressed(int pcID, int wsID, int pcutID, Date sDate) throws IOException {
-        TrioCouple newTrio = new TrioCouple(pcID, pcutID, wsID, sDate);
+        TrioCouple newTrio = new TrioCouple(pcID, wsID, pcutID, sDate);
         PCNMClientModel.sendMessageToServer(new Message(MessageType.ADD_TRIO, newTrio));
     }
 

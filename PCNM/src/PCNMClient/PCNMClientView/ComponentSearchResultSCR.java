@@ -152,10 +152,10 @@ public class ComponentSearchResultSCR extends javax.swing.JPanel {
         txtAddComponentName.setToolTipText("");
 
         spnAddComponentPrice.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-        spnAddComponentPrice.setModel(new javax.swing.SpinnerNumberModel(0.0f, 0.0f, null, 1.0f));
+        spnAddComponentPrice.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.0f), Float.valueOf(0.0f), null, Float.valueOf(1.0f)));
 
         spnAddComponentValAdd.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-        spnAddComponentValAdd.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(1.0f), Float.valueOf(1.0f), Float.valueOf(1.99f), Float.valueOf(0.1f)));
+        spnAddComponentValAdd.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(1.0f), Float.valueOf(0.01f), Float.valueOf(1.99f), Float.valueOf(0.1f)));
 
         cmbAddComponentStatus.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         cmbAddComponentStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Enabled", "Disabled", "Suspended" }));
@@ -295,7 +295,7 @@ public class ComponentSearchResultSCR extends javax.swing.JPanel {
         cmbPriceFilter.addActionListener(formListener);
 
         spnPriceFilter.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-        spnPriceFilter.setModel(new javax.swing.SpinnerNumberModel(0.0f, 0.0f, null, 1.0f));
+        spnPriceFilter.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.0f), Float.valueOf(0.0f), null, Float.valueOf(1.0f)));
         spnPriceFilter.setEnabled(false);
         spnPriceFilter.addChangeListener(formListener);
 

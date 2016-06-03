@@ -130,7 +130,7 @@ public class WorkstationLogic extends Logic {
             }
         }
         // applying filter by status
-        if (search_model.getStatus() != null) {
+        if (search_model.getStatus() != null && search_model.getStatus() != Status.Error) {
             if (isfirst) {
                 filter = "workstation.status = " + statusToInt(search_model.getStatus());
                 isfirst = false;
@@ -225,7 +225,7 @@ public class WorkstationLogic extends Logic {
         isAdded = DBConnect.insertSingleRecord (conDB, "workstation", fields, values);
         if (isAdded) {
             resultString = "OK";
-            Workstation added = getWorkstationsWithFilter(newWS).get(0);
+            Workstation added = getWorkstationsWithFilter(new Workstation(newWS.getID(), newWS.getName())).get(0);
             conDB.close();
             return new Message (MessageType.ADD_WORKSTATION, added, resultString);
         }

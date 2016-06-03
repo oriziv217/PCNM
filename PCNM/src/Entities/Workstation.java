@@ -128,6 +128,11 @@ public class Workstation implements Serializable, Comparable<Workstation> {
         this.ID = ID;
     }
     
+    public Workstation (int ID, String name) {
+        this();
+        this.ID = ID;
+        this.name = name;
+    }
     /**
      * No ID and no type constructor - used for new Workstations and for search filters
      * @param name

@@ -1,5 +1,6 @@
 package Entities;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * This class represents a record in Component table
@@ -140,7 +141,7 @@ public class Component implements Serializable, Comparable<Component> {
      * @param price
      */
     public void setPrice(float price) {
-        this.price = price;
+        this.price = roundFloat(price, 2);
     }
 
     /**
@@ -156,7 +157,7 @@ public class Component implements Serializable, Comparable<Component> {
      * @param valueAdd
      */
     public void setValueAdd(float valueAdd) {
-        this.valueAdd = valueAdd;
+        this.valueAdd = roundFloat(valueAdd, 2);
     }
 
     /**
@@ -197,5 +198,11 @@ public class Component implements Serializable, Comparable<Component> {
     @Override
     public int compareTo(Component comparedTo) {
        return this.ID - comparedTo.getID(); 
+    }
+    
+    private float roundFloat(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
     }
 }
